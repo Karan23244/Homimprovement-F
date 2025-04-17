@@ -1,7 +1,9 @@
-User-agent: *  
-Disallow: /admin/  
-Disallow: /user-generated/  
-Allow: /  
+# *
+User-agent: *
+Allow: /
 
-Sitemap: https://homimprovement.com/sitemap.xml  
+# Host
+Host: https://homimprovement.com
 
+# Sitemaps
+Sitemap: https://homimprovement.com/sitemap.xml
