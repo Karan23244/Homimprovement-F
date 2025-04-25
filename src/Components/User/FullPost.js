@@ -303,7 +303,7 @@ const FullPost = ({ param2 }) => {
           {post.AdImage && (
             <aside className="lg:w-1/4">
               <div className="sticky top-16 p-4 border m-4 overflow-auto lg:h-screen">
-                <Link href={post.ad_url} target="_blank">
+                <Link href={post.ad_url} target="_blank" id="sidebanner">
                   <img src={adimageUrl} alt="ad" />
                 </Link>
               </div>
