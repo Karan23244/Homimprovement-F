@@ -294,7 +294,7 @@ const FullPost = ({ param2 }) => {
           {adData && (
             <aside className="lg:w-1/4">
               <div className="sticky top-16 p-4 border m-4 overflow-auto lg:h-screen">
-                <Link href={adData.link} target="_blank">
+                <Link href={adData.link} target="_blank" id="sidebanner">
                   <img src={adData.image} alt="ad" />
                 </Link>
               </div>
