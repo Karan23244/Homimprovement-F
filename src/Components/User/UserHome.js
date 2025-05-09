@@ -6,7 +6,7 @@ import Head from "next/head";
 import Image from "next/image";
 import CustomCarousel from "../Common/CustomCarousel";
 import usePageTracker from "../Hooks/usePageTracker";
-
+import SkeletonLoader from "../Common/Skeleton";
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
@@ -89,7 +89,7 @@ function UserHome({ posts }) {
 
       <div className="lg:px-10 lg:py-5 px-5 py-5">
         {loading ? (
-          <p className="text-gray-500 text-center h-screen">Loading...</p>
+          <SkeletonLoader />
         ) : error ? (
           <p className="text-gray-500 text-center h-screen">{error}</p>
         ) : posts?.length === 0 ? (

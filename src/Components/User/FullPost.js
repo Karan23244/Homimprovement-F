@@ -7,6 +7,29 @@ import Link from "next/link";
 import CommentSection from "../Common/Comment";
 import "./styles.css";
 import usePageTracker from "../Hooks/usePageTracker";
+
+
+// Spinner Component
+const Spinner = () => (
+  <div className="flex items-center justify-center h-[70vh]">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+  </div>
+);
+
+// Skeleton Placeholder
+const Skeleton = () => (
+  <div className="animate-pulse space-y-6 px-4 py-8">
+    <div className="h-64 bg-gray-300 rounded-md"></div>
+    <div className="h-6 bg-gray-300 rounded w-1/2"></div>
+    <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+    <div className="space-y-3">
+      <div className="h-4 bg-gray-300 rounded w-full"></div>
+      <div className="h-4 bg-gray-300 rounded w-5/6"></div>
+      <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+    </div>
+  </div>
+);
+
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
@@ -23,6 +46,7 @@ const FullPost = ({ param2 }) => {
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingStage, setLoadingStage] = useState("spinner"); // 'spinner' | 'skeleton' | 'loaded'
   const fetchedRef = useRef(false);
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
@@ -186,7 +210,11 @@ const FullPost = ({ param2 }) => {
   }
 
   if (!post) {
-    return <p className="text-gray-500 text-center h-screen">Loading...</p>;
+    return (
+      <>
+        <Skeleton />
+      </>
+    );
   }
 
   return (
@@ -293,8 +321,8 @@ const FullPost = ({ param2 }) => {
 
           {adData && (
             <aside className="lg:w-1/4">
-              <div className="sticky top-16 p-4 border m-4 overflow-auto lg:h-screen">
-                <Link href={adData.link} target="_blank" id="sidebanner">
+              <div className="sticky top-16 p-4 border m-4 overflow-auto lg:h-screen" id="sidebanner">
+                <Link href={adData.link} target="_blank" >
                   <img src={adData.image} alt="ad" />
                 </Link>
               </div>
@@ -302,8 +330,8 @@ const FullPost = ({ param2 }) => {
           )}
           {post.AdImage && (
             <aside className="lg:w-1/4">
-              <div className="sticky top-16 p-4 border m-4 overflow-auto lg:h-screen">
-                <Link href={post.ad_url} target="_blank" id="sidebanner">
+              <div className="sticky top-16 p-4 border m-4 overflow-auto lg:h-screen" id="sidebanner">
+                <Link href={post.ad_url} target="_blank" >
                   <img src={adimageUrl} alt="ad" />
                 </Link>
               </div>
