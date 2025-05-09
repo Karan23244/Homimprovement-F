@@ -177,38 +177,43 @@ function UserHome({ posts }) {
                 </h2>
                 <div className="grid grid-cols-1 gap-4 h-full">
                   {topReads?.slice(0, 7)?.map((post) => (
-                    <div
+                    <Link
                       key={post.id}
-                      className="post-card flex flex-row gap-4 hover:shadow-md h-full">
-                      <div className="w-2/5">
-                        <img
-                          src={
-                            post?.featured_image
-                              ? `${baseUrl}/${post?.featured_image}`
-                              : "https://via.placeholder.com/300x200.png?text=No+Image"
-                          }
-                          alt={post?.title}
-                          className="w-full h-40 object-cover"
-                        />
+                      href={`/${createSlug(
+                        post?.category_names[0]
+                      )}/${createSlug(post?.Custom_url)}`}
+                      className="mt-auto">
+                      <div className="post-card flex flex-row gap-4 h-full">
+                        <div className="w-2/5">
+                          <img
+                            src={
+                              post?.featured_image
+                                ? `${baseUrl}/${post?.featured_image}`
+                                : "https://via.placeholder.com/300x200.png?text=No+Image"
+                            }
+                            alt={post?.title}
+                            className="w-full h-40 object-cover"
+                          />
+                        </div>
+                        <div className="flex flex-col  w-3/5 h-full">
+                          <h3 className="lg:text-base text-sm font-semibold text-gray-800 line-clamp-3">
+                            {post?.title}
+                          </h3>
+                          <p className="lg:text-sm text-xs text-gray-600 line-clamp-2">
+                            {post?.seoDescription}
+                          </p>
+                          <Link
+                            href={`/${createSlug(
+                              post?.category_names[0]
+                            )}/${createSlug(post?.Custom_url)}`}
+                            className="mt-auto">
+                            <button className="lg:text-base text-sm text-white px-5 py-2 bg-gradient-to-r from-[#00008B] to-[#00008B] rounded-md shadow-md hover:shadow-lg">
+                              Read More
+                            </button>
+                          </Link>
+                        </div>
                       </div>
-                      <div className="flex flex-col  w-3/5 h-full">
-                        <h3 className="lg:text-base text-sm font-semibold text-gray-800 line-clamp-3">
-                          {post?.title}
-                        </h3>
-                        <p className="lg:text-sm text-xs text-gray-600 line-clamp-2">
-                          {post?.seoDescription}
-                        </p>
-                        <Link
-                          href={`/${createSlug(
-                            post?.category_names[0]
-                          )}/${createSlug(post?.Custom_url)}`}
-                          className="mt-auto">
-                          <button className="lg:text-base text-sm text-white px-5 py-2 bg-gradient-to-r from-[#00008B] to-[#00008B] rounded-md shadow-md hover:shadow-lg">
-                            Read More
-                          </button>
-                        </Link>
-                      </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -220,36 +225,40 @@ function UserHome({ posts }) {
                 </h2>
                 <div className="grid grid-cols-2 gap-4 h-full">
                   {editorsChoice?.slice(0, 8)?.map((post) => (
-                    <div
+                    <Link
                       key={post.id}
-                      className="overflow-hidden hover:shadow-lg border border-gray-200 flex flex-col h-full">
-                      <img
-                        src={
-                          post?.featured_image
-                            ? `${baseUrl}/${post?.featured_image}`
-                            : "https://via.placeholder.com/300x200.png?text=No+Image"
-                        }
-                        alt={post?.title}
-                        className="w-full h-40 object-cover"
-                      />
-                      <div className="p-2 flex flex-col flex-grow">
-                        <h3 className="lg:text-base text-sm font-semibold text-gray-800 line-clamp-2">
-                          {post?.title}
-                        </h3>
-                        <p className="lg:text-sm text-xs text-gray-600 line-clamp-2">
-                          {post?.seoDescription}
-                        </p>
-                        <Link
-                          href={`/${createSlug(
-                            post?.category_names[0]
-                          )}/${createSlug(post?.Custom_url)}`}
-                          className="mt-auto">
-                          <button className="lg:text-base text-sm text-white px-4 py-1 bg-gradient-to-r from-[#00008B] to-[#00008B] rounded-md shadow-md hover:shadow-lg">
-                            Read More
-                          </button>
-                        </Link>
+                      href={`/${createSlug(
+                        post?.category_names[0]
+                      )}/${createSlug(post?.Custom_url)}`}>
+                      <div className="overflow-hidden border border-gray-200 flex flex-col h-full">
+                        <img
+                          src={
+                            post?.featured_image
+                              ? `${baseUrl}/${post?.featured_image}`
+                              : "https://via.placeholder.com/300x200.png?text=No+Image"
+                          }
+                          alt={post?.title}
+                          className="w-full h-40 object-cover"
+                        />
+                        <div className="p-2 flex flex-col flex-grow">
+                          <h3 className="lg:text-base text-sm font-semibold text-gray-800 line-clamp-2">
+                            {post?.title}
+                          </h3>
+                          <p className="lg:text-sm text-xs text-gray-600 line-clamp-2">
+                            {post?.seoDescription}
+                          </p>
+                          <Link
+                            href={`/${createSlug(
+                              post?.category_names[0]
+                            )}/${createSlug(post?.Custom_url)}`}
+                            className="mt-auto">
+                            <button className="lg:text-base text-sm text-white px-4 py-1 bg-gradient-to-r from-[#00008B] to-[#00008B] rounded-md shadow-md hover:shadow-lg">
+                              Read More
+                            </button>
+                          </Link>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -419,7 +428,7 @@ const CategoryBlogs = ({ posts, baseUrl }) => {
                           loading="lazy"
                         />
                         {/* Title Overlay */}
-                        <div className="absolute top-4 left-4 group-hover:opacity-0 text-white text-xl font-semibold z-10">
+                        <div className="absolute top-4 left-4 group-hover:opacity-0 text-black text-xl font-semibold z-10">
                           {post?.title}
                         </div>
                       </div>
