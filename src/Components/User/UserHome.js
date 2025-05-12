@@ -10,12 +10,13 @@ import SkeletonLoader from "../Common/Skeleton";
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
-function UserHome({ posts }) {
+function UserHome() {
   usePageTracker("home");
   const baseUrl =
     process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [posts, setPosts] = useState([]);
   const [topReads, setTopReads] = useState([]);
   const [editorsChoice, setEditorsChoice] = useState([]);
   const [imagePreloaded, setImagePreloaded] = useState(false);
@@ -48,10 +49,24 @@ function UserHome({ posts }) {
         setLoading(false);
       }
     };
-
+    const fetchPosts = async () => {
+      try {
+        const postsRes = await fetch(`${baseUrl}/api/posts`, {
+          cache: "no-store",
+        });
+        const postsJson = await postsRes.json();
+        const publishedPosts = postsJson.data.filter(
+          (post) => post.blog_type === "published"
+        );
+        setPosts(publishedPosts);
+      } catch (err) {
+        setError("Failed to fetch posts: " + err.message);
+      }
+    };
     // if (posts.length === 0) fetchPosts();
     if (topReads.length === 0 && editorsChoice.length === 0)
       fetchReadsAndChoices();
+    fetchPosts();
   }, []);
 
   useEffect(() => {
