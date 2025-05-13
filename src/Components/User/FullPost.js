@@ -34,7 +34,7 @@ function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
 const FullPost = ({ param2 }) => {
-  usePageTracker("blogs");
+  // usePageTracker("blogs");
 
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);

@@ -179,7 +179,7 @@ const getSeoDetails = (category) => {
 };
 
 const CategoryPosts = () => {
-    usePageTracker("category");
+    // usePageTracker("category");
 
   const {
     posts,

@@ -11,7 +11,7 @@ function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
 function UserHome() {
-  usePageTracker("home");
+  // usePageTracker("home");
   const baseUrl =
     process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
   const [loading, setLoading] = useState(true);
@@ -20,6 +20,10 @@ function UserHome() {
   const [topReads, setTopReads] = useState([]);
   const [editorsChoice, setEditorsChoice] = useState([]);
   const [imagePreloaded, setImagePreloaded] = useState(false);
+  const [loadingPosts, setLoadingPosts] = useState(true);
+  const [loadingTopReads, setLoadingTopReads] = useState(true);
+  const [loadingEditorsChoice, setLoadingEditorsChoice] = useState(true);
+  console.log(topReads);
   const preloadLCPImage = (url) => {
     const link = document.createElement("link");
     link.rel = "preload";
@@ -29,44 +33,56 @@ function UserHome() {
   };
 
   useEffect(() => {
-    const fetchReadsAndChoices = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch(
-          `${baseUrl}/api/posts/topReadsAndEditorsChoice`
-        );
-        const result = await res.json();
-        const top = result.data.topReads.filter(
-          (post) => post.blog_type === "published"
-        );
-        const choice = result.data.editorsChoice.filter(
-          (post) => post.blog_type === "published"
-        );
-        setTopReads(top);
-        setEditorsChoice(choice);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    const fetchPosts = async () => {
-      try {
+        // Fetch all published posts
         const postsRes = await fetch(`${baseUrl}/api/posts`, {
           cache: "no-store",
         });
         const postsJson = await postsRes.json();
-        const publishedPosts = postsJson.data.filter(
+
+        const allPublishedPosts = postsJson.data.filter(
           (post) => post.blog_type === "published"
         );
-        setPosts(publishedPosts);
+
+        setPosts(allPublishedPosts); // store all published posts
+
+        const first7 = allPublishedPosts.slice(0, 7);
+        const usedIds = new Set(first7.map((post) => post.id));
+
+        // Fetch topReads and editorsChoice
+        const res = await fetch(
+          `${baseUrl}/api/posts/topReadsAndEditorsChoice`
+        );
+        const result = await res.json();
+
+        const rawTop = result.data.topReads.filter(
+          (post) => post.blog_type === "published"
+        );
+        const rawChoice = result.data.editorsChoice.filter(
+          (post) => post.blog_type === "published"
+        );
+
+        // Filter out posts already in first7
+        const filteredTopReads = rawTop.filter((post) => !usedIds.has(post.id));
+        filteredTopReads.forEach((post) => usedIds.add(post.id));
+
+        const filteredEditorsChoice = rawChoice.filter(
+          (post) => !usedIds.has(post.id)
+        );
+
+        setTopReads(filteredTopReads);
+        setEditorsChoice(filteredEditorsChoice);
       } catch (err) {
-        setError("Failed to fetch posts: " + err.message);
+        setError("Error fetching data: " + err.message);
+      } finally {
+        setLoadingPosts(false);
+        setLoadingTopReads(false);
+        setLoadingEditorsChoice(false);
       }
     };
-    // if (posts.length === 0) fetchPosts();
-    if (topReads.length === 0 && editorsChoice.length === 0)
-      fetchReadsAndChoices();
-    fetchPosts();
+
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -103,115 +119,70 @@ function UserHome() {
       </Head>
 
       <div className="lg:px-10 lg:py-5 px-5 py-5">
-        {loading ? (
-          <SkeletonLoader />
-        ) : error ? (
-          <p className="text-gray-500 text-center h-screen">{error}</p>
-        ) : posts?.length === 0 ? (
-          <p className="text-gray-500 text-center h-screen">
-            No matching blog posts found.
-          </p>
-        ) : (
-          <>
-            <div className="flex flex-col lg:flex-row lg:justify-evenly gap-6 items-stretch h-full">
-              {/* Latest Blogs Section */}
-              <div className="flex flex-col lg:w-2/3 gap-4 h-full">
-                <h1 className="lg:text-2xl text-base font-semibold text-black">
-                  Latest Blogs
-                </h1>
-                {posts && posts.length > 0 && (
-                  <div className="relative overflow-hidden hover:shadow-md flex-grow">
-                    <Link
-                      href={`/${createSlug(
-                        posts[0]?.category_names[0]
-                      )}/${createSlug(posts[0]?.Custom_url)}`}
-                      className="block h-full">
-                      <div className="relative w-full lg:h-[350px] h-[200px]">
-                        <img
-                          src={
-                            posts[0]?.featured_image
-                              ? `${baseUrl}/${posts[0]?.featured_image}`
-                              : "https://via.placeholder.com/600x400.png?text=No+Image"
-                          }
-                          alt={posts[0]?.title}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-custom"></div>
-                      </div>
-                      <div className="absolute bottom-0 left-0 text-white p-4 w-full">
-                        <h3 className="lg:text-2xl text-lg font-medium line-clamp-2">
-                          {posts[0]?.title}
-                        </h3>
-                        <p className="lg:text-sm text-xs mt-1 line-clamp-2">
-                          {posts[0]?.seoDescription}
-                        </p>
-                      </div>
-                    </Link>
-                  </div>
-                )}
-
-                {/* Smaller Cards */}
-                <div className="grid grid-cols-2 md:grid-cols-2 gap-4 flex-grow">
-                  {posts?.slice(1, 7)?.map((post) => (
-                    <div
-                      key={post.id}
-                      className="overflow-hidden hover:shadow-md border border-gray-200 flex flex-col h-full">
-                      <img
-                        src={
-                          post?.featured_image
-                            ? `${baseUrl}/${post?.featured_image}`
-                            : "https://via.placeholder.com/300x200.png?text=No+Image"
-                        }
-                        alt={post?.title}
-                        className="w-full h-40 object-cover"
-                      />
-                      <div className="p-2 flex flex-col flex-grow">
-                        <h3 className="lg:text-base text-sm font-semibold line-clamp-2">
-                          {post?.title}
-                        </h3>
-                        <p className="lg:text-sm text-xs text-gray-600 line-clamp-2">
-                          {post?.seoDescription}
-                        </p>
-                        <Link
-                          href={`/${createSlug(
-                            post?.category_names[0]
-                          )}/${createSlug(post?.Custom_url)}`}
-                          className="text-[#00008B] hover:underline inline-block mt-auto">
-                          Read More...
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Top Reads Section */}
-              <div className="lg:w-1/2 w-full flex flex-col gap-4 h-full">
-                <h2 className="lg:text-2xl text-base font-semibold mb-4 text-black">
-                  Top Reads
-                </h2>
-                <div className="grid grid-cols-1 gap-4 h-full">
-                  {topReads?.slice(0, 7)?.map((post) => (
-                    <Link
-                      key={post.id}
-                      href={`/${createSlug(
-                        post?.category_names[0]
-                      )}/${createSlug(post?.Custom_url)}`}
-                      className="mt-auto">
-                      <div className="post-card flex flex-row gap-4 h-full">
-                        <div className="w-2/5">
-                          <img
+        <>
+          <div className="flex flex-col lg:flex-row lg:justify-evenly gap-6 items-stretch h-full">
+            {/* Latest Blogs Section */}
+            <div className="flex flex-col lg:w-2/3 gap-4 h-full">
+              <h1 className="lg:text-2xl text-base font-semibold text-black">
+                Latest Blogs
+              </h1>
+              {loadingPosts ? (
+                <SkeletonLoader />
+              ) : (
+                <>
+                  {posts && posts.length > 0 && (
+                    <div className="relative overflow-hidden hover:shadow-md flex-grow">
+                      <Link
+                        href={`/${createSlug(
+                          posts[0]?.category_names[0]
+                        )}/${createSlug(posts[0]?.Custom_url)}`}
+                        className="block h-full">
+                        <div className="relative w-full lg:h-[350px] h-[200px]">
+                          <Image
                             src={
-                              post?.featured_image
-                                ? `${baseUrl}/${post?.featured_image}`
-                                : "https://via.placeholder.com/300x200.png?text=No+Image"
+                              posts[0]?.featured_image
+                                ? `${baseUrl}/${posts[0]?.featured_image}`
+                                : "https://via.placeholder.com/600x400.png?text=No+Image"
                             }
-                            alt={post?.title}
-                            className="w-full h-40 object-cover"
+                            alt={posts[0]?.title}
+                            width={600}
+                            height={400}
+                            priority
+                            className="w-full h-full object-cover"
                           />
+                          <div className="absolute top-0 left-0 w-full h-full bg-gradient-custom"></div>
                         </div>
-                        <div className="flex flex-col  w-3/5 h-full">
-                          <h3 className="lg:text-base text-sm font-semibold text-gray-800 line-clamp-3">
+                        <div className="absolute bottom-0 left-0 text-white p-4 w-full">
+                          <h3 className="lg:text-2xl text-lg font-medium line-clamp-2">
+                            {posts[0]?.title}
+                          </h3>
+                          <p className="lg:text-sm text-xs mt-1 line-clamp-2">
+                            {posts[0]?.seoDescription}
+                          </p>
+                        </div>
+                      </Link>
+                    </div>
+                  )}
+
+                  {/* Smaller Cards */}
+                  <div className="grid grid-cols-2 md:grid-cols-2 gap-4 flex-grow">
+                    {posts?.slice(1, 7)?.map((post) => (
+                      <div
+                        key={post.id}
+                        className="overflow-hidden hover:shadow-md border border-gray-200 flex flex-col h-full">
+                        <Image
+                          src={
+                            post?.featured_image
+                              ? `${baseUrl}/${post?.featured_image}`
+                              : "https://via.placeholder.com/300x200.png?text=No+Image"
+                          }
+                          alt={post?.title}
+                          width={300}
+                          height={200}
+                          className="w-full h-40 object-cover"
+                        />
+                        <div className="p-2 flex flex-col flex-grow">
+                          <h3 className="lg:text-base text-sm font-semibold line-clamp-2">
                             {post?.title}
                           </h3>
                           <p className="lg:text-sm text-xs text-gray-600 line-clamp-2">
@@ -221,23 +192,77 @@ function UserHome() {
                             href={`/${createSlug(
                               post?.category_names[0]
                             )}/${createSlug(post?.Custom_url)}`}
-                            className="mt-auto">
-                            <button className="lg:text-base text-sm text-white px-5 py-2 bg-gradient-to-r from-[#00008B] to-[#00008B] rounded-md shadow-md hover:shadow-lg">
-                              Read More
-                            </button>
+                            className="text-[#00008B] hover:underline inline-block mt-auto">
+                            Read More...
                           </Link>
                         </div>
                       </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
 
-              {/* Editor's Choice Section */}
-              <div className="lg:w-1/2 w-full flex flex-col gap-4 h-full">
-                <h2 className="text-2xl font-semibold mb-4 text-black">
-                  Editor’s Choice
-                </h2>
+            {/* Top Reads Section */}
+            <div className="lg:w-1/2 w-full flex flex-col gap-4 h-full">
+              <h2 className="lg:text-2xl text-base font-semibold mb-4 text-black">
+                Top Reads
+              </h2>
+              <div className="grid grid-cols-1 gap-4 h-full">
+                {loadingTopReads ? (
+                  <SkeletonTopReads />
+                ) : (
+                  <>
+                    {topReads?.slice(0, 7)?.map((post) => (
+                      <Link
+                        key={post.id}
+                        href={`/${createSlug(
+                          post?.category_names[0]
+                        )}/${createSlug(post?.Custom_url)}`}>
+                        <div className="post-card flex flex-row gap-4 h-full">
+                          <div className="w-2/5">
+                            <Image
+                              src={
+                                post?.featured_image
+                                  ? `${baseUrl}/${post?.featured_image}`
+                                  : "https://via.placeholder.com/300x200.png?text=No+Image"
+                              }
+                              alt={post?.title}
+                              width={300}
+                              height={200}
+                              loading="lazy"
+                              className="w-full h-40 object-cover"
+                            />
+                          </div>
+                          <div className="flex flex-col  w-3/5 h-full">
+                            <h3 className="lg:text-base text-sm font-semibold text-gray-800 line-clamp-3">
+                              {post?.title}
+                            </h3>
+                            <p className="lg:text-sm text-xs text-gray-600 line-clamp-2">
+                              {post?.seoDescription}
+                            </p>
+                            <div className="mt-auto">
+                              <button className="lg:text-base mt-auto text-sm text-white px-5 py-2 bg-gradient-to-r from-[#00008B] to-[#00008B] rounded-md shadow-md hover:shadow-lg">
+                                Read More
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Editor's Choice Section */}
+            <div className="lg:w-1/2 w-full flex flex-col gap-4 h-full">
+              <h2 className="text-2xl font-semibold mb-4 text-black">
+                Editor’s Choice
+              </h2>
+              {loadingEditorsChoice ? (
+                <SkeletonEditorsChoice />
+              ) : (
                 <div className="grid grid-cols-2 gap-4 h-full">
                   {editorsChoice?.slice(0, 8)?.map((post) => (
                     <Link
@@ -246,13 +271,15 @@ function UserHome() {
                         post?.category_names[0]
                       )}/${createSlug(post?.Custom_url)}`}>
                       <div className="overflow-hidden border border-gray-200 flex flex-col h-full">
-                        <img
+                        <Image
                           src={
                             post?.featured_image
                               ? `${baseUrl}/${post?.featured_image}`
                               : "https://via.placeholder.com/300x200.png?text=No+Image"
                           }
                           alt={post?.title}
+                          width={300}
+                          height={200}
                           className="w-full h-40 object-cover"
                         />
                         <div className="p-2 flex flex-col flex-grow">
@@ -262,24 +289,20 @@ function UserHome() {
                           <p className="lg:text-sm text-xs text-gray-600 line-clamp-2">
                             {post?.seoDescription}
                           </p>
-                          <Link
-                            href={`/${createSlug(
-                              post?.category_names[0]
-                            )}/${createSlug(post?.Custom_url)}`}
-                            className="mt-auto">
+                          <div className="mt-auto">
                             <button className="lg:text-base text-sm text-white px-4 py-1 bg-gradient-to-r from-[#00008B] to-[#00008B] rounded-md shadow-md hover:shadow-lg">
                               Read More
                             </button>
-                          </Link>
+                          </div>
                         </div>
                       </div>
                     </Link>
                   ))}
                 </div>
-              </div>
+              )}
             </div>
-          </>
-        )}
+          </div>
+        </>
       </div>
       <div className="mt-8 md:mt-[5%]">
         <div className="text-xl md:text-5xl font-bold text-center px-4">
@@ -584,4 +607,46 @@ const OurMission = () => {
     </div>
   );
 };
+
+const SkeletonTopReads = () => {
+  return (
+    <div className="space-y-4">
+      <div className="h-6 bg-gray-300 rounded w-1/3 animate-pulse"></div>
+      <div className="grid grid-cols-1 gap-4">
+        {Array.from({ length: 5 }).map((_, idx) => (
+          <div
+            key={idx}
+            className="flex gap-4 border border-gray-200 p-2 rounded-md animate-pulse">
+            <div className="w-2/5 h-32 bg-gray-300 rounded"></div>
+            <div className="flex flex-col gap-2 w-3/5">
+              <div className="h-4 bg-gray-300 rounded w-full"></div>
+              <div className="h-3 bg-gray-200 rounded w-4/5"></div>
+              <div className="h-8 bg-gray-300 rounded w-1/2 mt-auto"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+const SkeletonEditorsChoice = () => {
+  return (
+    <div className="space-y-4">
+      <div className="h-6 bg-gray-300 rounded w-1/3 animate-pulse"></div>
+      <div className="grid grid-cols-2 gap-4">
+        {Array.from({ length: 6 }).map((_, idx) => (
+          <div
+            key={idx}
+            className="space-y-2 border border-gray-200 p-2 rounded-md animate-pulse">
+            <div className="w-full h-32 bg-gray-300 rounded"></div>
+            <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+            <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+            <div className="h-8 bg-gray-300 rounded w-1/2 mt-auto"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default UserHome;
