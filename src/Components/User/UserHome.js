@@ -17,6 +17,7 @@ function UserHome() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [allposts, setAllPosts] = useState([]);
   const [topReads, setTopReads] = useState([]);
   const [editorsChoice, setEditorsChoice] = useState([]);
   const [imagePreloaded, setImagePreloaded] = useState(false);
@@ -41,7 +42,7 @@ function UserHome() {
         const allPublishedPosts = postsJson.data.filter(
           (post) => post.blog_type === "published"
         );
-
+        setAllPosts(allPublishedPosts);
         const first7 = allPublishedPosts.slice(0, 7); // latest 7
         const first7Ids = new Set(first7.map((post) => post.id));
         setPosts(first7);
@@ -348,7 +349,7 @@ function UserHome() {
           </CustomCarousel>
         </div>
       </div>
-      <CategoryBlogs posts={posts} baseUrl={baseUrl} />
+      <CategoryBlogs posts={allposts} baseUrl={baseUrl} />
       <OurMission />
     </>
   );
