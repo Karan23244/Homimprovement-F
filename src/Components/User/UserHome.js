@@ -23,7 +23,6 @@ function UserHome() {
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [loadingTopReads, setLoadingTopReads] = useState(true);
   const [loadingEditorsChoice, setLoadingEditorsChoice] = useState(true);
-  console.log(topReads);
   const preloadLCPImage = (url) => {
     const link = document.createElement("link");
     link.rel = "preload";
@@ -36,49 +35,51 @@ function UserHome() {
     const fetchData = async () => {
       try {
         // Fetch all published posts
-        const postsRes = await fetch(`${baseUrl}/api/posts`, {
-          cache: "no-store",
-        });
+        const postsRes = await fetch(`${baseUrl}/api/posts`);
         const postsJson = await postsRes.json();
 
         const allPublishedPosts = postsJson.data.filter(
           (post) => post.blog_type === "published"
         );
 
-        setPosts(allPublishedPosts); // store all published posts
-
-        const first7 = allPublishedPosts.slice(0, 7);
-        const usedIds = new Set(first7.map((post) => post.id));
-
+        const first7 = allPublishedPosts.slice(0, 7); // latest 7
+        const first7Ids = new Set(first7.map((post) => post.id));
+        setPosts(first7);
+        setLoadingPosts(false);
         // Fetch topReads and editorsChoice
         const res = await fetch(
           `${baseUrl}/api/posts/topReadsAndEditorsChoice`
         );
         const result = await res.json();
 
-        const rawTop = result.data.topReads.filter(
+        const rawTopReads = result.data.topReads.filter(
           (post) => post.blog_type === "published"
         );
-        const rawChoice = result.data.editorsChoice.filter(
+        const rawEditorsChoice = result.data.editorsChoice.filter(
           (post) => post.blog_type === "published"
         );
 
-        // Filter out posts already in first7
-        const filteredTopReads = rawTop.filter((post) => !usedIds.has(post.id));
-        filteredTopReads.forEach((post) => usedIds.add(post.id));
-
-        const filteredEditorsChoice = rawChoice.filter(
-          (post) => !usedIds.has(post.id)
+        // Filter topReads: remove any in first7
+        const topReadsFiltered = rawTopReads.filter(
+          (post) => !first7Ids.has(post.id)
         );
 
-        setTopReads(filteredTopReads);
-        setEditorsChoice(filteredEditorsChoice);
+        // Get first 7 of filtered topReads to exclude from editorsChoice
+        const top7ReadsForEditorExclusion = topReadsFiltered.slice(0, 7);
+        const excludeFromEditorsChoice = new Set([
+          ...first7.map((p) => p.id),
+          ...top7ReadsForEditorExclusion.map((p) => p.id),
+        ]);
+        setLoadingTopReads(false);
+        const editorsChoiceFiltered = rawEditorsChoice.filter(
+          (post) => !excludeFromEditorsChoice.has(post.id)
+        );
+        setLoadingEditorsChoice(false);
+        setTopReads(topReadsFiltered.slice(0, 7)); // use only top 7
+        setEditorsChoice(editorsChoiceFiltered);
       } catch (err) {
         setError("Error fetching data: " + err.message);
       } finally {
-        setLoadingPosts(false);
-        setLoadingTopReads(false);
-        setLoadingEditorsChoice(false);
       }
     };
 
