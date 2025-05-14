@@ -5,8 +5,12 @@ import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
 import CustomCarousel from "../Common/CustomCarousel";
+import dynamic from "next/dynamic";
 import usePageTracker from "../Hooks/usePageTracker";
-import SkeletonLoader from "../Common/Skeleton";
+const SkeletonLoader = dynamic(() => import("../Common/Skeleton"), {
+  ssr: false,
+});
+
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
@@ -35,52 +39,55 @@ function UserHome() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch all published posts
-        const postsRes = await fetch(`${baseUrl}/api/posts`);
+        // Load both APIs in parallel
+        const [postsRes, highlightsRes] = await Promise.all([
+          fetch(`${baseUrl}/api/posts`),
+          fetch(`${baseUrl}/api/posts/topReadsAndEditorsChoice`),
+        ]);
+
         const postsJson = await postsRes.json();
+        const highlightsJson = await highlightsRes.json();
 
         const allPublishedPosts = postsJson.data.filter(
           (post) => post.blog_type === "published"
         );
-        setAllPosts(allPublishedPosts);
-        const first7 = allPublishedPosts.slice(0, 7); // latest 7
+
+        const first7 = allPublishedPosts.slice(0, 7);
         const first7Ids = new Set(first7.map((post) => post.id));
+
         setPosts(first7);
+        setAllPosts(allPublishedPosts);
         setLoadingPosts(false);
-        // Fetch topReads and editorsChoice
-        const res = await fetch(
-          `${baseUrl}/api/posts/topReadsAndEditorsChoice`
-        );
-        const result = await res.json();
 
-        const rawTopReads = result.data.topReads.filter(
+        // Process topReads and editorsChoice
+        const rawTopReads = highlightsJson.data.topReads.filter(
           (post) => post.blog_type === "published"
         );
-        const rawEditorsChoice = result.data.editorsChoice.filter(
+        const rawEditorsChoice = highlightsJson.data.editorsChoice.filter(
           (post) => post.blog_type === "published"
         );
 
-        // Filter topReads: remove any in first7
         const topReadsFiltered = rawTopReads.filter(
           (post) => !first7Ids.has(post.id)
         );
 
-        // Get first 7 of filtered topReads to exclude from editorsChoice
         const top7ReadsForEditorExclusion = topReadsFiltered.slice(0, 7);
         const excludeFromEditorsChoice = new Set([
-          ...first7.map((p) => p.id),
+          ...first7Ids,
           ...top7ReadsForEditorExclusion.map((p) => p.id),
         ]);
-        setLoadingTopReads(false);
+
         const editorsChoiceFiltered = rawEditorsChoice.filter(
           (post) => !excludeFromEditorsChoice.has(post.id)
         );
-        setLoadingEditorsChoice(false);
-        setTopReads(topReadsFiltered.slice(0, 7)); // use only top 7
+
+        // Set states once, after all filtering is done
+        setTopReads(topReadsFiltered.slice(0, 7));
         setEditorsChoice(editorsChoiceFiltered);
+        setLoadingTopReads(false);
+        setLoadingEditorsChoice(false);
       } catch (err) {
         setError("Error fetching data: " + err.message);
-      } finally {
       }
     };
 
@@ -150,6 +157,7 @@ function UserHome() {
                             width={600}
                             height={400}
                             priority
+                            fetchPriority="high"
                             className="w-full h-full object-cover"
                           />
                           <div className="absolute top-0 left-0 w-full h-full bg-gradient-custom"></div>
