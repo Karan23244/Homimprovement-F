@@ -5,12 +5,8 @@ import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
 import CustomCarousel from "../Common/CustomCarousel";
-import dynamic from "next/dynamic";
 import usePageTracker from "../Hooks/usePageTracker";
-const SkeletonLoader = dynamic(() => import("../Common/Skeleton"), {
-  ssr: false,
-});
-
+import SkeletonLoader from "../Common/Skeleton";
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
@@ -39,55 +35,54 @@ function UserHome() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Load both APIs in parallel
-        const [postsRes, highlightsRes] = await Promise.all([
-          fetch(`${baseUrl}/api/posts`),
-          fetch(`${baseUrl}/api/posts/topReadsAndEditorsChoice`),
-        ]);
-
+        // Fetch all published posts
+        const postsRes = await fetch(`${baseUrl}/api/posts`);
         const postsJson = await postsRes.json();
-        const highlightsJson = await highlightsRes.json();
 
         const allPublishedPosts = postsJson.data.filter(
           (post) => post.blog_type === "published"
         );
 
-        const first7 = allPublishedPosts.slice(0, 7);
-        const first7Ids = new Set(first7.map((post) => post.id));
-
-        setPosts(first7);
         setAllPosts(allPublishedPosts);
-        setLoadingPosts(false);
+         setLoadingPosts(false);
+        const first7 = allPublishedPosts.slice(0, 7); // latest 7
+        const first7Ids = new Set(first7.map((post) => post.id));
+        setPosts(first7);
+       
+        // Fetch topReads and editorsChoice
+        const res = await fetch(
+          `${baseUrl}/api/posts/topReadsAndEditorsChoice`
+        );
+        const result = await res.json();
 
-        // Process topReads and editorsChoice
-        const rawTopReads = highlightsJson.data.topReads.filter(
+        const rawTopReads = result.data.topReads.filter(
           (post) => post.blog_type === "published"
         );
-        const rawEditorsChoice = highlightsJson.data.editorsChoice.filter(
+        const rawEditorsChoice = result.data.editorsChoice.filter(
           (post) => post.blog_type === "published"
         );
 
+        // Filter topReads: remove any in first7
         const topReadsFiltered = rawTopReads.filter(
           (post) => !first7Ids.has(post.id)
         );
 
+        // Get first 7 of filtered topReads to exclude from editorsChoice
         const top7ReadsForEditorExclusion = topReadsFiltered.slice(0, 7);
         const excludeFromEditorsChoice = new Set([
-          ...first7Ids,
+          ...first7.map((p) => p.id),
           ...top7ReadsForEditorExclusion.map((p) => p.id),
         ]);
-
+        setLoadingTopReads(false);
         const editorsChoiceFiltered = rawEditorsChoice.filter(
           (post) => !excludeFromEditorsChoice.has(post.id)
         );
-
-        // Set states once, after all filtering is done
-        setTopReads(topReadsFiltered.slice(0, 7));
-        setEditorsChoice(editorsChoiceFiltered);
-        setLoadingTopReads(false);
         setLoadingEditorsChoice(false);
+        setTopReads(topReadsFiltered.slice(0, 7)); // use only top 7
+        setEditorsChoice(editorsChoiceFiltered);
       } catch (err) {
         setError("Error fetching data: " + err.message);
+      } finally {
       }
     };
 
@@ -189,6 +184,7 @@ function UserHome() {
                           alt={post?.title}
                           width={300}
                           height={200}
+                          
                           className="w-full h-40 object-cover"
                         />
                         <div className="p-2 flex flex-col flex-grow">
