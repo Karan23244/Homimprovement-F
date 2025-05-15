@@ -43,11 +43,11 @@ function UserHome() {
         );
 
         setAllPosts(allPublishedPosts);
-         setLoadingPosts(false);
+        setLoadingPosts(false);
         const first7 = allPublishedPosts.slice(0, 7); // latest 7
         const first7Ids = new Set(first7.map((post) => post.id));
         setPosts(first7);
-       
+
         // Fetch topReads and editorsChoice
         const res = await fetch(
           `${baseUrl}/api/posts/topReadsAndEditorsChoice`
@@ -88,13 +88,13 @@ function UserHome() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (allposts && allposts[0]?.featured_image && !imagePreloaded) {
-      const url = `${baseUrl}/${allposts[0].featured_image}`;
-      preloadLCPImage(url);
-      setImagePreloaded(true);
-    }
-  }, [allposts, imagePreloaded]);
+  // useEffect(() => {
+  //   if (allposts && allposts[0]?.featured_image && !imagePreloaded) {
+  //     const url = `${baseUrl}/${allposts[0].featured_image}`;
+  //     preloadLCPImage(url);
+  //     setImagePreloaded(true);
+  //   }
+  // }, [allposts, imagePreloaded]);
 
   return (
     <>
@@ -119,6 +119,15 @@ function UserHome() {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://homimprovement.com" />
         <link rel="canonical" href="https://homimprovement.com" />
+        {/* ✅ Preload LCP image if available */}
+        {allposts?.[0]?.featured_image && (
+          <link
+            rel="preload"
+            as="image"
+            href={`${baseUrl}/${allposts[0].featured_image}`}
+            fetchpriority="high"
+          />
+        )}
       </Head>
 
       <div className="lg:px-10 lg:py-5 px-5 py-5">
@@ -129,45 +138,44 @@ function UserHome() {
               <h1 className="lg:text-2xl text-base font-semibold text-black">
                 Latest Blogs
               </h1>
+              {allposts && allposts.length > 0 && (
+                <div className="relative overflow-hidden hover:shadow-md flex-grow">
+                  <Link
+                    href={`/${createSlug(
+                      allposts[0]?.category_names[0]
+                    )}/${createSlug(allposts[0]?.Custom_url)}`}
+                    className="block h-full">
+                    <div className="relative w-full lg:h-[350px] h-[200px]">
+                      <Image
+                        src={
+                          allposts[0]?.featured_image
+                            ? `${baseUrl}/${allposts[0]?.featured_image}`
+                            : "https://via.placeholder.com/600x400.png?text=No+Image"
+                        }
+                        alt={allposts[0]?.title}
+                        width={500}
+                        height={300}
+                        priority
+                        fetchPriority="high"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-0 left-0 w-full h-full bg-gradient-custom"></div>
+                    </div>
+                    <div className="absolute bottom-0 left-0 text-white p-4 w-full">
+                      <h3 className="lg:text-2xl text-lg font-medium line-clamp-2">
+                        {allposts[0]?.title}
+                      </h3>
+                      <p className="lg:text-sm text-xs mt-1 line-clamp-2">
+                        {allposts[0]?.seoDescription}
+                      </p>
+                    </div>
+                  </Link>
+                </div>
+              )}
               {loadingPosts ? (
                 <SkeletonLatestBlogs />
               ) : (
                 <>
-                  {posts && posts.length > 0 && (
-                    <div className="relative overflow-hidden hover:shadow-md flex-grow">
-                      <Link
-                        href={`/${createSlug(
-                          posts[0]?.category_names[0]
-                        )}/${createSlug(posts[0]?.Custom_url)}`}
-                        className="block h-full">
-                        <div className="relative w-full lg:h-[350px] h-[200px]">
-                          <Image
-                            src={
-                              posts[0]?.featured_image
-                                ? `${baseUrl}/${posts[0]?.featured_image}`
-                                : "https://via.placeholder.com/600x400.png?text=No+Image"
-                            }
-                            alt={posts[0]?.title}
-                            width={600}
-                            height={400}
-                            priority
-                            fetchPriority="high"
-                            className="w-full h-full object-cover"
-                          />
-                          <div className="absolute top-0 left-0 w-full h-full bg-gradient-custom"></div>
-                        </div>
-                        <div className="absolute bottom-0 left-0 text-white p-4 w-full">
-                          <h3 className="lg:text-2xl text-lg font-medium line-clamp-2">
-                            {posts[0]?.title}
-                          </h3>
-                          <p className="lg:text-sm text-xs mt-1 line-clamp-2">
-                            {posts[0]?.seoDescription}
-                          </p>
-                        </div>
-                      </Link>
-                    </div>
-                  )}
-
                   {/* Smaller Cards */}
                   <div className="grid grid-cols-2 md:grid-cols-2 gap-4 flex-grow">
                     {posts?.slice(1, 7)?.map((post) => (
@@ -183,7 +191,6 @@ function UserHome() {
                           alt={post?.title}
                           width={300}
                           height={200}
-                          
                           className="w-full h-40 object-cover"
                         />
                         <div className="p-2 flex flex-col flex-grow">
@@ -353,7 +360,6 @@ function UserHome() {
         </div>
       </div>
       <CategoryBlogs posts={allposts} baseUrl={baseUrl} />
-      <OurMission />
     </>
   );
 }
@@ -518,108 +524,110 @@ const CategoryBlogs = ({ posts, baseUrl }) => {
   );
 };
 
-//our mission
-const OurMission = () => {
-  return (
-    <div className="space-y-10 px-4 sm:px-6 lg:px-8 py-5">
-      <div className="text-center mb-6">
-        <h2 className="text-3xl md:text-5xl font-extrabold text-black">
-          Our Mission
-        </h2>
-      </div>
+// //our mission
+// const OurMission = () => {
+//   return (
+//     <div className="space-y-10 px-4 sm:px-6 lg:px-8 py-5">
+//       <div className="text-center mb-6">
+//         <h2 className="text-3xl md:text-5xl font-extrabold text-black">
+//           Our Mission
+//         </h2>
+//       </div>
 
-      <div className="text-black text-lg leading-relaxed text-justify space-y-4">
-        <p>
-          Well -Vaking to homimprovement, your final destination for all things
-          related to home improvement! Whether you are planning a complete house
-          renovation or simply looking for new interior design ideas, our site
-          is here to inspire and guide it every step on the way. In
-          homimprovement, we believe that your home is a reflection of your
-          personality and style. This is why we offer a wide range of{" "}
-          <Link
-            href={`https://homimprovement.com/upgrade-yourself/diy-home-projects`}
-            className="text-blue-500">
-            home improvement ideas
-          </Link>{" "}
-          to help it turn your space into something truly special. From economic
-          bridge projects to luxurious updates, our tips and resources meet all
-          tastes and budgets
-        </p>
-      </div>
+//       <div className="text-black text-lg leading-relaxed text-justify space-y-4">
+//         <p>
+//           Well -Vaking to homimprovement, your final destination for all things
+//           related to home improvement! Whether you are planning a complete house
+//           renovation or simply looking for new interior design ideas, our site
+//           is here to inspire and guide it every step on the way. In
+//           homimprovement, we believe that your home is a reflection of your
+//           personality and style. This is why we offer a wide range of{" "}
+//           <Link
+//             href={`https://homimprovement.com/upgrade-yourself/diy-home-projects`}
+//             className="text-blue-500">
+//             home improvement ideas
+//           </Link>{" "}
+//           to help it turn your space into something truly special. From economic
+//           bridge projects to luxurious updates, our tips and resources meet all
+//           tastes and budgets
+//         </p>
+//       </div>
 
-      <div className="flex flex-col lg:flex-row gap-10 p-6 lg:p-12">
-        {/* Left Section */}
-        <div className="flex flex-col lg:w-1/2 space-y-6">
-          <div className="text-lg text-black space-y-4 leading-relaxed">
-            <p>
-              Explore our collection curated by{" "}
-              <Link
-                href={`https://homimprovement.com/upgrade-yourself/interior-design-trends`}
-                className="text-blue-500">
-                interior design ideas
-              </Link>{" "}
-              to discover innovative ways to renew your living spaces. Whether
-              you are updating an individual room or reimaging your entire home,
-              our specialized advice and trend concepts will help you create a
-              beautiful and beautiful space. Planning a house renovation? We
-              have you covered! Our comprehensive guides and{" "}
-              <Link
-                href={`https://homimprovement.com/home-insights/how-to`}
-                className="text-blue-500">
-                step-by-step tutorials
-              </Link>{" "}
-              facilitate combat to the most challenging projects. From Kitchen
-              Reforms to Bathroom Reforms, we provide practical solutions to
-              bring your vision to life.
-            </p>
-          </div>
-          <div className="overflow-hidden rounded-xl shadow-lg">
-            <img
-              src="mission1.jpeg"
-              alt="Mission"
-              className="w-full h-auto object-cover transform hover:scale-105 transition-all duration-300"
-            />
-          </div>
-        </div>
+//       <div className="flex flex-col lg:flex-row gap-10 p-6 lg:p-12">
+//         {/* Left Section */}
+//         <div className="flex flex-col lg:w-1/2 space-y-6">
+//           <div className="text-lg text-black space-y-4 leading-relaxed">
+//             <p>
+//               Explore our collection curated by{" "}
+//               <Link
+//                 href={`https://homimprovement.com/upgrade-yourself/interior-design-trends`}
+//                 className="text-blue-500">
+//                 interior design ideas
+//               </Link>{" "}
+//               to discover innovative ways to renew your living spaces. Whether
+//               you are updating an individual room or reimaging your entire home,
+//               our specialized advice and trend concepts will help you create a
+//               beautiful and beautiful space. Planning a house renovation? We
+//               have you covered! Our comprehensive guides and{" "}
+//               <Link
+//                 href={`https://homimprovement.com/home-insights/how-to`}
+//                 className="text-blue-500">
+//                 step-by-step tutorials
+//               </Link>{" "}
+//               facilitate combat to the most challenging projects. From Kitchen
+//               Reforms to Bathroom Reforms, we provide practical solutions to
+//               bring your vision to life.
+//             </p>
+//           </div>
+//           <div className="overflow-hidden rounded-xl shadow-lg">
+//             <img
+//               src="mission1.jpeg"
+//               alt="Mission"
+//               className="w-full h-auto object-cover transform hover:scale-105 transition-all duration-300"
+//             />
+//           </div>
+//         </div>
 
-        {/* Right Section */}
-        <div className="flex flex-col lg:w-1/2 space-y-6">
-          <div className="overflow-hidden rounded-xl shadow-lg">
-            <img
-              src="mission2.jpeg"
-              alt="Mission"
-              className="w-full h-auto object-cover transform hover:scale-105 transition-all duration-300"
-            />
-          </div>
-          <div className="text-lg text-black space-y-4 leading-relaxed">
-            <p>
-              Homimprovement is more than just a site - it is a community of
-              passionate owners and design enthusiasts. Join us to share your
-              projects, seek inspiration and connect to individuals who think
-              the same way as they share their love for home improvement. Start
-              your journey today and unlock the potential of your home. Visit
-              homimprovement.com to get numerous home improvement ideas,{" "}
-              <Link
-                href={`https://homimprovement.com/home-insights/reviews`}
-                className="text-blue-500">
-                expert tips
-              </Link>{" "}
-              and the inspiration you need to create the home of your dreams!
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-const SkeletonLatestBlogs=()=> {
+//         {/* Right Section */}
+//         <div className="flex flex-col lg:w-1/2 space-y-6">
+//           <div className="overflow-hidden rounded-xl shadow-lg">
+//             <img
+//               src="mission2.jpeg"
+//               alt="Mission"
+//               className="w-full h-auto object-cover transform hover:scale-105 transition-all duration-300"
+//             />
+//           </div>
+//           <div className="text-lg text-black space-y-4 leading-relaxed">
+//             <p>
+//               Homimprovement is more than just a site - it is a community of
+//               passionate owners and design enthusiasts. Join us to share your
+//               projects, seek inspiration and connect to individuals who think
+//               the same way as they share their love for home improvement. Start
+//               your journey today and unlock the potential of your home. Visit
+//               homimprovement.com to get numerous home improvement ideas,{" "}
+//               <Link
+//                 href={`https://homimprovement.com/home-insights/reviews`}
+//                 className="text-blue-500">
+//                 expert tips
+//               </Link>{" "}
+//               and the inspiration you need to create the home of your dreams!
+//             </p>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+const SkeletonLatestBlogs = () => {
   return (
     <div className="space-y-4">
       <div className="h-6 bg-gray-300 rounded w-1/3 animate-pulse"></div>
       <div className="w-full h-[200px] bg-gray-300 rounded-md animate-pulse"></div>
       <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
         {Array.from({ length: 6 }).map((_, idx) => (
-          <div key={idx} className="space-y-2 border border-gray-200 p-2 rounded-md animate-pulse">
+          <div
+            key={idx}
+            className="space-y-2 border border-gray-200 p-2 rounded-md animate-pulse">
             <div className="w-full h-32 bg-gray-300 rounded"></div>
             <div className="h-4 bg-gray-300 rounded w-3/4"></div>
             <div className="h-3 bg-gray-200 rounded w-5/6"></div>
@@ -628,7 +636,7 @@ const SkeletonLatestBlogs=()=> {
       </div>
     </div>
   );
-}
+};
 const SkeletonTopReads = () => {
   return (
     <div className="space-y-4">
