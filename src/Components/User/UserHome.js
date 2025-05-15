@@ -9,14 +9,13 @@ import usePageTracker from "../Hooks/usePageTracker";
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
-function UserHome() {
+function UserHome({ allposts }) {
   // usePageTracker("home");
   const baseUrl =
     process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState([]);
-  const [allposts, setAllPosts] = useState([]);
   const [topReads, setTopReads] = useState([]);
   const [editorsChoice, setEditorsChoice] = useState([]);
   const [imagePreloaded, setImagePreloaded] = useState(false);
@@ -34,20 +33,20 @@ function UserHome() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch all published posts
-        const postsRes = await fetch(`${baseUrl}/api/posts`);
-        const postsJson = await postsRes.json();
+        // // Fetch all published posts
+        // const postsRes = await fetch(`${baseUrl}/api/posts`);
+        // const postsJson = await postsRes.json();
 
-        const allPublishedPosts = postsJson.data.filter(
-          (post) => post.blog_type === "published"
-        );
+        // const allPublishedPosts = postsJson.data.filter(
+        //   (post) => post.blog_type === "published"
+        // );
 
-        setAllPosts(allPublishedPosts);
-        setLoadingPosts(false);
-        const first7 = allPublishedPosts.slice(0, 7); // latest 7
+        // setAllPosts(allPublishedPosts);
+
+        const first7 = allposts.slice(0, 7); // latest 7
         const first7Ids = new Set(first7.map((post) => post.id));
         setPosts(first7);
-
+        setLoadingPosts(false);
         // Fetch topReads and editorsChoice
         const res = await fetch(
           `${baseUrl}/api/posts/topReadsAndEditorsChoice`
@@ -621,8 +620,6 @@ const CategoryBlogs = ({ posts, baseUrl }) => {
 const SkeletonLatestBlogs = () => {
   return (
     <div className="space-y-4">
-      <div className="h-6 bg-gray-300 rounded w-1/3 animate-pulse"></div>
-      <div className="w-full h-[200px] bg-gray-300 rounded-md animate-pulse"></div>
       <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
         {Array.from({ length: 6 }).map((_, idx) => (
           <div
@@ -640,7 +637,6 @@ const SkeletonLatestBlogs = () => {
 const SkeletonTopReads = () => {
   return (
     <div className="space-y-4">
-      <div className="h-6 bg-gray-300 rounded w-1/3 animate-pulse"></div>
       <div className="grid grid-cols-1 gap-4">
         {Array.from({ length: 5 }).map((_, idx) => (
           <div
@@ -661,7 +657,6 @@ const SkeletonTopReads = () => {
 const SkeletonEditorsChoice = () => {
   return (
     <div className="space-y-4">
-      <div className="h-6 bg-gray-300 rounded w-1/3 animate-pulse"></div>
       <div className="grid grid-cols-2 gap-4">
         {Array.from({ length: 6 }).map((_, idx) => (
           <div
