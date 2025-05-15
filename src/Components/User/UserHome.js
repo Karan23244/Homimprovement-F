@@ -6,7 +6,6 @@ import Head from "next/head";
 import Image from "next/image";
 import CustomCarousel from "../Common/CustomCarousel";
 import usePageTracker from "../Hooks/usePageTracker";
-import SkeletonLoader from "../Common/Skeleton";
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
@@ -90,12 +89,12 @@ function UserHome() {
   }, []);
 
   useEffect(() => {
-    if (posts && posts[0]?.featured_image && !imagePreloaded) {
-      const url = `${baseUrl}/${posts[0].featured_image}`;
+    if (allposts && allposts[0]?.featured_image && !imagePreloaded) {
+      const url = `${baseUrl}/${allposts[0].featured_image}`;
       preloadLCPImage(url);
       setImagePreloaded(true);
     }
-  }, [posts, imagePreloaded]);
+  }, [allposts, imagePreloaded]);
 
   return (
     <>
@@ -131,7 +130,7 @@ function UserHome() {
                 Latest Blogs
               </h1>
               {loadingPosts ? (
-                <SkeletonLoader />
+                <SkeletonLatestBlogs />
               ) : (
                 <>
                   {posts && posts.length > 0 && (
@@ -613,7 +612,23 @@ const OurMission = () => {
     </div>
   );
 };
-
+const SkeletonLatestBlogs=()=> {
+  return (
+    <div className="space-y-4">
+      <div className="h-6 bg-gray-300 rounded w-1/3 animate-pulse"></div>
+      <div className="w-full h-[200px] bg-gray-300 rounded-md animate-pulse"></div>
+      <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
+        {Array.from({ length: 6 }).map((_, idx) => (
+          <div key={idx} className="space-y-2 border border-gray-200 p-2 rounded-md animate-pulse">
+            <div className="w-full h-32 bg-gray-300 rounded"></div>
+            <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+            <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 const SkeletonTopReads = () => {
   return (
     <div className="space-y-4">
