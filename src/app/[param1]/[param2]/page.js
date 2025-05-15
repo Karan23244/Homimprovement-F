@@ -202,7 +202,7 @@ export async function generateMetadata({ params }) {
       process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
 
     try {
-      const res = await axios.get(`${API_URL}/api/posts/${param2}`);
+      const res = await axios.get(`${API_URL}/api/posts/${param1}/${param2}`);
       const post = res.data.data;
       return {
         title: post?.seoTitle,
@@ -211,13 +211,13 @@ export async function generateMetadata({ params }) {
           title: post?.seoTitle,
           description: post?.seoDescription,
           type: "article",
-          url: `${API_URL}/blog/${param2}`,
+          url: `${API_URL}/${param1}/${param2}`,
           images: post?.featured_image
             ? [`${API_URL}/${post.featured_image}`]
             : [],
         },
         alternates: {
-          canonical: `${API_URL}/blog/${param2}`,
+          canonical: `${API_URL}/${param1}/${param2}`,
         },
       };
     } catch (error) {
@@ -237,6 +237,6 @@ export default async function Page({ params }) {
   if (predefinedCategoriesType.includes(param1)) {
     return <CategoryPage param1={param1} param2={param2} />;
   } else {
-    return <FullPost param2={param2} />;
+    return <FullPost param2={param2} param1={param1} />;
   }
 }

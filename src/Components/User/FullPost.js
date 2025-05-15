@@ -33,7 +33,7 @@ const Skeleton = () => (
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
-const FullPost = ({ param2 }) => {
+const FullPost = ({ param1,param2 }) => {
   // usePageTracker("blogs");
 
   const [post, setPost] = useState(null);
@@ -97,7 +97,7 @@ const FullPost = ({ param2 }) => {
 
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/posts/${param2}`, {
+        const response = await axios.get(`${API_URL}/api/posts/${param1}/${param2}`, {
           withCredentials: true,
         });
         setPost(response.data.data);
