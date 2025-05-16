@@ -17,10 +17,10 @@ module.exports = {
       { loc: `${baseUrl}/upgrade-yourself/smart-home-technology`, lastmod: "2025-04-01" },
       { loc: `${baseUrl}/upgrade-yourself/diy-home-projects`, lastmod: "2025-04-01" },
       { loc: `${baseUrl}/upgrade-yourself/interior-design-trends`, lastmod: "2025-04-01" },
-      { loc: `${baseUrl}/home-insights/reviews`, lastmod: "2025-04-01" },
-      { loc: `${baseUrl}/home-insights/how-to`, lastmod: "2025-04-01" },
-      { loc: `${baseUrl}/home-insights/vs`, lastmod: "2025-04-01" },
-      { loc: `${baseUrl}/home-insights/best`, lastmod: "2025-04-01" },
+      { loc: `${baseUrl}/home-insights/product-reviews`, lastmod: "2025-04-01" },
+      { loc: `${baseUrl}/home-insights/how-to-guides`, lastmod: "2025-04-01" },
+      { loc: `${baseUrl}/home-insights/comparisons`, lastmod: "2025-04-01" },
+      { loc: `${baseUrl}/home-insights/best-picks`, lastmod: "2025-04-01" },
       { loc: `${baseUrl}/home-insights/deals`, lastmod: "2025-04-01" },
     ];
 
