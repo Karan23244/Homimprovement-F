@@ -33,14 +33,6 @@ const getSeoDetails = (category) => {
       keywords: "DIY home decor,DIY home projects,best DIY home security",
       shortDescription:
         "Wherein creativity meets functionality! Engaging in do-it-yourself home projects now not most effective permits you to change your home but also saves your money compared to hiring professionals. There’s a unique delight that arrives from creating something together with your own ideas, whether it’s constructing a new bookshelf, painting a room, or make smart home device for your home. These tasks can substantially decorate your home’s aesthetic and capability. Additionally, incorporating DIY home decor can add a personalized touch to every corner of your house.",
-      html: `<h2><strong><span style="font-size:16pt;font-family:Arial,sans-serif;">Popular DIY Home Projects</span></strong></h2>
-<p><span style="font-size:11pt;font-family:Arial,sans-serif;">One of the most famous DIY home projects is restoring your furniture. This manner provides unique pieces a brand new lease on life with some paint, new hardware, and gadgets. Upcycling isn&apos;t always the handiest green but additionally a wonderful way to create particular objects that mirror your style. Another massive concept is a garden makeover;&nbsp;</span><a href="https://homimprovement.com/diy-home-projects/diy-outdoor-projects-enhance-backyard"><u><span style="color:#1155cc;font-size:11pt;font-family:Arial,sans-serif;">renovate your outdoor</span></u></a><span style="font-size:11pt;font-family:Arial,sans-serif;">&nbsp;area proper right into a lovely lawn may be as simple as constructing raised lawn beds, growing a flower bed, and putting in a small pond. DIY home decor ideas, such as repurposing old jars into stylish vases or making rustic wooden signs, can elevate your space effortlessly.</span></p>
-<p><span style="font-size:11pt;font-family:Arial,sans-serif;">For those trying to customise their interiors, DIY wall art and decor projects provide infinite opportunities, from canvas artwork to wall hangings made from herbal substances. You can even create a gallery wall offering your favored pictures and artwork. Additionally, tackling domestic corporation with creative storage solutions, which includes DIY shelving devices, garage bins, and closet organizers, can help maximize area and preserve your private home tidy. Lighting upgrades are another top notch way to trade the atmosphere of your property; remember making your personal pendant lighting fixtures or updating existing furniture with a fresh coat of paint or new shades. Executing the best DIY home security measures, such as installing smart locks or motion sensor lights, can add an extra layer of protection to your household.</span></p>
-<p><br/></p><h2><strong><span style="font-size:16pt;font-family:Arial,sans-serif;">Tips for Successful DIY Projects</span></strong></h2>
-<p><span style="font-size:11pt;font-family:Arial,sans-serif;">To ensure a successful DIY initiative, it&rsquo;s crucial to plot ahead. Gather all vital substances and tools, and create a step-by-step means of step manual to follow. If you&rsquo;re new to DIY home decor, begin small with plausible initiatives to build your self assurance earlier than tackling extra complex responsibilities. Always prioritize protection via carrying suitable tools and following commands carefully. If a task calls for equipment or substances you&rsquo;re surprised with, consider looking at tutorials or looking for advice. Remember, no longer will each challenge go as planned, and that&rsquo;s ok! Embrace the studying system and don&rsquo;t be afraid to make modifications along the way. Additionally, if you&apos;re looking to enhance security, the best&nbsp;</span><a href="https://homimprovement.com/diy-home-projects/easy-diy-home-security-projects"><u><span style="color:#1155cc;font-size:11pt;font-family:Arial,sans-serif;">DIY home security solutions</span></u></a><span style="font-size:11pt;font-family:Arial,sans-serif;">&nbsp;can be both effective and cost-efficient.</span></p>
-<p><br/></p><h2><strong><span style="font-size:16pt;font-family:Arial,sans-serif;">Inspiration and Resources</span></strong></h2>
-<p><span style="font-size:11pt;font-family:Arial,sans-serif;">For extra inspiration, test out our blog posts presenting exact publications and tutorials on diverse DIY home projects. We additionally offer hints on sourcing substances, budgeting, and locating the right equipment in your duties. Join our network of DIY fans and share your tasks with us! Engaging in DIY now is not the simplest way to create a beautiful home, but it additionally fosters an experience of accomplishment and creativity. By integrating DIY home decor elements into your projects, you can ensure that every space in your home reflects your unique personality.</span></p>
-<p><span style="font-size:11pt;font-family:Arial,sans-serif;">DIY home projects are an extraordinary manner to specify your creativity at the same time as improving your dwelling area. With the right ideas and resources, you can rework your home right into a reflection of your character and style. Explore our DIY Home Projects category for more suggestions, tricks, and suggestions to get begun for your subsequent mission these days! By conducting DIY, you no longer handiest create a stunning domestic but additionally revel in the method of creating it uniquely yours. Happy crafting, and don&rsquo;t forget to explore the best DIY home security tips to make your home both stylish and secure!</span></p>`,
     },
     "Interior Design Trends": {
       title: "Top Interior Design Styles & Modern Trends to Know",
@@ -52,26 +44,26 @@ const getSeoDetails = (category) => {
         "Where we explore the state-of-the-art interior design trends and thoughts to transform your dwelling space into a haven of splendor and comfort. Staying updated with modern interior design tendencies is essential for developing a home that reflects your character even as also being purposeful and alluring. Whether you’re making plans for a whole protection or just trying to refresh a room, knowledge of the latest trends can inspire you to make impactful adjustments.",
      
     },
-    "How To ?": {
+    "How To Guides": {
       title: "Home Maintenance Tips & Guides | Homimprovement",
       description:
         "Get the best home maintenance tips and guides to keep your home beautiful and functional year-round. Actionable advice on repairs, upgrades, and more!",
       keywords:
         "home maintenance list,home maintenance tips,Home improvement guides",
       shortDescription:
-        'Welcome to Homimprovement\'s "How To?" category, where we give you specified step-by-step instructions and useful guidelines on how to use the arena of smart technology. With greater smart home gadgets available on the market these days, getting to know the way to set up, use, and fasten them is crucial in order to achieve their advantages. You are both a technology amateur or a pro user; our special home improvement guides will make sure you get the first-rate from your smart home experience.',
+        'Welcome to Homimprovement\'s "How To Guides" category, where we give you specified step-by-step instructions and useful guidelines on how to use the arena of smart technology. With greater smart home gadgets available on the market these days, getting to know the way to set up, use, and fasten them is crucial in order to achieve their advantages. You are both a technology amateur or a pro user; our special home improvement guides will make sure you get the first-rate from your smart home experience.',
     
     },
-    Best: {
+    "Best Picks": {
       title: "Best Smart Home System: Guide to Top Devices & Integration ",
       description:
         "Explore top smart home systems that blend security, energy efficiency, and seamless integration. Find the best devices to upgrade your home today!",
       keywords: "best smart home devices,best smart home system",
       shortDescription:
-        'Welcome to the "Best" category of Homimprovement, wherein we pick and present to you the greatest products, equipment, and solutions for each element of your own home development task. If you need the high-quality smart home devices, the maximum appropriate equipment for home improvement tasks, or the maximum rated materials for preservation, our expertly decided on guidelines will provide you with the entirety you need. Based on expert evaluation and consumer reviews, you can choose with confidence the satisfaction to transform your home.',
+        'Welcome to the "Best Picks" category of Homimprovement, wherein we pick and present to you the greatest products, equipment, and solutions for each element of your own home development task. If you need the high-quality smart home devices, the maximum appropriate equipment for home improvement tasks, or the maximum rated materials for preservation, our expertly decided on guidelines will provide you with the entirety you need. Based on expert evaluation and consumer reviews, you can choose with confidence the satisfaction to transform your home.',
     
     },
-    Vs: {
+    Comparisons: {
       title: "Product and Technology Comparison | Homimprovement",
       description:
         "Explore in-depth product and technology comparisons to help you make smarter choices for your next home purchase. Find the best options today!",
@@ -79,13 +71,13 @@ const getSeoDetails = (category) => {
       shortDescription:
         'Welcome to the "Versus" section of Homimprovement, in which we compare famous home improvement products and tools in opposition to each other to assist you in making better choices. In a world full of picks, it may be hard to determine which products are surely satisfactorily suited to your functions. Our intensity product comparison and technology comparison will come up with an idea of the strengths and weaknesses of each choice so you can make a smart decision for your own home development endeavours.',
     },
-    Reviews: {
+    "Product Reviews": {
       title: "Product Analysis and Reviews | Best Product Review Website",
       description:
         "Explore honest product analysis and the latest reviews for your smart home. Get expert buying advice and discover the best products today!",
       keywords: "product analysis, best product review websites",
       shortDescription:
-        "Welcome to Homimprovement's 'Reviews' category, In which we explore the area of smart home devices to help you in making your living area greater linked, green, and cushy. With technology advancing every day, smart home gadgets are gaining titanic popularity, presenting comfort, security, and electricity efficiency. Whether you're a tech geek or a property owner who wants to smarten up your house, our in-depth opinions will assist you choose the maximum appropriate smart home brand to your necessities. Our product analysis guarantees that every gadget is assessed thoroughly to help you make the best choice.",
+        "Welcome to Homimprovement's 'Product Reviews' category, In which we explore the area of smart home devices to help you in making your living area greater linked, green, and cushy. With technology advancing every day, smart home gadgets are gaining titanic popularity, presenting comfort, security, and electricity efficiency. Whether you're a tech geek or a property owner who wants to smarten up your house, our in-depth opinions will assist you choose the maximum appropriate smart home brand to your necessities. Our product analysis guarantees that every gadget is assessed thoroughly to help you make the best choice.",
       
     },
     Deals: {
