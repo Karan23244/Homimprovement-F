@@ -12,7 +12,7 @@ function createSlug(text) {
 function UserHome({ allposts }) {
   // usePageTracker("home");
   const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
+    process.env.NEXT_PUBLIC_API_URL;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -407,7 +407,7 @@ const CategoryBlogs = ({ posts, baseUrl }) => {
   }));
 
   return (
-    <div className="space-y-10 px-4 sm:px-6 lg:px-8">
+    <div className="space-y-10 sm:px-6 lg:px-8 my-12">
       {groupedPosts.map(({ category, posts }, index) => (
         <div
           key={category.name}

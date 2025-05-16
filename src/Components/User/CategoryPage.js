@@ -7,7 +7,7 @@ import Head from "next/head";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import usePostsByCategory from "../Hooks/usePostsByCategory";
 import usePageTracker from "../Hooks/usePageTracker";
-const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
@@ -85,7 +85,7 @@ const getSeoDetails = (category) => {
         "Explore honest product analysis and the latest reviews for your smart home. Get expert buying advice and discover the best products today!",
       keywords: "product analysis, best product review websites",
       shortDescription:
-        "In which we explore the area of smart home devices to help you in making your living area greater linked, green, and cushy. With technology advancing every day, smart home gadgets are gaining titanic popularity, presenting comfort, security, and electricity efficiency. Whether you're a tech geek or a property owner who wants to smarten up your house, our in-depth opinions will assist you choose the maximum appropriate smart home brand to your necessities. Our product analysis guarantees that every gadget is assessed thoroughly to help you make the best choice.",
+        "Welcome to Homimprovement's 'Reviews' category, In which we explore the area of smart home devices to help you in making your living area greater linked, green, and cushy. With technology advancing every day, smart home gadgets are gaining titanic popularity, presenting comfort, security, and electricity efficiency. Whether you're a tech geek or a property owner who wants to smarten up your house, our in-depth opinions will assist you choose the maximum appropriate smart home brand to your necessities. Our product analysis guarantees that every gadget is assessed thoroughly to help you make the best choice.",
       
     },
     Deals: {
@@ -136,14 +136,53 @@ const CategoryPosts = () => {
   const { title, description, keywords, shortDescription, html } =
     getSeoDetails(modifiedCategoryName);
 
-  if (loading)
-    return <div className="text-gray-500 text-center h-screen">Loading...</div>;
-  if (error)
-    return (
-      <div className="text-gray-500 text-center h-screen">
-        Error: {error.message}
-      </div>
-    );
+if (loading)
+  return (
+    <div className="flex flex-col items-center justify-center h-screen text-gray-600">
+      <svg
+        className="animate-spin h-10 w-10 text-blue-500 mb-4"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+        ></path>
+      </svg>
+      <p className="text-lg">Loading, please wait...</p>
+    </div>
+  );
+
+if (error)
+  return (
+    <div className="flex flex-col items-center justify-center h-screen text-red-600">
+      <svg
+        className="w-12 h-12 mb-4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <p className="text-lg font-semibold">Page Not Found!</p>
+    </div>
+  );
+
 
   const sortedPosts = [...posts].sort((a, b) => b.view_count - a.view_count);
 

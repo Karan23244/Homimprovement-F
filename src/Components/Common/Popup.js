@@ -28,12 +28,19 @@ const SubscribePopup = () => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPopup(true);
-      setTimeout(() => setIsVisible(true), 10);
-    }, 5000);
+    const hasSeenPopup = sessionStorage.getItem("hasSeenPopup");
 
-    return () => clearTimeout(timer);
+    if (!hasSeenPopup) {
+      const timer = setTimeout(() => {
+        setShowPopup(true);
+        setTimeout(() => setIsVisible(true), 10);
+      }, 5000); // Show after 5 seconds
+
+      // Mark as seen for current session
+      sessionStorage.setItem("hasSeenPopup", "true");
+
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   const handleClose = () => {
@@ -48,10 +55,12 @@ const SubscribePopup = () => {
           <div
             className={`bg-white rounded-lg shadow-lg p-6 max-w-sm sm:max-w-md lg:max-w-3xl w-full h-auto transition-transform duration-300 transform flex flex-col lg:flex-row justify-center items-center mx-auto gap-6 px-4 sm:px-8 ${
               isVisible ? "scale-100 opacity-100" : "scale-90 opacity-0"
-            }`}>
+            }`}
+          >
             <button
               onClick={handleClose}
-              className="absolute top-2 right-4 sm:right-6 text-2xl sm:text-4xl font-medium text-gray-700 hover:text-gray-900 focus:outline-none">
+              className="absolute top-2 right-4 sm:right-6 text-2xl sm:text-4xl font-medium text-gray-700 hover:text-gray-900 focus:outline-none"
+            >
               &times;
             </button>
             <div className="w-32 sm:w-48 lg:w-60 flex-shrink-0">
@@ -72,7 +81,8 @@ const SubscribePopup = () => {
               </p>
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-col sm:flex-row gap-4 w-full">
+                className="flex flex-col sm:flex-row gap-4 w-full"
+              >
                 <input
                   type="email"
                   value={email}
@@ -83,7 +93,8 @@ const SubscribePopup = () => {
                 />
                 <button
                   type="submit"
-                  className="w-full sm:w-auto bg-[#00008B] text-white font-semibold px-6 py-2 rounded-md transition-all duration-300">
+                  className="w-full sm:w-auto bg-[#00008B] text-white font-semibold px-6 py-2 rounded-md transition-all duration-300"
+                >
                   Subscribe
                 </button>
               </form>
@@ -91,7 +102,8 @@ const SubscribePopup = () => {
                 <p
                   className={`mt-4 text-center ${
                     status === "success" ? "text-green-500" : "text-red-500"
-                  }`}>
+                  }`}
+                >
                   {message}
                 </p>
               )}

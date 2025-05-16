@@ -49,7 +49,7 @@ const FullPost = ({ param1,param2 }) => {
   const [loadingStage, setLoadingStage] = useState("spinner"); // 'spinner' | 'skeleton' | 'loaded'
   const fetchedRef = useRef(false);
   const API_URL =
-    process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
+    process.env.NEXT_PUBLIC_API_URL;
   const blogAds = [
     {
       id: "interior-design-ideas-glass-mirrors",
@@ -127,7 +127,7 @@ const FullPost = ({ param1,param2 }) => {
           level: heading.tagName.toLowerCase(),
         };
       });
-
+      console.log(post.category_names[0]);
       const fetchRelatedBlogs = async () => {
         try {
           const res = await axios.get(
@@ -205,9 +205,16 @@ const FullPost = ({ param1,param2 }) => {
   const adimageUrl = post?.AdImage ? `${API_URL}/${post.AdImage}` : "";
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
-  if (error) {
-    return <p className="text-center text-red-600 h-screen">{error}</p>;
-  }
+if (error) {
+  return (
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+      <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md max-w-md text-center">
+        <strong className="font-bold">Page Not Found</strong>
+      </div>
+    </div>
+  );
+}
+
 
   if (!post) {
     return (

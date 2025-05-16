@@ -85,7 +85,7 @@ function Footer() {
               <ul className="grid lg:grid-cols-4 grid-cols-2 gap-2 items-center text-sm font-medium justify-between lg:divide-x-2">
                 <li>
                   <Link
-                    href="/privacy_policy"
+                    href="/privacy-policy"
                     className="hover:underline lg:text-lg text-sm text-white mx-4 py-2 lg:font-semibold"
                   >
                     Privacy Policy
@@ -93,7 +93,7 @@ function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/terms_and_condition"
+                    href="/terms-and-condition"
                     className="hover:underline lg:text-lg text-sm text-white mx-4 py-2 lg:font-semibold"
                   >
                     Terms & Conditions
@@ -109,7 +109,7 @@ function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/about"
+                    href="/about-us"
                     className="hover:underline lg:text-lg text-sm text-white mx-4 py-2 lg:font-semibold"
                   >
                     About Us

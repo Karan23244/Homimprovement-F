@@ -158,7 +158,7 @@ const seoData = {
 };
 
 const predefinedCategoriesType = ["upgrade-yourself", "home-insights"];
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const formatCategory = (str) => {
   return str
     .split("-")
@@ -199,7 +199,7 @@ export async function generateMetadata({ params }) {
     };
   } else {
     const API_URL =
-      process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
+      process.env.NEXT_PUBLIC_API_URL;
 
     try {
       const res = await axios.get(`${API_URL}/api/posts/${param1}/${param2}`);
