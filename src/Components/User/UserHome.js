@@ -366,25 +366,25 @@ function UserHome({ allposts }) {
 const CategoryBlogs = ({ posts, baseUrl }) => {
   const categoryFilter = [
     {
-      name: "Reviews",
+      name: "Product Reviews",
       description: "Shop Smart: Read Our Expert Reviews Before You Buy!",
       adimg: "/review.webp",
       link: "/home-insights/reviews",
     },
     {
-      name: "VS",
+      name: "Comparisons",
       description: "Compare the Best Products with Ease.",
       adimg: "/vs.webp",
       link: "/home-insights/how-to",
     },
     {
-      name: "Best",
+      name: "Best Picks",
       description: "Find the Best Picks Curated Just for You!",
       adimg: "/best.webp",
       link: "/home-insights/vs",
     },
     {
-      name: "How To",
+      name: "How To Guides",
       description: "Step-by-Step Guides for Everyday Solutions.",
       adimg: "/howto.webp",
       link: "/home-insights/best",
