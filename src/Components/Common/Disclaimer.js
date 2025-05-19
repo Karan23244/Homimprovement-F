@@ -1,7 +1,31 @@
 import React from "react";
+import Head from "next/head";
 
 const Disclaimer = () => {
   return (
+    <>
+          <Head>
+        <title>Home Improvement Ideas & Design | HomImprovement</title>
+        <meta
+          name="description"
+          content="Upgrade your home with the best home improvement tips & interior design ideas..."
+        />
+        <meta
+          name="keywords"
+          content="Home improvement, Home renovation tips, Interior design ideas..."
+        />
+        <meta
+          property="og:title"
+          content="Home Improvement Ideas & Design | HomImprovement"
+        />
+        <meta
+          property="og:description"
+          content="Upgrade your home with the best home improvement tips & interior design ideas..."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://localhost:3000/disclaimer" />
+        <link rel="canonical" href="http://localhost:3000/disclaimer" />
+      </Head>
     <div className="lg:mx-[13%] lg:my-8 mx-[2%] my-[1%]">
       <h1 className="lg:text-8xl text-xl font-bold text-gray-900 lg:mt-10 lg:mb-14 my-5">
         Disclaimer
@@ -81,6 +105,7 @@ const Disclaimer = () => {
         remain unaffected.
       </p>
     </div>
+    </>
   );
 };
 

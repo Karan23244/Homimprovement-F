@@ -97,37 +97,7 @@ function UserHome({ allposts }) {
 
   return (
     <>
-      <Head>
-        <title>Home Improvement Ideas & Design | HomImprovement</title>
-        <meta
-          name="description"
-          content="Upgrade your home with the best home improvement tips & interior design ideas..."
-        />
-        <meta
-          name="keywords"
-          content="Home improvement, Home renovation tips, Interior design ideas..."
-        />
-        <meta
-          property="og:title"
-          content="Home Improvement Ideas & Design | HomImprovement"
-        />
-        <meta
-          property="og:description"
-          content="Upgrade your home with the best home improvement tips & interior design ideas..."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://homimprovement.com" />
-        <link rel="canonical" href="https://homimprovement.com" />
-        {/* ✅ Preload LCP image if available */}
-        {allposts?.[0]?.featured_image && (
-          <link
-            rel="preload"
-            as="image"
-            href={`${baseUrl}/${allposts[0].featured_image}`}
-            fetchpriority="high"
-          />
-        )}
-      </Head>
+
 
       <div className="lg:px-10 lg:py-5 px-5 py-5">
         <>

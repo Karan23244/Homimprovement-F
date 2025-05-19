@@ -1,9 +1,33 @@
 'use client';
 import Image from 'next/image';
 import React from 'react';
+import Head from "next/head";
 
 const AboutUs = () => {
   return (
+       <>
+      <Head>
+        <title>Home Improvement Ideas & Design | HomImprovement</title>
+        <meta
+          name="description"
+          content="Upgrade your home with the best home improvement tips & interior design ideas..."
+        />
+        <meta
+          name="keywords"
+          content="Home improvement, Home renovation tips, Interior design ideas..."
+        />
+        <meta
+          property="og:title"
+          content="Home Improvement Ideas & Design | HomImprovement"
+        />
+        <meta
+          property="og:description"
+          content="Upgrade your home with the best home improvement tips & interior design ideas..."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://homimprovement.com/about-us" />
+        <link rel="canonical" href="https://homimprovement.com/about-us" />
+      </Head>
     <div className="lg:mx-[13%] lg:my-8 mx-[2%] my-[1%]">
       <h1 className="lg:text-8xl text-xl font-bold text-gray-900 lg:mt-10 lg:mb-14 my-5">
         About Us
@@ -111,6 +135,7 @@ const AboutUs = () => {
         at info@homimprovement.com.
       </p>
     </div>
+    </>
   );
 };
 
