@@ -10,9 +10,9 @@ module.exports = {
     // Static routes
     const staticPaths = [
       { loc: `${baseUrl}/`, lastmod: "2025-04-01" },
-      { loc: `${baseUrl}/about`, lastmod: "2025-04-01" },
-      { loc: `${baseUrl}/privacy_policy`, lastmod: "2025-04-01" },
-      { loc: `${baseUrl}/terms_and_condition`, lastmod: "2025-04-01" },
+      { loc: `${baseUrl}/about-us`, lastmod: "2025-04-01" },
+      { loc: `${baseUrl}/privacy-policy`, lastmod: "2025-04-01" },
+      { loc: `${baseUrl}/terms-and-condition`, lastmod: "2025-04-01" },
       { loc: `${baseUrl}/disclaimer`, lastmod: "2025-04-01" },
       { loc: `${baseUrl}/upgrade-yourself/smart-home-technology`, lastmod: "2025-04-01" },
       { loc: `${baseUrl}/upgrade-yourself/diy-home-projects`, lastmod: "2025-04-01" },
