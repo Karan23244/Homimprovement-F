@@ -46,10 +46,9 @@ function createSlug(text) {
 }
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 function NewPage({ allposts }) {
-  const [latestPosts, setLatestPosts] = useState([]);
   const [topReads, setTopReads] = useState([]);
   const [editorsChoice, setEditorsChoice] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -93,20 +92,58 @@ function NewPage({ allposts }) {
 
     fetchBlogs();
   }, []);
+
+  const getUniqueCategoryBlogs = (allBlogs, usedBlogs) => {
+    const usedBlogIds = new Set(usedBlogs.map((blog) => blog.Custom_url));
+    const uniqueCategories = new Set();
+    const featuredCategoryBlogs = [];
+
+    for (const blog of allBlogs) {
+      if (
+        !usedBlogIds.has(blog.Custom_url) &&
+        blog.category_names &&
+        blog.category_names.length > 0
+      ) {
+        const category = blog.category_names[0];
+
+        if (!uniqueCategories.has(category)) {
+          uniqueCategories.add(category);
+          featuredCategoryBlogs.push(blog);
+        }
+
+        if (featuredCategoryBlogs.length === 8) break;
+      }
+    }
+
+    return featuredCategoryBlogs;
+  };
+
+  // Example usage:
+  const featureCategoryBlogs = getUniqueCategoryBlogs(allposts, [
+    ...topReads,
+    ...editorsChoice,
+    ...allposts.slice(0, 8),
+  ]);
   return (
     <>
       <Hero />
       <LatestBlogs allposts={allposts} />
-      <FeatureCategory allposts={allposts} />
+      <FeatureCategory featureCategoryBlogs={featureCategoryBlogs} />
       <div className="p-6 bg-gray-100">
         <div className="mb-6 text-center">
           <h1 className="text-lg lg:text-3xl font-bold">Top Reads</h1>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {topReads?.slice(0, 12).map((post) => (
-            <HorizontalBlogCard key={post.id} post={post} />
-          ))}
+          {isLoading || !topReads?.length
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <HorizontalBlogCardSkeleton key={i} />
+              ))
+            : topReads
+                .slice(0, 12)
+                .map((post) => (
+                  <HorizontalBlogCard key={post.id} post={post} />
+                ))}
         </div>
       </div>
 
@@ -114,12 +151,18 @@ function NewPage({ allposts }) {
         <div className="mb-6 text-center">
           <h1 className="text-lg lg:text-3xl font-bold">Editor's Choice</h1>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 bg-gray-100">
-          {editorsChoice?.slice(0, 8).map((post) => (
-            <BlogCard key={post.id} post={post} />
-          ))}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {isLoading || !editorsChoice?.length
+            ? Array.from({ length: 8 }).map((_, i) => (
+                <BlogCardSkeleton key={i} />
+              ))
+            : editorsChoice
+                .slice(0, 8)
+                .map((post) => <BlogCard key={post.id} post={post} />)}
         </div>
       </div>
+
       <CategorySection />
       <FeedbackSlider />
     </>
@@ -129,35 +172,51 @@ function NewPage({ allposts }) {
 export default NewPage;
 
 const Hero = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/Hero.webp";
+    img.onload = () => {
+      setIsLoading(false);
+    };
+  }, []);
+
   return (
     <>
-      <div
-        className="relative h-[500px] w-full bg-cover bg-center"
-        style={{ backgroundImage: `url('/Hero.webp')` }}>
-        {/* Content */}
-        <div className="relative z-10 flex items-center h-full px-10 md:px-20">
-          <div className="text-white max-w-4xl space-y-6">
-            <h1 className="lg:text-4xl text-xl font-bold leading-tight">
-              Discover 200+ Home Improvement Blogs with HomImprovement for Your
-              Dream House
-            </h1>
-            <p className="text-lg lg:text-xl">
-              Browse HomImprovement for expert guides on home renovation,
-              design, and smart tech. Transform your living space with trusted
-              advice!
-            </p>
-            <button className="mt-4 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-semibold transition duration-300">
-              More Insights
-            </button>
+      {isLoading ? (
+        <div className="relative h-[500px] w-full bg-gray-200 animate-pulse flex items-center justify-center">
+          <div className="w-3/4 h-24 bg-gray-300 rounded mb-4"></div>
+        </div>
+      ) : (
+        <div
+          className="relative h-[500px] w-full bg-cover bg-center"
+          style={{ backgroundImage: `url('/Hero.webp')` }}>
+          <div className="relative z-10 flex items-center h-full px-10 md:px-20">
+            <div className="text-white max-w-4xl space-y-6">
+              <h1 className="lg:text-4xl text-xl font-bold leading-tight">
+                Discover 200+ Home Improvement Blogs with HomImprovement for
+                Your Dream House
+              </h1>
+              <p className="text-lg lg:text-xl">
+                Browse HomImprovement for expert guides on home renovation,
+                design, and smart tech. Transform your living space with trusted
+                advice!
+              </p>
+              <button className="mt-4 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-semibold transition duration-300">
+                More Insights
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="bg-[#DEDEFF] py-5 px-4">
+      )}
+
+      <div className="bg-[#DEDEFF] py-8 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className=" lg:text-5xl text-2xl  font-bold text-[#202D53] mb-6">
             House Renovation Ideas by homimprovement
           </h1>
-          <p className="lg:text-xl text-lg text-black">
+          <p className="lg:text-lg text-base text-black">
             Ready to revamp your home? Homimprovement offers comprehensive house
             renovation and unique design ideas to help you create the perfect
             living space.
@@ -167,7 +226,28 @@ const Hero = () => {
     </>
   );
 };
+
+const LatestSkeletonCard = () => (
+  <div className="bg-white shadow-md rounded-lg overflow-hidden animate-pulse">
+    <div className="w-full h-48 bg-gray-300"></div>
+    <div className="p-4 space-y-3">
+      <div className="h-5 bg-gray-300 rounded w-3/4"></div>
+      <div className="h-4 bg-gray-200 rounded w-full"></div>
+      <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+      <div className="mt-4 h-10 w-28 bg-gray-300 rounded-full"></div>
+    </div>
+  </div>
+);
+
 const LatestBlogs = ({ allposts }) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (allposts && allposts.length > 0) {
+      setLoading(false);
+    }
+  }, [allposts]);
+
   return (
     <div className="p-6 bg-gray-100">
       <div className="mb-6 text-center">
@@ -175,44 +255,69 @@ const LatestBlogs = ({ allposts }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {allposts?.slice(0, 8)?.map((post) => (
-          <div
-            key={post.id}
-            className="bg-white shadow-md rounded-lg overflow-hidden">
-            <Link
-              href={`/${createSlug(post?.category_names[0])}/${createSlug(
-                post?.Custom_url
-              )}`}
-              className="block h-full">
-              <img
-                src={
-                  post?.featured_image
-                    ? `${baseUrl}/${post?.featured_image}`
-                    : "https://via.placeholder.com/300x200.png?text=No+Image"
-                }
-                alt={post?.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4 flex flex-col">
-                <h2 className="text-lg lg:text-xl font-semibold mb-2">
-                  {post?.title}
-                </h2>
-                <p className="text-gray-600 mb-4 line-clamp-2 text-sm lg:text-base">
-                  {post?.seoDescription}
-                </p>
-                <button className="w-fit px-5 py-2 bg-none border border-[#DEDEFF] hover:bg-indigo-700 text-black hover:text-white rounded-full font-medium transition duration-300">
-                  Read More...
-                </button>
+        {loading
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <LatestSkeletonCard key={index} />
+            ))
+          : allposts?.slice(0, 8)?.map((post) => (
+              <div
+                key={post.id}
+                className="bg-white shadow-md rounded-lg overflow-hidden">
+                <Link
+                  href={`/${createSlug(post?.category_names[0])}/${createSlug(
+                    post?.Custom_url
+                  )}`}
+                  className="block h-full"
+                  loading="lazy">
+                  <img
+                    src={
+                      post?.featured_image
+                        ? `${baseUrl}/${post?.featured_image}`
+                        : "https://via.placeholder.com/300x200.png?text=No+Image"
+                    }
+                    alt={post?.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4 flex flex-col">
+                    <h2 className="text-lg lg:text-xl font-semibold mb-2">
+                      {post?.title}
+                    </h2>
+                    <p className="text-gray-600 mb-4 line-clamp-2 text-sm lg:text-base">
+                      {post?.seoDescription}
+                    </p>
+                    <button className="w-fit px-5 py-2 bg-none border border-[#DEDEFF] hover:bg-indigo-700 text-black hover:text-white rounded-full font-medium transition duration-300">
+                      Read More...
+                    </button>
+                  </div>
+                </Link>
               </div>
-            </Link>
-          </div>
-        ))}
+            ))}
       </div>
     </div>
   );
 };
 
-const FeatureCategory = ({ allposts }) => {
+const SkeletonFeatureCard = () => (
+  <div className="bg-white shadow-md rounded-lg overflow-hidden animate-pulse">
+    <div className="w-full h-56 bg-gray-300 relative"></div>
+    <div className="p-4 space-y-3">
+      <div className="h-5 bg-gray-300 rounded w-3/4"></div>
+      <div className="h-4 bg-gray-200 rounded w-full"></div>
+      <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+      <div className="mt-4 h-10 w-28 bg-gray-300 rounded-full"></div>
+    </div>
+  </div>
+);
+
+const FeatureCategory = ({ featureCategoryBlogs }) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (featureCategoryBlogs && featureCategoryBlogs.length > 0) {
+      setLoading(false);
+    }
+  }, [featureCategoryBlogs]);
+
   return (
     <div className="p-6 bg-gray-100">
       <div className="mb-6 text-center">
@@ -220,49 +325,62 @@ const FeatureCategory = ({ allposts }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {allposts?.slice(8, 16)?.map((post) => (
-          <Link
-            key={post.id}
-            href={`/${createSlug(post?.category_names[0])}/${createSlug(
-              post?.Custom_url
-            )}`}
-            className="bg-white shadow-md rounded-lg overflow-hidden block hover:shadow-lg transition-shadow duration-300">
-            <div className="relative">
-              <img
-                src={
-                  post?.featured_image
-                    ? `${baseUrl}/${post?.featured_image}`
-                    : "https://via.placeholder.com/300x200.png?text=No+Image"
-                }
-                alt={post?.title}
-                className="w-full h-56 object-cover"
-              />
-              {/* Category tag with icon */}
-              <div className="absolute top-2 left-2 bg-white bg-opacity-90 px-4 py-2 flex items-center gap-1 text-sm rounded-full shadow text-black">
-                <FaTag className="text-indigo-600 text-base lg:text-medium" />
-                <span className="font-medium">
-                  {post?.category_names[0] || "Uncategorized"}
-                </span>
-              </div>
-            </div>
+        {loading
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <SkeletonFeatureCard key={index} />
+            ))
+          : featureCategoryBlogs?.map((post) => (
+              <Link
+                key={post.id}
+                href={`/${createSlug(post?.category_names[0])}/${createSlug(
+                  post?.Custom_url
+                )}`}
+                className="bg-white shadow-md rounded-lg overflow-hidden block hover:shadow-lg transition-shadow duration-300">
+                <div className="relative">
+                  <img
+                    src={
+                      post?.featured_image
+                        ? `${baseUrl}/${post?.featured_image}`
+                        : "https://via.placeholder.com/300x200.png?text=No+Image"
+                    }
+                    alt={post?.title}
+                    className="w-full h-56 object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute top-2 left-2 bg-white bg-opacity-90 px-4 py-2 flex items-center gap-1 text-sm rounded-full shadow text-black">
+                    <FaTag className="text-indigo-600 text-base lg:text-medium" />
+                    <span className="font-medium">
+                      {post?.category_names[0] || "Uncategorized"}
+                    </span>
+                  </div>
+                </div>
 
-            <div className="p-4 flex flex-col h-full">
-              <h2 className="text-lg lg:text-xl line-clamp-2 font-semibold mb-2">
-                {post?.title}
-              </h2>
-              <p className="text-gray-600 mb-4 line-clamp-2 text-sm lg:text-base">
-                {post?.seoDescription}
-              </p>
-              <span className="w-fit px-5 py-2 border border-[#DEDEFF] hover:bg-indigo-700 text-black hover:text-white rounded-full font-medium transition duration-300">
-                Read More...
-              </span>
-            </div>
-          </Link>
-        ))}
+                <div className="p-4 flex flex-col h-full">
+                  <h2 className="text-lg lg:text-xl line-clamp-2 font-semibold mb-2">
+                    {post?.title}
+                  </h2>
+                  <p className="text-gray-600 mb-4 line-clamp-2 text-sm lg:text-base">
+                    {post?.seoDescription}
+                  </p>
+                  <span className="w-fit px-5 py-2 border border-[#DEDEFF] hover:bg-indigo-700 text-black hover:text-white rounded-full font-medium transition duration-300">
+                    Read More...
+                  </span>
+                </div>
+              </Link>
+            ))}
       </div>
     </div>
   );
 };
+const BlogCardSkeleton = () => (
+  <div className="relative block h-72 rounded-lg overflow-hidden bg-gray-200 animate-pulse shadow-md">
+    <div className="absolute inset-0 bg-gray-300" />
+    <div className="absolute bottom-4 left-4 right-4 z-20">
+      <div className="h-6 bg-gray-400 rounded w-3/4 mb-2"></div>
+      <div className="h-4 bg-gray-400 rounded w-full"></div>
+    </div>
+  </div>
+);
 
 const BlogCard = ({ post }) => {
   return (
@@ -280,6 +398,7 @@ const BlogCard = ({ post }) => {
         }
         alt={post?.title}
         className="absolute inset-0 w-full h-full object-cover"
+        loading="lazy"
       />
 
       {/* Gradient overlay */}
@@ -295,6 +414,17 @@ const BlogCard = ({ post }) => {
     </Link>
   );
 };
+const HorizontalBlogCardSkeleton = () => (
+  <div className="flex flex-col lg:flex-row bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+    <div className="w-full lg:w-1/3 h-48 lg:h-auto bg-gray-300" />
+    <div className="p-4 flex flex-col justify-start gap-2 w-full lg:w-2/3">
+      <div className="h-6 bg-gray-300 rounded w-3/4"></div>
+      <div className="h-4 bg-gray-300 rounded w-full"></div>
+      <div className="h-4 bg-gray-300 rounded w-1/2 mt-2"></div>
+    </div>
+  </div>
+);
+
 const HorizontalBlogCard = ({ post }) => {
   return (
     <Link
@@ -312,6 +442,7 @@ const HorizontalBlogCard = ({ post }) => {
           }
           alt={post?.title}
           className="w-full h-full object-cover"
+          loading="lazy"
         />
       </div>
 
@@ -356,6 +487,7 @@ const CategorySection = () => {
               src="/homepage.webp"
               alt="About us"
               className="w-full h-auto rounded-lg shadow-lg"
+              loading="lazy"
             />
           </div>
         </div>
@@ -393,13 +525,11 @@ const FeedbackSlider = () => {
       <div className="max-w-7xl mx-auto px-4">
         <Slider {...settings}>
           {feedbacks.map((fb, idx) => (
-            <div key={idx} className="px-4 h-[200px]">
-              {" "}
-              {/* Slide wrapper */}
+            <div key={idx} className="px-4 h-[250px]">
               <div className="bg-white p-6 rounded-lg shadow text-center flex flex-col h-full">
-                <FaUserCircle className="mx-auto text-5xl text-gray-500 mb-4" />
+                <FaUserCircle className="mx-auto w-12 h-12 text-gray-500 mb-4 shrink-0" />
                 <h4 className="font-semibold text-black text-lg">{fb.name}</h4>
-                <p className="text-gray-600 text-sm mt-2 flex-grow">
+                <p className="text-gray-600 text-sm mt-2 flex-grow overflow-y-auto max-h-24">
                   "{fb.comment}"
                 </p>
               </div>
