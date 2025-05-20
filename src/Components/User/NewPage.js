@@ -1,12 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FaTag } from "react-icons/fa";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
 import { FaUserCircle } from "react-icons/fa";
 
 const feedbacks = [
@@ -130,10 +127,10 @@ function NewPage({ allposts }) {
       <Hero />
       <LatestBlogs allposts={allposts} />
       <FeatureCategory featureCategoryBlogs={featureCategoryBlogs} />
-      <div className="p-6 bg-gray-100">
-        <div className="mb-6 text-center">
-          <h1 className="text-lg lg:text-3xl font-bold">Top Reads</h1>
-        </div>
+      <section className="p-6 bg-gray-100">
+        <h2 className="mb-6 text-center text-lg lg:text-3xl font-bold">
+          Top Reads
+        </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {isLoading || !topReads?.length
@@ -146,12 +143,12 @@ function NewPage({ allposts }) {
                   <HorizontalBlogCard key={post.id} post={post} />
                 ))}
         </div>
-      </div>
+      </section>
 
-      <div className="p-6 bg-gray-100">
-        <div className="mb-6 text-center">
-          <h1 className="text-lg lg:text-3xl font-bold">Editor's Choice</h1>
-        </div>
+      <section className="p-6 bg-gray-100">
+        <h2 className="mb-6 text-center text-lg lg:text-3xl font-bold">
+          Editor's Choice
+        </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {isLoading || !editorsChoice?.length
@@ -162,7 +159,7 @@ function NewPage({ allposts }) {
                 .slice(0, 8)
                 .map((post) => <BlogCard key={post.id} post={post} />)}
         </div>
-      </div>
+      </section>
 
       <CategorySection />
       <FeedbackSlider />
@@ -224,73 +221,62 @@ const LatestSkeletonCard = () => (
   </div>
 );
 
-const LatestBlogs = ({ allposts }) => {
+const LatestBlogs = ({ allposts = [] }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (allposts && allposts.length > 0) {
-      setLoading(false);
-    }
+    setLoading(allposts.length === 0);
   }, [allposts]);
 
+  const postsToShow = loading
+    ? Array.from({ length: 8 })
+    : allposts.slice(0, 8);
+
   return (
-    <div className="p-6 bg-gray-100">
-      <div className="mb-6 text-center">
+    <section className="p-6 bg-gray-100">
+      <header className="mb-6 text-center">
         <h1 className="text-lg lg:text-3xl font-bold">Latest Blogs</h1>
-      </div>
+      </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {loading
-          ? Array.from({ length: 8 }).map((_, index) => (
-              <LatestSkeletonCard key={index} />
-            ))
-          : allposts?.slice(0, 8)?.map((post) => (
-              <div
-                key={post.id}
-                className="bg-white shadow-md rounded-lg overflow-hidden">
-                <Link
-                  href={`/${createSlug(post?.category_names[0])}/${createSlug(
-                    post?.Custom_url
-                  )}`}
-                  className="block h-full"
-                  loading="lazy">
-                  {/* <img
-                    src={
-                      post?.featured_image
-                        ? `${baseUrl}/${post?.featured_image}`
-                        : "https://via.placeholder.com/300x200.png?text=No+Image"
-                    }
-                    alt={post?.title}
-                    className="w-full h-48 object-cover"
-                  /> */}
-                  <Image
-                    src={
-                      post?.featured_image
-                        ? `${baseUrl}/${post?.featured_image}`
-                        : "https://via.placeholder.com/300x200.png?text=No+Image"
-                    }
-                    alt={post?.title}
-                    width={300}
-                    height={200}
-                    className="object-cover w-full h-48"
-                    loading="lazy"
-                  />
-                  <div className="p-4 flex flex-col">
-                    <h2 className="text-lg lg:text-xl font-semibold mb-2 line-clamp-2">
-                      {post?.title}
-                    </h2>
-                    <p className="text-gray-600 mb-4 line-clamp-2 text-sm lg:text-base">
-                      {post?.seoDescription}
-                    </p>
-                    <button className="w-fit px-5 py-2 bg-none border border-[#DEDEFF] hover:bg-indigo-700 text-black hover:text-white rounded-full font-medium transition duration-300">
-                      Read More...
-                    </button>
-                  </div>
-                </Link>
+        {postsToShow.map((post, index) =>
+          loading ? (
+            <LatestSkeletonCard key={index} />
+          ) : (
+            <Link
+              key={post.id}
+              href={`/${createSlug(post?.category_names?.[0])}/${createSlug(
+                post?.Custom_url
+              )}`}
+              className="bg-white shadow-md rounded-lg overflow-hidden block hover:shadow-lg transition-shadow duration-300">
+              <Image
+                src={
+                  post?.featured_image
+                    ? `${baseUrl}/${post.featured_image}`
+                    : "https://via.placeholder.com/300x200.png?text=No+Image"
+                }
+                alt={post?.title || "Blog Image"}
+                width={300}
+                height={200}
+                className="object-cover w-full h-48"
+                loading="lazy"
+              />
+              <div className="p-4">
+                <h2 className="text-lg lg:text-xl font-semibold mb-2 line-clamp-2">
+                  {post?.title}
+                </h2>
+                <p className="text-gray-600 mb-4 text-sm lg:text-base line-clamp-2">
+                  {post?.seoDescription}
+                </p>
+                <span className="inline-block px-5 py-2 border border-[#DEDEFF] hover:bg-indigo-700 text-black hover:text-white rounded-full font-medium transition duration-300">
+                  Read More...
+                </span>
               </div>
-            ))}
+            </Link>
+          )
+        )}
       </div>
-    </div>
+    </section>
   );
 };
 
@@ -306,62 +292,50 @@ const SkeletonFeatureCard = () => (
   </div>
 );
 
-const FeatureCategory = ({ featureCategoryBlogs }) => {
+const FeatureCategory = ({ featureCategoryBlogs = [] }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (featureCategoryBlogs && featureCategoryBlogs.length > 0) {
-      setLoading(false);
-    }
+    setLoading(!(featureCategoryBlogs.length > 0));
   }, [featureCategoryBlogs]);
 
   return (
-    <div className="p-6 bg-gray-100">
-      <div className="mb-6 text-center">
-        <h1 className="text-lg lg:text-3xl font-bold">Feature Category</h1>
-      </div>
+    <section className="p-6 bg-gray-100">
+      <header className="mb-6 text-center">
+        <h1 className="text-lg lg:text-3xl font-bold">Featured Categories</h1>
+      </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {loading
-          ? Array.from({ length: 8 }).map((_, index) => (
+        {(loading ? Array.from({ length: 8 }) : featureCategoryBlogs).map(
+          (post, index) =>
+            loading ? (
               <SkeletonFeatureCard key={index} />
-            ))
-          : featureCategoryBlogs?.map((post) => (
+            ) : (
               <Link
                 key={post.id}
-                href={`/${createSlug(post?.category_names[0])}/${createSlug(
+                href={`/${createSlug(post?.category_names?.[0])}/${createSlug(
                   post?.Custom_url
                 )}`}
                 className="bg-white shadow-md rounded-lg overflow-hidden block hover:shadow-lg transition-shadow duration-300">
                 <div className="relative">
-                  {/* <img
-                    src={
-                      post?.featured_image
-                        ? `${baseUrl}/${post?.featured_image}`
-                        : "https://via.placeholder.com/300x200.png?text=No+Image"
-                    }
-                    alt={post?.title}
-                    className="w-full h-56 object-cover"
-                    loading="lazy"
-                  /> */}
                   <Image
                     src={
                       post?.featured_image
-                        ? `${baseUrl}/${post?.featured_image}`
+                        ? `${baseUrl}/${post.featured_image}`
                         : "https://via.placeholder.com/300x200.png?text=No+Image"
                     }
-                    alt={post?.title}
+                    alt={post?.title || "Blog Thumbnail"}
                     width={300}
                     height={233}
                     className="object-cover w-full h-56"
                     loading="lazy"
                   />
-                  <div className="absolute top-2 left-2 bg-white bg-opacity-90 px-4 py-2 flex items-center gap-1 text-sm rounded-full shadow text-black">
-                    <FaTag className="text-indigo-600 text-base lg:text-medium" />
+                  <span className="absolute top-2 left-2 bg-white bg-opacity-90 px-4 py-2 flex items-center gap-1 text-sm rounded-full shadow text-black">
+                    <FaTag className="text-indigo-600 text-base" />
                     <span className="font-medium">
-                      {post?.category_names[0] || "Uncategorized"}
+                      {post?.category_names?.[0] || "Uncategorized"}
                     </span>
-                  </div>
+                  </span>
                 </div>
 
                 <div className="p-4 flex flex-col h-full">
@@ -376,9 +350,10 @@ const FeatureCategory = ({ featureCategoryBlogs }) => {
                   </span>
                 </div>
               </Link>
-            ))}
+            )
+        )}
       </div>
-    </div>
+    </section>
   );
 };
 const BlogCardSkeleton = () => (
@@ -486,80 +461,91 @@ const HorizontalBlogCard = ({ post }) => {
 };
 const CategorySection = () => {
   return (
-    <>
-      <div className="bg-[#00008B] text-white py-12 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
-          {/* Left Side Content */}
-          <div className="lg:w-1/2 text-left">
-            <h2 className="text-2xl lg:text-4xl font-bold mb-4">
-              Best House Renovation Solutions by Homimprovement
-            </h2>
-            <p className="mb-6 text-base lg:text-xl leading-relaxed">
-              Get inspired with our home improvement ideas. From latest Interior
-              Design Ideas to House renovation help, we will assist you for your
-              home improvement.
-            </p>
-            <button className="px-6 py-3 bg-white text-[#00008B] hover:bg-gray-200 font-medium rounded-full transition duration-300">
-              More To Explore
-            </button>
-          </div>
+    <section className="bg-[#00008B] text-white py-12 px-6">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
+        <article className="lg:w-1/2">
+          <h2 className="text-2xl lg:text-4xl font-bold mb-4">
+            Best House Renovation Solutions by Homimprovement
+          </h2>
+          <p className="mb-6 text-base lg:text-xl leading-relaxed">
+            Get inspired with our home improvement ideas. From latest Interior
+            Design Ideas to House renovation help, we will assist you for your
+            home improvement.
+          </p>
+          <button className="px-6 py-3 bg-white text-[#00008B] hover:bg-gray-200 font-medium rounded-full transition duration-300">
+            More To Explore
+          </button>
+        </article>
 
-          {/* Right Side Image */}
-          <div className="lg:w-1/2 w-full">
-            <img
-              src="/homepage.webp"
-              alt="About us"
-              className="w-full h-auto rounded-lg shadow-lg"
-              loading="lazy"
-            />
-          </div>
-        </div>
+        <figure className="lg:w-1/2 w-full">
+          <img
+            src="/homepage.webp"
+            alt="About us"
+            className="w-full h-auto rounded-lg shadow-lg"
+            loading="lazy"
+          />
+        </figure>
       </div>
-    </>
+    </section>
   );
 };
+
 const FeedbackSlider = () => {
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 1500,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 1024, // lg
-        settings: { slidesToShow: 2 },
-      },
-      {
-        breakpoint: 640, // sm
-        settings: { slidesToShow: 1 },
-      },
-    ],
-  };
+  const [slidesToShow, setSlidesToShow] = useState(3);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Responsive slidesToShow
+  useEffect(() => {
+    const updateSlides = () => {
+      const width = window.innerWidth;
+      if (width < 640) setSlidesToShow(1);
+      else if (width < 1024) setSlidesToShow(2);
+      else setSlidesToShow(3);
+    };
+
+    updateSlides();
+    window.addEventListener("resize", updateSlides);
+    return () => window.removeEventListener("resize", updateSlides);
+  }, []);
+
+  // Autoplay
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev === feedbacks.length - 3 ? 0 : prev + 1));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [feedbacks.length]);
 
   return (
-    <div className="py-12 bg-gray-100">
+    <section className="py-12">
       <h2 className="text-center text-lg lg:text-3xl font-bold mb-8">
         What Our Users Say
       </h2>
-      <div className="max-w-7xl mx-auto px-4">
-        <Slider {...settings}>
+      <div className="overflow-hidden max-w-7xl mx-auto px-4">
+        <div
+          className="flex transition-transform duration-700 ease-in-out"
+          style={{
+            width: `${feedbacks.length * (100 / slidesToShow)}%`,
+            transform: `translateX(-${
+              (100 / feedbacks.length) * currentIndex
+            }%)`,
+          }}>
           {feedbacks.map((fb, idx) => (
-            <div key={idx} className="px-4 h-[250px]">
-              <div className="bg-white p-6 rounded-lg shadow text-center flex flex-col h-full">
+            <div
+              key={idx}
+              className="px-4"
+              style={{ width: `${100 / feedbacks.length}%` }}>
+              <blockquote className=" p-6 text-center flex flex-col h-full">
                 <FaUserCircle className="mx-auto w-12 h-12 text-gray-500 mb-4 shrink-0" />
-                <h4 className="font-semibold text-black text-lg">{fb.name}</h4>
+                <h3 className="font-semibold text-black text-lg">{fb.name}</h3>
                 <p className="text-gray-600 text-sm mt-2 flex-grow overflow-y-auto max-h-24">
                   "{fb.comment}"
                 </p>
-              </div>
+              </blockquote>
             </div>
           ))}
-        </Slider>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
