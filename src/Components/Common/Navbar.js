@@ -147,7 +147,7 @@ function Navbar({ categories = [], posts }) {
                     <button className="block text-black text-xl hover:text-[#00008B] font-semibold">
                       {type}
                     </button>
-                    <ul className="absolute hidden group-hover:block w-[250px] z-10 bg-white shadow-lg border border-black">
+                    <ul className="absolute hidden group-hover:block w-[250px] z-20 bg-white shadow-lg border border-black">
                       {groupedCategories[type].map((category) => (
                         <li
                           key={category.category_id}

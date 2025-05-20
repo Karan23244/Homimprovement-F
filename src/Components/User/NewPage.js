@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { FaTag } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -172,48 +173,32 @@ function NewPage({ allposts }) {
 export default NewPage;
 
 const Hero = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const img = new Image();
-    img.src = "/Hero.webp";
-    img.onload = () => {
-      setIsLoading(false);
-    };
-  }, []);
-
   return (
     <>
-      {isLoading ? (
-        <div className="relative h-[500px] w-full bg-gray-200 animate-pulse flex items-center justify-center">
-          <div className="w-3/4 h-24 bg-gray-300 rounded mb-4"></div>
-        </div>
-      ) : (
-        <div
-          className="relative h-[500px] w-full bg-cover bg-center"
-          style={{ backgroundImage: `url('/Hero.webp')` }}>
-          <div className="relative z-10 flex items-center h-full px-10 md:px-20">
-            <div className="text-white max-w-4xl space-y-6">
-              <h1 className="lg:text-4xl text-xl font-bold leading-tight">
-                Discover 200+ Home Improvement Blogs with HomImprovement for
-                Your Dream House
-              </h1>
-              <p className="text-lg lg:text-xl">
-                Browse HomImprovement for expert guides on home renovation,
-                design, and smart tech. Transform your living space with trusted
-                advice!
-              </p>
-              <button className="mt-4 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-semibold transition duration-300">
-                More Insights
-              </button>
-            </div>
+      <div
+        className="relative lg:h-[500px] h-[400px] w-full bg-cover bg-center"
+        style={{ backgroundImage: `url("/Hero.webp")` }}>
+        <div className="relative z-10 flex items-center h-full px-10 md:px-20">
+          <div className="text-white max-w-4xl space-y-6">
+            <h1 className="lg:text-4xl text-lg font-bold leading-tight">
+              Discover 200+ Home Improvement Blogs with HomImprovement for Your
+              Dream House
+            </h1>
+            <p className="text-base lg:text-xl">
+              Browse HomImprovement for expert guides on home renovation,
+              design, and smart tech. Transform your living space with trusted
+              advice!
+            </p>
+            <button className="lg:mt-4 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full lg:font-semibold font-medium transition duration-300">
+              More Insights
+            </button>
           </div>
         </div>
-      )}
+      </div>
 
       <div className="bg-[#DEDEFF] py-8 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className=" lg:text-5xl text-2xl  font-bold text-[#202D53] mb-6">
+          <h1 className="lg:text-5xl text-2xl font-bold text-[#202D53] mb-6">
             House Renovation Ideas by homimprovement
           </h1>
           <p className="lg:text-lg text-base text-black">
@@ -269,7 +254,7 @@ const LatestBlogs = ({ allposts }) => {
                   )}`}
                   className="block h-full"
                   loading="lazy">
-                  <img
+                  {/* <img
                     src={
                       post?.featured_image
                         ? `${baseUrl}/${post?.featured_image}`
@@ -277,9 +262,21 @@ const LatestBlogs = ({ allposts }) => {
                     }
                     alt={post?.title}
                     className="w-full h-48 object-cover"
+                  /> */}
+                  <Image
+                    src={
+                      post?.featured_image
+                        ? `${baseUrl}/${post?.featured_image}`
+                        : "https://via.placeholder.com/300x200.png?text=No+Image"
+                    }
+                    alt={post?.title}
+                    width={300}
+                    height={200}
+                    className="object-cover w-full h-48"
+                    loading="lazy"
                   />
                   <div className="p-4 flex flex-col">
-                    <h2 className="text-lg lg:text-xl font-semibold mb-2">
+                    <h2 className="text-lg lg:text-xl font-semibold mb-2 line-clamp-2">
                       {post?.title}
                     </h2>
                     <p className="text-gray-600 mb-4 line-clamp-2 text-sm lg:text-base">
@@ -337,7 +334,7 @@ const FeatureCategory = ({ featureCategoryBlogs }) => {
                 )}`}
                 className="bg-white shadow-md rounded-lg overflow-hidden block hover:shadow-lg transition-shadow duration-300">
                 <div className="relative">
-                  <img
+                  {/* <img
                     src={
                       post?.featured_image
                         ? `${baseUrl}/${post?.featured_image}`
@@ -345,6 +342,18 @@ const FeatureCategory = ({ featureCategoryBlogs }) => {
                     }
                     alt={post?.title}
                     className="w-full h-56 object-cover"
+                    loading="lazy"
+                  /> */}
+                  <Image
+                    src={
+                      post?.featured_image
+                        ? `${baseUrl}/${post?.featured_image}`
+                        : "https://via.placeholder.com/300x200.png?text=No+Image"
+                    }
+                    alt={post?.title}
+                    width={300}
+                    height={233}
+                    className="object-cover w-full h-56"
                     loading="lazy"
                   />
                   <div className="absolute top-2 left-2 bg-white bg-opacity-90 px-4 py-2 flex items-center gap-1 text-sm rounded-full shadow text-black">
@@ -390,14 +399,16 @@ const BlogCard = ({ post }) => {
       )}`}
       className="relative block h-72 rounded-lg overflow-hidden group shadow-md hover:shadow-lg transition-shadow duration-300">
       {/* Background image */}
-      <img
+      <Image
         src={
           post?.featured_image
             ? `${baseUrl}/${post?.featured_image}`
             : "https://via.placeholder.com/400x300.png?text=No+Image"
         }
         alt={post?.title}
-        className="absolute inset-0 w-full h-full object-cover"
+        width={400}
+        height={300}
+        className="object-cover absolute inset-0"
         loading="lazy"
       />
 
@@ -434,7 +445,7 @@ const HorizontalBlogCard = ({ post }) => {
       className="flex flex-col lg:flex-row bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       {/* Image on left */}
       <div className="w-full lg:w-1/3 h-48 lg:h-auto">
-        <img
+        {/* <img
           src={
             post?.featured_image
               ? `${baseUrl}/${post?.featured_image}`
@@ -442,6 +453,18 @@ const HorizontalBlogCard = ({ post }) => {
           }
           alt={post?.title}
           className="w-full h-full object-cover"
+          loading="lazy"
+        /> */}
+        <Image
+          src={
+            post?.featured_image
+              ? `${baseUrl}/${post?.featured_image}`
+              : "https://via.placeholder.com/300x200.png?text=No+Image"
+          }
+          alt={post?.title}
+          width={300}
+          height={200}
+          className="object-cover w-full h-full"
           loading="lazy"
         />
       </div>
