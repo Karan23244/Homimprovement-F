@@ -62,6 +62,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <link rel="preload" as="image" href="/Hero.webp" type="image/webp" />
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{

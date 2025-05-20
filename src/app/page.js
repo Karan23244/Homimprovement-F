@@ -13,8 +13,8 @@ export default async function HomePage() {
   );
   return (
     <>
-      <UserHome allposts={posts} />
-      {/* <NewPage allposts={posts} /> */}
+      {/* <UserHome allposts={posts} /> */}
+      <NewPage allposts={posts} />
     </>
   );
 }
