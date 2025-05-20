@@ -182,7 +182,7 @@ function Navbar({ categories = [], posts }) {
                 {showDropdown && (
                   <ul
                     ref={dropdownRef}
-                    className="suggestion-item absolute bg-white border border-black rounded-xl shadow-lg w-[calc(100%+10rem)] -left-[10rem] mt-2 py-5 transition-all z-10">
+                    className="suggestion-item absolute bg-white border border-black rounded-xl shadow-lg w-[calc(100%+10rem)] -left-[10rem] mt-2 py-5 transition-all z-30">
                     <div className="px-4 text-md font-semibold">
                       Searching For
                     </div>
