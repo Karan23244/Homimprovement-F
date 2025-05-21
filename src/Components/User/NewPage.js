@@ -186,7 +186,9 @@ const Hero = () => {
               design, and smart tech. Transform your living space with trusted
               advice!
             </p>
-            <button className="lg:mt-4 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full lg:font-semibold font-medium transition duration-300">
+            <button
+              onClick={() => (window.location.href = "/home-insights")}
+              className="lg:mt-4 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full lg:font-semibold font-medium transition duration-300 cursor-pointer">
               More Insights
             </button>
           </div>
@@ -195,9 +197,9 @@ const Hero = () => {
 
       <div className="bg-[#DEDEFF] py-8 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="lg:text-5xl text-2xl font-bold text-[#202D53] mb-6">
+          <h2 className="lg:text-5xl text-2xl font-bold text-[#202D53] mb-6">
             House Renovation Ideas by homimprovement
-          </h1>
+          </h2>
           <p className="lg:text-lg text-base text-black">
             Ready to revamp your home? Homimprovement offers comprehensive house
             renovation and unique design ideas to help you create the perfect
@@ -235,7 +237,7 @@ const LatestBlogs = ({ allposts = [] }) => {
   return (
     <section className="p-6 bg-gray-100">
       <header className="mb-6 text-center">
-        <h1 className="text-lg lg:text-3xl font-bold">Latest Blogs</h1>
+        <h2 className="text-lg lg:text-3xl font-bold">Latest Blogs</h2>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -302,7 +304,7 @@ const FeatureCategory = ({ featureCategoryBlogs = [] }) => {
   return (
     <section className="p-6 bg-gray-100">
       <header className="mb-6 text-center">
-        <h1 className="text-lg lg:text-3xl font-bold">Featured Categories</h1>
+        <h2 className="text-lg lg:text-3xl font-bold">Featured Categories</h2>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -472,7 +474,9 @@ const CategorySection = () => {
             Design Ideas to House renovation help, we will assist you for your
             home improvement.
           </p>
-          <button className="px-6 py-3 bg-white text-[#00008B] hover:bg-gray-200 font-medium rounded-full transition duration-300">
+          <button
+            onClick={() => (window.location.href = "/upgrade-yourself")}
+            className="px-6 py-3 bg-white text-[#00008B] hover:bg-gray-200 font-medium rounded-full transition duration-300 cursor-pointer">
             More To Explore
           </button>
         </article>

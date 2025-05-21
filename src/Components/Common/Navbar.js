@@ -29,7 +29,19 @@ function Navbar({ categories = [], posts }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [openCategory, setOpenCategory] = useState(null); // for second level
+  const [openSubCategory, setOpenSubCategory] = useState(null); // for third level
   const dropdownRef = useRef();
+
+  const handleRedirect = (type) => {
+    const lowerType = type.toLowerCase();
+    if (lowerType === "upgrade yourself") {
+      router.push("/upgrade-yourself");
+    } else if (lowerType === "home insights") {
+      router.push("/home-insights");
+    }
+    setIsMenuOpen(false);
+  };
   const groupedCategories = useMemo(() => {
     return categories.reduce((acc, category) => {
       if (!acc[category.category_type]) {
@@ -41,14 +53,13 @@ function Navbar({ categories = [], posts }) {
   }, [categories]);
 
   const toggleMenu = () => {
-    // If the search bar is open, close it when toggling the menu
-    if (searchBarOpen) {
-      setSearchBarOpen(false);
-    }
     // Toggle the menu state
     setIsMenuOpen(!isMenuOpen);
   };
-
+  const handleClickMenu = () => {
+    // Toggle the menu state
+    setIsMenuOpen(false);
+  };
   const toggleSearchBar = () => {
     // If the menu is open, close it when toggling the search bar
     if (isMenuOpen) {
@@ -117,9 +128,7 @@ function Navbar({ categories = [], posts }) {
         <div className="flex justify-between items-center">
           <div className="flex flex-row items-center lg:gap-4 gap-2 lg:w-[40%] pl-3 py-1">
             <div className="flex items-center space-x-3 cursor-pointer">
-              <Link
-                href="/"
-                className="">
+              <Link href="/">
                 <img
                   src="/headerlogo.webp"
                   alt="Logo"
@@ -142,32 +151,53 @@ function Navbar({ categories = [], posts }) {
           <div className="flex items-center lg:order-2 pr-3">
             <div className="flex flex-row justify-center items-center gap-28">
               <ul className="hidden lg:flex flex-row lg:space-x-8 gap-14">
-                {Object.keys(groupedCategories).map((type) => (
-                  <li className="relative group" key={type}>
-                    <button className="block text-black text-xl hover:text-[#00008B] font-semibold">
-                      {type}
-                    </button>
-                    <ul className="absolute hidden group-hover:block w-[250px] z-20 bg-white shadow-lg border border-black">
-                      {groupedCategories[type].map((category) => (
-                        <li
-                          key={category.category_id}
-                          className="p-1 hover:bg-gray-200 hover:border-black hover:border-l-4 cursor-pointer transition-transform duration-200">
-                          <Link
-                            href={`/${category.category_type
-                              .replace(/\s+/g, "-")
-                              .toLowerCase()}/${category.category_name
-                              .replace(/\s+/g, "-")
-                              .toLowerCase()}`}
-                            className="block px-4 py-2 hover:border-gray-600 text-black">
-                            {category.category_name === "How To"
-                              ? "How To ?"
-                              : category.category_name}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
+                <li className="relative group">
+                  <button className="block text-black text-xl hover:text-[#00008B] font-semibold">
+                    Blog Categories
+                  </button>
+                  {/* Second level - dropdown with types */}
+                  <ul className="absolute hidden group-hover:block left-0 w-[250px] z-20 bg-white shadow-lg border border-black">
+                    {Object.keys(groupedCategories).map((type) => (
+                      <li
+                        key={type}
+                        className="relative group/type hover:bg-gray-100">
+                        <button
+                          onClick={() => handleRedirect(type)}
+                          className="w-full text-left px-4 py-2 text-black hover:text-[#00008B] font-medium cursor-pointer">
+                          {type}
+                        </button>
+
+                        {/* Third level - submenu for category names */}
+                        <ul className="absolute hidden group-hover/type:block left-full top-0 w-[250px] z-30 bg-white shadow-lg border border-black">
+                          {groupedCategories[type].map((category) => (
+                            <li
+                              key={category.category_id}
+                              className="hover:bg-gray-200 hover:border-black hover:border-l-4 cursor-pointer transition-transform duration-200">
+                              <Link
+                                href={`/${category.category_type
+                                  .replace(/\s+/g, "-")
+                                  .toLowerCase()}/${category.category_name
+                                  .replace(/\s+/g, "-")
+                                  .toLowerCase()}`}
+                                className="block px-4 py-2 text-black">
+                                {category.category_name === "How To"
+                                  ? "How To ?"
+                                  : category.category_name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+                <li>
+                  <Link
+                    href={`/about-us`}
+                    className="block text-black text-xl hover:text-[#00008B] font-semibold">
+                    About Us
+                  </Link>
+                </li>
               </ul>
 
               {/* Search Input */}
@@ -256,45 +286,81 @@ function Navbar({ categories = [], posts }) {
               : "opacity-0 -top-full invisible"
           }`}
           style={{ zIndex: 1000 }}>
-          <ul className="space-y-4 p-4">
-            <div className="flex flex-col gap-4">
-              {Object.keys(groupedCategories).map((type) => (
-                <div key={type} className="relative group">
-                  <button
-                    className="flex justify-between items-center w-full px-4 py-2 text-black text-xl font-semibold hover:text-[#00008B] border-b"
-                    onClick={() =>
-                      setActiveCategory(activeCategory === type ? null : type)
-                    }>
-                    {type}
-                    {activeCategory === type ? (
-                      <FaChevronUp className="text-gray-600 text-sm" />
-                    ) : (
-                      <FaChevronDown className="text-gray-600 text-sm" />
-                    )}
-                  </button>
-                  <ul
-                    className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                      activeCategory === type ? "max-h-[500px]" : "max-h-0"
-                    }`}>
-                    {groupedCategories[type].map((category) => (
-                      <li key={category.category_id} className="px-6 py-2">
-                        <Link
-                          href={`/${category.category_type
-                            .replace(/\s+/g, "-")
-                            .toLowerCase()}/${category.category_name
-                            .replace(/\s+/g, "-")
-                            .toLowerCase()}`}
-                          className="block text-black hover:text-blue-800">
-                          {category.category_name === "How To"
-                            ? "How To ?"
-                            : category.category_name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+          <ul className="flex flex-col bg-white mt-2">
+            {/* Blog Categories */}
+            <li className="border-b border-gray-300">
+              <button
+                onClick={() =>
+                  setOpenCategory(openCategory === "blog" ? null : "blog")
+                }
+                className="w-full text-left px-4 py-3 text-black text-lg font-semibold flex justify-between items-center">
+                Blog Categories
+                <span>{openCategory === "blog" ? "▲" : "▼"}</span>
+              </button>
+
+              {openCategory === "blog" && (
+                <ul className="flex flex-col bg-gray-50 border-t border-gray-300">
+                  {Object.keys(groupedCategories).map((type) => (
+                    <li
+                      key={type}
+                      className="border-b border-gray-200 flex flex-col">
+                      <div className="flex justify-between items-center px-6 py-2">
+                        {/* Redirect button */}
+                        <button
+                          onClick={() => handleRedirect(type)}
+                          className="text-black font-medium text-left flex-1">
+                          {type}
+                        </button>
+
+                        {/* Toggle submenu button */}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation(); // prevent parent clicks
+                            setOpenSubCategory(
+                              openSubCategory === type ? null : type
+                            );
+                          }}
+                          className="ml-2 text-black font-medium"
+                          aria-label="Toggle submenu">
+                          {openSubCategory === type ? "▲" : "▼"}
+                        </button>
+                      </div>
+
+                      {/* Third level submenu */}
+                      {openSubCategory === type && (
+                        <ul className="flex flex-col bg-white border-t border-gray-200">
+                          {groupedCategories[type].map((category) => (
+                            <li key={category.category_id}>
+                              <Link
+                                onAbort={handleClickMenu}
+                                href={`/${category.category_type
+                                  .replace(/\s+/g, "-")
+                                  .toLowerCase()}/${category.category_name
+                                  .replace(/\s+/g, "-")
+                                  .toLowerCase()}`}
+                                className="block px-8 py-2 text-black hover:bg-gray-200">
+                                {category.category_name === "How To"
+                                  ? "How To ?"
+                                  : category.category_name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+
+            {/* About Us */}
+            <li>
+                <Link
+                  href={`/about-us`}
+                  className="block text-black text-xl hover:text-[#00008B] font-semibold">
+                  About Us
+                </Link>
+            </li>
           </ul>
         </div>
       </nav>
