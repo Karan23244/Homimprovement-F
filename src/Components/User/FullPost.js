@@ -89,7 +89,7 @@ const FullPost = ({ param1,param2 }) => {
       console.error("Error fetching comments:", err);
     }
   };
-
+ console.log(post)
   useEffect(() => {
     if (!param2) return;
     setPost(null);
@@ -127,11 +127,10 @@ const FullPost = ({ param1,param2 }) => {
           level: heading.tagName.toLowerCase(),
         };
       });
-      console.log(post.category_names[0]);
       const fetchRelatedBlogs = async () => {
         try {
           const res = await axios.get(
-            `${API_URL}/api/posts/related/${post.category_names[0]}`
+            `${API_URL}/api/posts/related/${post.categories[0].category_name}`
           );
           setRelatedBlogs(res.data.data);
         } catch (err) {
@@ -357,7 +356,7 @@ if (error) {
               {relatedBlogs.map((blog) => (
                 <Link
                   key={blog.id}
-                  href={`/${createSlug(blog?.category_names[0])}/${createSlug(
+                  href={`/${createSlug(blog?.categories[0]?.category_type)}/${createSlug(blog?.categories[0]?.category_name)}/${createSlug(
                     blog?.Custom_url
                   )}`}
                   className="block">

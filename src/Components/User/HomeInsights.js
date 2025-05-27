@@ -140,9 +140,9 @@ export default function HomeInsights() {
 const HorizontalBlogCard = ({ post }) => {
   return (
     <Link
-      href={`/${createSlug(post?.category_names[0])}/${createSlug(
-        post?.Custom_url
-      )}`}
+      href={`/${createSlug(post?.categories[0]?.category_type)}/${createSlug(
+        post?.categories[0]?.category_name
+      )}/${createSlug(post?.Custom_url)}`}
       className="flex flex-col lg:flex-row bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       {/* Image on left */}
       <div className="w-full lg:w-1/3 h-48 lg:h-auto">
@@ -189,9 +189,9 @@ const LatestBlogs = ({ post }) => {
   return (
     <Link
       key={post.id}
-      href={`/${createSlug(post?.category_names?.[0])}/${createSlug(
-        post?.Custom_url
-      )}`}
+      href={`/${createSlug(post?.categories[0]?.category_type)}/${createSlug(
+        post?.categories[0]?.category_name
+      )}/${createSlug(post?.Custom_url)}`}
       className="bg-white  overflow-hidden block transition-shadow duration-300">
       <Image
         src={

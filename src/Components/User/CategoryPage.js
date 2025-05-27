@@ -14,8 +14,6 @@ function createSlug(text) {
 }
 
 const getSeoDetails = (category) => {
-
-
   const seoData = {
     "Smart Home Technology": {
       title: "Smart Home Automation Technology | HomImprovement",
@@ -42,7 +40,6 @@ const getSeoDetails = (category) => {
         "interior design styles,modern interior design,interior design trends,interior design ideas for home",
       shortDescription:
         "Where we explore the state-of-the-art interior design trends and thoughts to transform your dwelling space into a haven of splendor and comfort. Staying updated with modern interior design tendencies is essential for developing a home that reflects your character even as also being purposeful and alluring. Whether you’re making plans for a whole protection or just trying to refresh a room, knowledge of the latest trends can inspire you to make impactful adjustments.",
-     
     },
     "How To Guides": {
       title: "Home Maintenance Tips & Guides | Homimprovement",
@@ -52,7 +49,6 @@ const getSeoDetails = (category) => {
         "home maintenance list,home maintenance tips,Home improvement guides",
       shortDescription:
         'Welcome to Homimprovement\'s "How To Guides" category, where we give you specified step-by-step instructions and useful guidelines on how to use the arena of smart technology. With greater smart home gadgets available on the market these days, getting to know the way to set up, use, and fasten them is crucial in order to achieve their advantages. You are both a technology amateur or a pro user; our special home improvement guides will make sure you get the first-rate from your smart home experience.',
-    
     },
     "Best Picks": {
       title: "Best Smart Home System: Guide to Top Devices & Integration ",
@@ -61,7 +57,6 @@ const getSeoDetails = (category) => {
       keywords: "best smart home devices,best smart home system",
       shortDescription:
         'Welcome to the "Best Picks" category of Homimprovement, wherein we pick and present to you the greatest products, equipment, and solutions for each element of your own home development task. If you need the high-quality smart home devices, the maximum appropriate equipment for home improvement tasks, or the maximum rated materials for preservation, our expertly decided on guidelines will provide you with the entirety you need. Based on expert evaluation and consumer reviews, you can choose with confidence the satisfaction to transform your home.',
-    
     },
     Comparisons: {
       title: "Product and Technology Comparison | Homimprovement",
@@ -78,7 +73,6 @@ const getSeoDetails = (category) => {
       keywords: "product analysis, best product review websites",
       shortDescription:
         "Welcome to Homimprovement's 'Product Reviews' category, In which we explore the area of smart home devices to help you in making your living area greater linked, green, and cushy. With technology advancing every day, smart home gadgets are gaining titanic popularity, presenting comfort, security, and electricity efficiency. Whether you're a tech geek or a property owner who wants to smarten up your house, our in-depth opinions will assist you choose the maximum appropriate smart home brand to your necessities. Our product analysis guarantees that every gadget is assessed thoroughly to help you make the best choice.",
-      
     },
     Deals: {
       title: "Smart Home Deals: Discounts You Can’t Miss!",
@@ -88,7 +82,6 @@ const getSeoDetails = (category) => {
         "smart home bundle deals, smart home deals today, home automation deals, great deal products, smart deal, smart deals, smart deals now",
       shortDescription:
         "In our increasingly busy world, adding smart home technology to your abode has never been easier. Here at Homimprovement, we are pleased to showcase a wide range of smart home bundle deals to suit any budget and need. Whether you're looking to get into home automation for the first time or are an experienced tech person, our smart home bundle deals allow you to start building out a better home.",
-      
     },
   };
 
@@ -102,7 +95,7 @@ const getSeoDetails = (category) => {
 };
 
 const CategoryPosts = () => {
-    // usePageTracker("category");
+  // usePageTracker("category");
 
   const {
     posts,
@@ -128,53 +121,48 @@ const CategoryPosts = () => {
   const { title, description, keywords, shortDescription, html } =
     getSeoDetails(modifiedCategoryName);
 
-if (loading)
-  return (
-    <div className="flex flex-col items-center justify-center h-screen text-gray-600">
-      <svg
-        className="animate-spin h-10 w-10 text-blue-500 mb-4"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
+  if (loading)
+    return (
+      <div className="flex flex-col items-center justify-center h-screen text-gray-600">
+        <svg
+          className="animate-spin h-10 w-10 text-blue-500 mb-4"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24">
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+        <p className="text-lg">Loading, please wait...</p>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="flex flex-col items-center justify-center h-screen text-red-600">
+        <svg
+          className="w-12 h-12 mb-4"
+          fill="none"
           stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-        ></path>
-      </svg>
-      <p className="text-lg">Loading, please wait...</p>
-    </div>
-  );
-
-if (error)
-  return (
-    <div className="flex flex-col items-center justify-center h-screen text-red-600">
-      <svg
-        className="w-12 h-12 mb-4"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-      <p className="text-lg font-semibold">Page Not Found!</p>
-    </div>
-  );
-
+          strokeWidth="2"
+          viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <p className="text-lg font-semibold">Page Not Found!</p>
+      </div>
+    );
 
   const sortedPosts = [...posts].sort((a, b) => b.view_count - a.view_count);
 
@@ -204,7 +192,9 @@ if (error)
             </h2>
             <Link
               href={`/${createSlug(
-                posts[0]?.category_names?.split(",")[0]
+                posts[0]?.categories[0]?.category_type
+              )}/${createSlug(
+                posts[0]?.categories[0]?.category_name?.split(",")
               )}/${createSlug(posts[0]?.Custom_url)}`}
               className="block">
               <img
@@ -248,7 +238,9 @@ if (error)
                 </p>
                 <Link
                   href={`/${createSlug(
-                    post?.category_names?.split(",")[0]
+                    post?.categories[0]?.category_type
+                  )}/${createSlug(
+                    post?.categories[0]?.category_name?.split(",")
                   )}/${createSlug(post?.Custom_url)}`}
                   className="text-[#00008B] hover:underline inline-block">
                   Read More...
@@ -304,7 +296,9 @@ if (error)
           <div className="relative lg:col-span-2 order-1 lg:order-none">
             <Link
               href={`/${createSlug(
-                posts[0]?.category_names?.split(",")[0]
+                posts[0]?.categories[0]?.category_type
+              )}/${createSlug(
+                posts[0]?.categories[0]?.category_name?.split(",")
               )}/${createSlug(posts[0]?.Custom_url)}`}
               className="block relative h-full">
               <img
@@ -336,7 +330,9 @@ if (error)
                 className="relative flex-1 flex flex-col bg-white">
                 <Link
                   href={`/${createSlug(
-                    post?.category_names?.split(",")[0]
+                    post?.categories[0]?.category_type
+                  )}/${createSlug(
+                    post?.categories[0]?.category_name?.split(",")
                   )}/${createSlug(post?.Custom_url)}`}
                   className="block relative h-full">
                   <img
@@ -431,14 +427,14 @@ if (error)
   return (
     <>
       <Head>
-          <title>{title}</title>
-          <meta name="description" content={description} />
-          <meta name="keywords" content={keywords} />
-          <meta property="og:title" content={title} />
-          <meta property="og:description" content={description} />
-          <meta property="og:type" content="Category Page" />
-          <meta property="og:url" content={`${currentUrl}`} />
-          <link rel="canonical" href={`${currentUrl}`} />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta name="keywords" content={keywords} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:type" content="Category Page" />
+        <meta property="og:url" content={`${currentUrl}`} />
+        <link rel="canonical" href={`${currentUrl}`} />
       </Head>
 
       {categoryType === "Upgrade Yourself"

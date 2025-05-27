@@ -134,7 +134,6 @@ function Navbar({ categories = [], posts }) {
                   alt="Logo"
                   width={80}
                   height={80}
-                  loading="lazy"
                 />
               </Link>
             </div>

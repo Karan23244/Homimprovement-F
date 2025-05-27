@@ -11,8 +11,7 @@ function createSlug(text) {
 }
 function UserHome({ allposts }) {
   // usePageTracker("home");
-  const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -97,8 +96,6 @@ function UserHome({ allposts }) {
 
   return (
     <>
-
-
       <div className="lg:px-10 lg:py-5 px-5 py-5">
         <>
           <div className="flex flex-col lg:flex-row lg:justify-evenly gap-6 items-stretch h-full">
@@ -111,7 +108,9 @@ function UserHome({ allposts }) {
                 <div className="relative overflow-hidden hover:shadow-md flex-grow">
                   <Link
                     href={`/${createSlug(
-                      allposts[0]?.category_names[0]
+                      allposts[0]?.categories[0]?.category_type
+                    )}/${createSlug(
+                      allposts[0]?.categories[0]?.category_name
                     )}/${createSlug(allposts[0]?.Custom_url)}`}
                     className="block h-full">
                     <div className="relative w-full lg:h-[350px] h-[200px]">
@@ -171,7 +170,9 @@ function UserHome({ allposts }) {
                           </p>
                           <Link
                             href={`/${createSlug(
-                              post?.category_names[0]
+                              post?.categories[0]?.category_type
+                            )}/${createSlug(
+                              post?.categories[0]?.category_name
                             )}/${createSlug(post?.Custom_url)}`}
                             className="text-[#00008B] hover:underline inline-block mt-auto">
                             Read More...

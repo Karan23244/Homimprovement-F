@@ -247,7 +247,9 @@ const LatestBlogs = ({ allposts = [] }) => {
           ) : (
             <Link
               key={post.id}
-              href={`/${createSlug(post?.category_names?.[0])}/${createSlug(
+              href={`/${createSlug(
+                post?.categories[0]?.category_type
+              )}/${createSlug(post?.categories[0]?.category_name)}/${createSlug(
                 post?.Custom_url
               )}`}
               className="bg-white shadow-md rounded-lg overflow-hidden block hover:shadow-lg transition-shadow duration-300">
@@ -315,9 +317,11 @@ const FeatureCategory = ({ featureCategoryBlogs = [] }) => {
             ) : (
               <Link
                 key={post.id}
-                href={`/${createSlug(post?.category_names?.[0])}/${createSlug(
-                  post?.Custom_url
-                )}`}
+                href={`/${createSlug(
+                  post?.categories[0]?.category_type
+                )}/${createSlug(
+                  post?.categories[0]?.category_name
+                )}/${createSlug(post?.Custom_url)}`}
                 className="bg-white shadow-md rounded-lg overflow-hidden block hover:shadow-lg transition-shadow duration-300">
                 <div className="relative">
                   <Image
@@ -371,9 +375,9 @@ const BlogCardSkeleton = () => (
 const BlogCard = ({ post }) => {
   return (
     <Link
-      href={`/${createSlug(post?.category_names[0])}/${createSlug(
-        post?.Custom_url
-      )}`}
+      href={`/${createSlug(post?.categories[0]?.category_type)}/${createSlug(
+        post?.categories[0]?.category_name
+      )}/${createSlug(post?.Custom_url)}`}
       className="relative block h-72 rounded-lg overflow-hidden group shadow-md hover:shadow-lg transition-shadow duration-300">
       {/* Background image */}
       <Image
@@ -416,9 +420,9 @@ const HorizontalBlogCardSkeleton = () => (
 const HorizontalBlogCard = ({ post }) => {
   return (
     <Link
-      href={`/${createSlug(post?.category_names[0])}/${createSlug(
-        post?.Custom_url
-      )}`}
+      href={`/${createSlug(post?.categories[0]?.category_type)}/${createSlug(
+        post?.categories[0]?.category_name
+      )}/${createSlug(post?.Custom_url)}`}
       className="flex flex-col lg:flex-row bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       {/* Image on left */}
       <div className="w-full lg:w-1/3 h-48 lg:h-auto">
