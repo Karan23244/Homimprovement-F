@@ -129,12 +129,7 @@ function Navbar({ categories = [], posts }) {
           <div className="flex flex-row items-center lg:gap-4 gap-2 lg:w-[40%] pl-3 py-1">
             <div className="flex items-center space-x-3 cursor-pointer">
               <Link href="/">
-                <img
-                  src="/headerlogo.webp"
-                  alt="Logo"
-                  width={80}
-                  height={80}
-                />
+                <img src="/headerlogo.webp" alt="Logo" width={80} height={80} />
               </Link>
             </div>
 
@@ -298,7 +293,7 @@ function Navbar({ categories = [], posts }) {
               </button>
 
               {openCategory === "blog" && (
-                <ul className="flex flex-col bg-gray-50 border-t border-gray-300">
+                <ul className="flex flex-col bg-gray-50 border-t border-gray-300 ">
                   {Object.keys(groupedCategories).map((type) => (
                     <li
                       key={type}
@@ -353,12 +348,12 @@ function Navbar({ categories = [], posts }) {
             </li>
 
             {/* About Us */}
-            <li>
-                <Link
-                  href={`/about-us`}
-                  className="block text-black text-xl hover:text-[#00008B] font-semibold">
-                  About Us
-                </Link>
+            <li className="border-b border-gray-300 px-4 py-3">
+              <Link
+                href={`/about-us`}
+                className="block text-black text-xl hover:text-[#00008B] font-semibold">
+                About Us
+              </Link>
             </li>
           </ul>
         </div>

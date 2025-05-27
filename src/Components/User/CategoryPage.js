@@ -107,14 +107,13 @@ const CategoryPosts = () => {
     currentPage,
     fetchPosts,
   } = usePostsByCategory();
-
   const [currentUrl, setCurrentUrl] = useState("");
   useEffect(() => {
     if (typeof window !== "undefined") {
       setCurrentUrl(window.location.href);
     }
   }, []);
-
+  console.log(posts);
   const modifiedCategoryName =
     categoryName?.trim().toLowerCase() === "how to" ? "How To ?" : categoryName;
 
@@ -192,9 +191,9 @@ const CategoryPosts = () => {
             </h2>
             <Link
               href={`/${createSlug(
-                posts[0]?.categories[0]?.category_type
+                posts[0]?.category_types?.split(",")[0]
               )}/${createSlug(
-                posts[0]?.categories[0]?.category_name?.split(",")
+                posts[0]?.category_names?.split(",")[0]
               )}/${createSlug(posts[0]?.Custom_url)}`}
               className="block">
               <img
@@ -238,9 +237,9 @@ const CategoryPosts = () => {
                 </p>
                 <Link
                   href={`/${createSlug(
-                    post?.categories[0]?.category_type
+                    post?.category_types?.split(",")[0]
                   )}/${createSlug(
-                    post?.categories[0]?.category_name?.split(",")
+                    post?.category_names?.split(",")[0]
                   )}/${createSlug(post?.Custom_url)}`}
                   className="text-[#00008B] hover:underline inline-block">
                   Read More...
@@ -296,9 +295,9 @@ const CategoryPosts = () => {
           <div className="relative lg:col-span-2 order-1 lg:order-none">
             <Link
               href={`/${createSlug(
-                posts[0]?.categories[0]?.category_type
+                posts[0]?.category_types?.split(",")[0]
               )}/${createSlug(
-                posts[0]?.categories[0]?.category_name?.split(",")
+                posts[0]?.category_names?.split(",")[0]
               )}/${createSlug(posts[0]?.Custom_url)}`}
               className="block relative h-full">
               <img
@@ -330,9 +329,9 @@ const CategoryPosts = () => {
                 className="relative flex-1 flex flex-col bg-white">
                 <Link
                   href={`/${createSlug(
-                    post?.categories[0]?.category_type
+                    post?.category_types?.split(",")[0]
                   )}/${createSlug(
-                    post?.categories[0]?.category_name?.split(",")
+                    post?.category_names?.split(",")[0]
                   )}/${createSlug(post?.Custom_url)}`}
                   className="block relative h-full">
                   <img
@@ -385,6 +384,8 @@ const CategoryPosts = () => {
                 </p>
                 <Link
                   href={`/${createSlug(
+                    post?.category_types?.split(",")[0]
+                  )}/${createSlug(
                     post?.category_names?.split(",")[0]
                   )}/${createSlug(post?.Custom_url)}`}
                   className="text-[#00008B] hover:underline inline-block mt-1">

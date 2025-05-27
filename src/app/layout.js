@@ -55,7 +55,6 @@ export default async function RootLayout({ children }) {
     cache: "no-store",
   });
   const postsRes = await fetch(`${baseUrl}/api/posts`, { cache: "no-store" });
-  console.log("postsRes", postsRes);
   const categories = await categoriesRes.json();
   const posts = await postsRes.json();
 

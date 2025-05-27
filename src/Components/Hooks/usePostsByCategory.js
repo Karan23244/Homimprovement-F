@@ -17,10 +17,10 @@ const usePostsByCategory = () => {
   const [error, setError] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const { param1, param2 } = useParams(); // Get params from URL
-  console.log(param1, param2);
-  const formattedCategoryType = param1 ? formatCategory(param1) : "";
-  const formattedCategoryName = param2 ? formatCategory(param2) : "";
+  const { param0, param1 } = useParams(); // Get params from URL
+  console.log(param0, param1);
+  const formattedCategoryType = param0 ? formatCategory(param0) : "";
+  const formattedCategoryName = param1 ? formatCategory(param1) : "";
   const categoryLimits = {
     "Upgrade Yourself": 16,
     "Home Insights": 19,
@@ -33,11 +33,12 @@ const usePostsByCategory = () => {
       const limit = categoryLimits[formattedCategoryType] || 10;
 
       const response = await axios.get(
-        `${baseUrl}/api/category/${param1}/${param2}`,
+        `${baseUrl}/api/category/${param0}/${param1}`,
         {
           params: { page, limit }, // Apply dynamic limit
         }
       );
+      console.log("response", response);
       const { data, totalPages, currentPage } = response.data;
       setPosts(data.data);
       setTotalPages(data.totalPages);
@@ -48,12 +49,11 @@ const usePostsByCategory = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
-    if (param1 && param2) {
+    if (param1 && param0) {
       fetchPosts();
     }
-  }, [param1, param2]);
+  }, [param1, param0]);
 
   return {
     posts,

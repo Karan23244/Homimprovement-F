@@ -56,15 +56,15 @@ export default function HomeInsights() {
   const filteredPosts = posts.filter(
     (post) =>
       post.blog_type === "published" &&
-      post.category_names.some((category) =>
-        categoryFilter.some((filter) => filter.name === category)
+      post.categories.some((category) =>
+        categoryFilter.some((filter) => filter.name === category.category_name)
       )
   );
 
   const groupedPosts = categoryFilter.map((category) => ({
     category,
     posts: filteredPosts.filter((post) =>
-      post.category_names.includes(category.name)
+      post.categories?.some((cat) => cat.category_name === category.name)
     ),
   }));
 
