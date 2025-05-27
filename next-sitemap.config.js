@@ -74,7 +74,12 @@ module.exports = {
     const posts = await res.json();
 
     const dynamicPaths = posts.data.map((post) => {
-      const categorySlug = post?.category_names?.[0]
+      const categoryType = post?.categories[0]?.category_type
+        ?.trim()
+        ?.toLowerCase()
+        ?.replace(/\s+/g, "-")
+        ?.replace(/[^a-z0-9-]/g, "");
+      const categorySlug = post?.categories[0]?.category_name
         ?.trim()
         ?.toLowerCase()
         ?.replace(/\s+/g, "-")
