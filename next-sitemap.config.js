@@ -91,7 +91,7 @@ module.exports = {
         ?.replace(/[^a-z0-9-]/g, "");
 
       return {
-        loc: `${baseUrl}/${categorySlug}/${urlSlug}`,
+        loc: `${baseUrl}/${categoryType}/${categorySlug}/${urlSlug}`,
         lastmod: post.updatedAt || "2025-04-01",
         priority: 0.8,
       };
