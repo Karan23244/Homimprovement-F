@@ -484,13 +484,11 @@ const CategorySection = () => {
           </button>
         </article>
 
-        <figure className="lg:w-1/2 w-full">
-          <img
-            src="/homepage.webp"
-            alt="About us"
-            className="w-full h-auto rounded-lg shadow-lg"
-            loading="lazy"
-          />
+        {/* Clickable Empty Box with Flexoffer */}
+        <figure
+          className="lg:w-1/2 w-full h-64 rounded-lg shadow-lg bg-white text-[#00008B] flex items-center justify-center cursor-pointer hover:bg-gray-100 transition"
+          onClick={() => (window.location.href = "/flexoffer")}>
+          <span className="text-xl font-semibold">Flexoffer</span>
         </figure>
       </div>
     </section>
