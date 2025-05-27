@@ -72,7 +72,7 @@ module.exports = {
     // Dynamic blog posts with priority
     const res = await fetch(`${baseUrl}/api/posts`);
     const posts = await res.json();
-
+    console.log("Fetched posts:", posts);
     const dynamicPaths = posts.data.map((post) => {
       const categoryType = post?.categories[0]?.category_type
         ?.trim()

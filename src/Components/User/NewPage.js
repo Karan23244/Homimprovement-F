@@ -99,13 +99,13 @@ function NewPage({ allposts }) {
     for (const blog of allBlogs) {
       if (
         !usedBlogIds.has(blog.Custom_url) &&
-        blog.category_names &&
-        blog.category_names.length > 0
+        Array.isArray(blog.categories) &&
+        blog.categories.length > 0
       ) {
-        const category = blog.category_names[0];
+        const categoryName = blog.categories[0].category_name;
 
-        if (!uniqueCategories.has(category)) {
-          uniqueCategories.add(category);
+        if (!uniqueCategories.has(categoryName)) {
+          uniqueCategories.add(categoryName);
           featuredCategoryBlogs.push(blog);
         }
 
@@ -302,7 +302,6 @@ const FeatureCategory = ({ featureCategoryBlogs = [] }) => {
   useEffect(() => {
     setLoading(!(featureCategoryBlogs.length > 0));
   }, [featureCategoryBlogs]);
-
   return (
     <section className="p-6 bg-gray-100">
       <header className="mb-6 text-center">
@@ -339,7 +338,7 @@ const FeatureCategory = ({ featureCategoryBlogs = [] }) => {
                   <span className="absolute top-2 left-2 bg-white bg-opacity-90 px-4 py-2 flex items-center gap-1 text-sm rounded-full shadow text-black">
                     <FaTag className="text-indigo-600 text-base" />
                     <span className="font-medium">
-                      {post?.category_names?.[0] || "Uncategorized"}
+                      {post?.categories[0]?.category_name}
                     </span>
                   </span>
                 </div>

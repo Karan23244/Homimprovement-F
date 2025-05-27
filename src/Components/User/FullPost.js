@@ -89,7 +89,6 @@ const FullPost = ({ param1,param2 }) => {
       console.error("Error fetching comments:", err);
     }
   };
- console.log(post)
   useEffect(() => {
     if (!param2) return;
     setPost(null);
