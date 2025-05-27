@@ -18,7 +18,6 @@ const usePostsByCategory = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const { param0, param1 } = useParams(); // Get params from URL
-  console.log(param0, param1);
   const formattedCategoryType = param0 ? formatCategory(param0) : "";
   const formattedCategoryName = param1 ? formatCategory(param1) : "";
   const categoryLimits = {
@@ -38,7 +37,6 @@ const usePostsByCategory = () => {
           params: { page, limit }, // Apply dynamic limit
         }
       );
-      console.log("response", response);
       const { data, totalPages, currentPage } = response.data;
       setPosts(data.data);
       setTotalPages(data.totalPages);

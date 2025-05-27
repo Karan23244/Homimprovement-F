@@ -165,32 +165,32 @@ const formatCategory = (str) => {
 };
 
 // DYNAMIC METADATA FUNCTION
-// export async function generateMetadata({ params }) {
-//   const { params0, params1 } = await params;
-//   const readableParam2 = params1;
-//   const modifiedCategoryName =
-//   readableParam2?.trim().toLowerCase() === "how to" ? "How To ?" : readableParam2;
-//       const data = seoData[modifiedCategoryName];
-//       return {
-//         title: data.title,
-//         description: data.description,
-//         keywords: data.keywords,
-//         openGraph: {
-//           title: data.title,
-//           description: data.description,
-//           type: "article",
-//           url: `${API_URL}/${params0}/${params1}`,
-//         },
-//         alternates: {
-//           canonical: `${API_URL}/${params0}/${params1}`,
-//         },
-//       };
-  
-// }
+export async function generateMetadata({ params }) {
+  const { param0, param1 } = await params;
+  const readableParam2 = formatCategory(param1);
+  const modifiedCategoryName =
+    readableParam2?.trim().toLowerCase() === "how to"
+      ? "How To ?"
+      : readableParam2;
+  const data = seoData[modifiedCategoryName];
+  return {
+    title: data.title,
+    description: data.description,
+    keywords: data.keywords,
+    openGraph: {
+      title: data.title,
+      description: data.description,
+      type: "article",
+      url: `${API_URL}/${param0}/${param1}`,
+    },
+    alternates: {
+      canonical: `${API_URL}/${param0}/${param1}`,
+    },
+  };
+}
 
 // DEFAULT PAGE RENDER
 export default async function Page({ params }) {
-  const { params0,params1 } = await params;
-    console.log(params0, params1);
-    return <CategoryPage param0={params0} param1={params1} />;
+  const { param0, param1 } = await params;
+  return <CategoryPage param0={param0} param1={param1} />;
 }

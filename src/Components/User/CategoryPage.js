@@ -113,7 +113,6 @@ const CategoryPosts = () => {
       setCurrentUrl(window.location.href);
     }
   }, []);
-  console.log(posts);
   const modifiedCategoryName =
     categoryName?.trim().toLowerCase() === "how to" ? "How To ?" : categoryName;
 
