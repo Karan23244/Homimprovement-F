@@ -201,6 +201,9 @@ const Hero = () => {
             House Renovation Ideas by homimprovement
           </h2>
           <p className="lg:text-lg text-base text-black">
+            Impact-Site-Verification: b3c75536-987d-4beb-bf76-99f0bc030a14
+          </p>
+          <p className="lg:text-lg text-base text-black">
             Ready to revamp your home? Homimprovement offers comprehensive house
             renovation and unique design ideas to help you create the perfect
             living space.
