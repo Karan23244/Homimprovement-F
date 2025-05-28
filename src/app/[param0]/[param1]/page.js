@@ -63,7 +63,7 @@ const seoData = {
 <p><span style="font-size:11pt;font-family:Arial,sans-serif;">Lighting is not just a utilitarian aspect anymore; it has come to be the center-piece of contemporary interior design trends. Show-stopping lights, like oversized chandeliers or quirky pendant lighting fixtures, can revolutionize the ecosystem of an area. Designers are pushing the limits with strong shapes, vibrant colorings, and unconventional substances to produce putting pieces which can be artwork in themselves. When choosing lights, consider how it integrates with your usual design aesthetic and elevates the mood of the room. Unique lighting ideas are an integral part of modern interior design.</span></p>
 <p><span style="font-size:11pt;font-family:Arial,sans-serif;">Keeping up with the modern interior design trends is essential to designing a domestic that expresses your personality and suits your needs. From going inexperienced with sustainable layout to harmonizing minimalism and maximalism, those trends offer a wealthy source of idea for reinventing your space. Warm coloration schemes, multi-functional areas, and display-stopping lights are some of the interior design ideas for home which can take your home&apos;s style and capability to the next stage. Visit our Interior Design Trends section for added recommendation, ideas, and notion to make your lovely living space turn out to be one that you&apos;ll adore for many years to come. Happy adorning!</span></p>`,
   },
-  "How To ?": {
+  "How To Guides": {
     title: "Home Maintenance Tips & Guides | Homimprovement",
     description:
       "Get the best home maintenance tips and guides to keep your home beautiful and functional year-round. Actionable advice on repairs, upgrades, and more!",
@@ -83,7 +83,7 @@ const seoData = {
 <p><span style="font-size:11pt;font-family:Arial,sans-serif;">Smart home tech is changing continuously, with more features and releases happening every day. Our &quot;How To?&quot; articles will ensure you stay on top of new developments in smart home devices and how to capitalize on them. Find out how to update your gadgets, check out latest functions, and use the new software updates to enrich your smart home experience. With our help, you&apos;ll make sure you are maximizing your use of your gadgets. Our home improvement guides will provide additional insights on keeping your home updated.</span></p>
 <p><span style="font-size:11pt;font-family:Arial,sans-serif;">The &quot;How To?&quot; section at Homimprovement is your one-stop for getting to know smart home technology. With step-by-step commands, beneficial pointers, and troubleshooting pointers, we hope to allow you to build a related and strength-efficient living area. Whether you&apos;re installing new devices, merging systems, optimizing electricity performance, or troubleshooting, our guide will walk you through every step. Visit our &quot;How To?&quot; section today and unleash the entire energy of your smart home! Our home maintenance list and home maintenance tips will support you in maintaining a well-functioning home.</span></p>`,
   },
-  Best: {
+  "Best Picks": {
     title: "Best Smart Home System: Guide to Top Devices & Integration ",
     description:
       "Explore top smart home systems that blend security, energy efficiency, and seamless integration. Find the best devices to upgrade your home today!",
@@ -102,7 +102,7 @@ const seoData = {
 <p><span style="font-size:11pt;font-family:Arial,sans-serif;">Along with product tips, our &quot;Best&quot; section additionally features pleasant practices for smart home improvement projects. Discover high-quality strategies for portraying, tiling, installing flooring, and more. Our guides offer helpful pointers and tricks to make certain you get expert-searching consequences, whether or not you&apos;re working on a small challenge or a huge renovation. By using our quality practices, you may enhance your competencies and have your initiatives finished to the highest level. Additionally, integrating the best smart home system into your renovation plans can improve security, convenience, and energy efficiency. A well-structured approach will ensure that your best smart home devices function optimally within your space.</span></p>
 <p><span style="font-size:11pt;font-family:Arial,sans-serif;">The &quot;Best&quot; category at Homimprovement is your go-to location for locating high-quality products, tools, and answers for each issue of your house improvement. Based on our expert analysis, client critiques, and handpicked hints, you can make the first-rate choices so that it will make your home great to stay in and boom its fee. Check out our &quot;Best&quot; category now and find out the first-rate products to take your own home improvement project to the following degree!</span></p>`,
   },
-  Vs: {
+  Comparisons: {
     title: "Product and Technology Comparison | Homimprovement",
     description:
       "Explore in-depth product and technology comparisons to help you make smarter choices for your next home purchase. Find the best options today!",
@@ -116,7 +116,7 @@ const seoData = {
 <p><span style="font-size:11pt;font-family:Arial,sans-serif;">The &quot;Versus&quot; section at Homimprovement is your one-stop guide for comparing the top products and tools solutions in home improvement. Through our in-depth product comparison, expert tips, and person critiques, you can make knowledgeable decisions as a way to decorate your living area and maximize your house&apos;s functionality. Visit our &quot;Versus&quot; section these days and discover the best products to take your home improvement initiatives to the next level! Our technology comparison guides will keep you updated on the latest advancements and trends.</span></p>
 `,
   },
-  Reviews: {
+  "Product Reviews": {
     title: "Product Analysis and Reviews | Best Product Review Website",
     description:
       "Explore honest product analysis and the latest reviews for your smart home. Get expert buying advice and discover the best products today!",
