@@ -542,7 +542,7 @@ const FeedbackSlider = () => {
               style={{ width: `${100 / feedbacks.length}%` }}>
               <blockquote className=" p-6 text-center flex flex-col h-full">
                 <FaUserCircle className="mx-auto w-12 h-12 text-gray-500 mb-4 shrink-0" />
-                <h3 className="font-semibold text-black text-lg">{fb.name}</h3>
+                <p className="font-semibold text-black text-lg">{fb.name}</p>
                 <p className="text-gray-600 text-sm mt-2 flex-grow overflow-y-auto max-h-24">
                   "{fb.comment}"
                 </p>

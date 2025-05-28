@@ -42,7 +42,7 @@ function Footer() {
           <div className="flex flex-col md:flex-row justify-center lg:gap-20">
             {/* Quick Links */}
             <div className="flex flex-col gap-3 text-center md:text-left">
-              <h3 className="text-lg font-semibold mb-2">Quick Links</h3>
+              <p className="text-lg font-semibold mb-2">Quick Links</p>
               <Link href="/privacy-policy" className="hover:underline text-sm">
                 Privacy Policy
               </Link>
@@ -60,7 +60,7 @@ function Footer() {
             </div>
           </div>
           <div className="flex flex-col items-center md:items-start gap-3">
-            <h3 className="text-lg font-semibold mb-2">Follow Us</h3>
+            <p className="text-lg font-semibold mb-2">Follow Us</p>
             <div className="flex space-x-6">
               <a
                 href="https://www.facebook.com/homimprovement9"

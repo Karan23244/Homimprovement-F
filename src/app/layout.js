@@ -74,6 +74,7 @@ export default async function RootLayout({ children }) {
         />
         {/* LH Verify Code */}
         <meta name="lhverifycode" content="32dc01246faccb7f5b3cad5016dd5033" />
+        <meta name="fo-verify" content="a98b21b4-ddf9-40a6-a1ea-00d196380a4d" />
         {/* <!-- Organization Schema --> */}
         {schemas.map((schema, index) => (
           <script
