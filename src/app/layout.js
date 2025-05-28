@@ -72,6 +72,18 @@ export default async function RootLayout({ children }) {
             })(window,document,'script','dataLayer','GTM-WGLXVJCS');`,
           }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function () {
+      var scriptProto = document.location.protocol === 'https:' ? 'https://' : 'http://';
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.async = true;
+      script.src = scriptProto + 'js.trckprf.com/v1/js?api_key=5df7b4dfe1879bb9c5d92e152bcb4344&site_id=d2356918e2b14619825e4c09c20d5ea5';
+      (document.getElementsByTagName('head')[0] || document.body).appendChild(script);
+    })();`,
+          }}
+        />
         {/* LH Verify Code */}
         <meta name="lhverifycode" content="32dc01246faccb7f5b3cad5016dd5033" />
         <meta name="fo-verify" content="a98b21b4-ddf9-40a6-a1ea-00d196380a4d" />
