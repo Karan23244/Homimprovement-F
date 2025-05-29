@@ -29,21 +29,37 @@ const blogRedirects = [
     from: "/smart-home-technology/radar-sensors-improve-smart-home-security-safety-comfort-and-more",
     to: "/upgrade-yourself/smart-home-technology/radar-sensors-benefits",
   },
-   {
+  {
     from: "/smart-home-technology/smart-home-spending-remains-strong-despite-cost-of-living-crisis",
     to: "/upgrade-yourself/smart-home-technology/smart-home-demand-2025",
   },
-   {
+  {
     from: "/smart-home-technology/smart-products-become-smarter-with-right-approach",
     to: "/upgrade-yourself/smart-home-technology/smart-products-evolve-with-right-approach",
   },
-     {
+  {
     from: "/smart-home-technology/using-real-time-ai-to-secure-smart-home-device-data",
     to: "/upgrade-yourself/smart-home-technology/real-time-ai-for-smart-home-devices",
   },
+  {
+    from: "/upgrade-yourself/smart-home-technology/the-rise-of-home-robots-ai-home-robots-for-home-use",
+    to: "/upgrade-yourself/smart-home-technology/ai-home-robots",
+  },
+  {
+    from: "/upgrade-yourself/smart-home-technology/future-of-smart-homes-generative-ai-for-personalization",
+    to: "/upgrade-yourself/smart-home-technology/future-of-smart-homes",
+  },
+  {
+    from: "/upgrade-yourself/smart-home-technology/emotion-sensing-smart-homes",
+    to: "/upgrade-yourself/smart-home-technology/emotion-sensing-smart-homes",
+  },
+  {
+    from: "/upgrade-yourself/smart-home-technology/rental-friendly-smart-home-security-systems",
+    to: "/upgrade-yourself/smart-home-technology/rental-friendly-smart-home-security-systems",
+  },
+
   // Add more here
 ];
-
 
 const nextConfig = {
   images: {

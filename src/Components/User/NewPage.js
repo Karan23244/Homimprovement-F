@@ -198,7 +198,7 @@ const Hero = () => {
       <div className="bg-[#DEDEFF] py-8 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="lg:text-5xl text-2xl font-bold text-[#202D53] mb-6">
-            House Renovation Ideas by homimprovement
+            House Renovation Ideas By Homimprovement
           </h2>
           <p className="lg:text-lg text-base text-black">
             Impact-Site-Verification: b3c75536-987d-4beb-bf76-99f0bc030a14
@@ -391,7 +391,7 @@ const BlogCard = ({ post }) => {
         alt={post?.title}
         width={400}
         height={300}
-        className="object-cover absolute inset-0"
+        className="object-cover h-full w-full absolute inset-0"
         loading="lazy"
       />
 
@@ -400,7 +400,7 @@ const BlogCard = ({ post }) => {
 
       {/* Text over image */}
       <div className="absolute bottom-4 left-4 right-4 z-20 text-white">
-        <h2 className="text-lg lg:text-2xl font-bold mb-2">{post?.title}</h2>
+        <h2 className="text-lg lg:text-2xl font-bold mb-2 line-clamp-2">{post?.title}</h2>
         <p className="text-sm lg:text-base line-clamp-2">
           {post?.seoDescription}
         </p>
