@@ -332,6 +332,7 @@ const FullPost = ({ param1, param2 }) => {
                 width={600}
                 height={400}
                 className="object-cover w-full h-full"
+                priority
               />
             </div>
 
@@ -340,15 +341,27 @@ const FullPost = ({ param1, param2 }) => {
               dangerouslySetInnerHTML={{ __html: updatedContent }}
             />
 
-            <CommentSection
-              comments={comments}
-              handleSubmit={handleSubmit}
-              loading={loading}
-              name={name}
-              setName={setName}
-              comment={comment}
-              setComment={setComment}
-            />
+            <div className="my-5">
+              {loading ? (
+                <div className="space-y-4 max-w-2xl mx-auto">
+                  {[...Array(3)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="h-24 bg-gray-200 animate-pulse rounded-md"></div>
+                  ))}
+                </div>
+              ) : (
+                <CommentSection
+                  comments={comments}
+                  handleSubmit={handleSubmit}
+                  loading={loading}
+                  name={name}
+                  setName={setName}
+                  comment={comment}
+                  setComment={setComment}
+                />
+              )}
+            </div>
           </main>
 
           {adData && (
