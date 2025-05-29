@@ -113,6 +113,9 @@ export default async function RootLayout({ children }) {
     })();`,
           }}
         />
+        <script
+          type="text/javascript"
+          src="https://s.skimresources.com/js/285761X1772273.skimlinks.js"></script>
       </body>
     </html>
   );

@@ -116,9 +116,9 @@ function Navbar({ categories = [], posts }) {
     setSuggestions([]);
     setShowDropdown(false);
     router.push(
-      `/${createSlug(suggestion?.category_names[0])}/${createSlug(
-        suggestion?.Custom_url
-      )}`
+      `/${createSlug(suggestion?.categories[0]?.category_type)}/${createSlug(
+        suggestion?.categories[0]?.category_name
+      )}/${createSlug(suggestion?.Custom_url)}`
     );
   };
 

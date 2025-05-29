@@ -7,25 +7,44 @@ import Link from "next/link";
 import CommentSection from "../Common/Comment";
 import "./styles.css";
 import usePageTracker from "../Hooks/usePageTracker";
+import Image from "next/image";
 
-
-// Spinner Component
-const Spinner = () => (
-  <div className="flex items-center justify-center h-[70vh]">
-    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
-  </div>
-);
-
-// Skeleton Placeholder
+// Skeleton Placeholder with reserved spaces similar to actual content layout
 const Skeleton = () => (
-  <div className="animate-pulse space-y-6 px-4 py-8">
-    <div className="h-64 bg-gray-300 rounded-md"></div>
-    <div className="h-6 bg-gray-300 rounded w-1/2"></div>
-    <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+  <div className="animate-pulse space-y-6 px-4 py-8 max-w-4xl mx-auto">
+    {/* Image placeholder with fixed height */}
+    <div className="h-64 bg-gray-300 rounded-md w-full"></div>
+
+    {/* Title */}
+    <div className="h-8 bg-gray-300 rounded w-3/4"></div>
+
+    {/* Author & Date */}
+    <div className="flex space-x-4">
+      <div className="h-6 bg-gray-300 rounded w-1/4"></div>
+      <div className="h-6 bg-gray-300 rounded w-1/6"></div>
+    </div>
+
+    {/* Content paragraphs */}
     <div className="space-y-3">
       <div className="h-4 bg-gray-300 rounded w-full"></div>
       <div className="h-4 bg-gray-300 rounded w-5/6"></div>
       <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+      <div className="h-4 bg-gray-300 rounded w-11/12"></div>
+      <div className="h-4 bg-gray-300 rounded w-4/5"></div>
+    </div>
+
+    {/* Reserve space for comment section */}
+    <div className="mt-10 space-y-4">
+      <div className="h-8 bg-gray-300 rounded w-1/4"></div>{" "}
+      {/* Comments header */}
+      <div className="h-6 bg-gray-300 rounded w-full"></div>{" "}
+      {/* Comment input */}
+      <div className="h-6 bg-gray-300 rounded w-full"></div>{" "}
+      {/* Comment input */}
+      <div className="h-16 bg-gray-300 rounded w-full"></div>{" "}
+      {/* Submit button */}
+      <div className="h-24 bg-gray-300 rounded w-full"></div>{" "}
+      {/* Comments list placeholder */}
     </div>
   </div>
 );
@@ -33,7 +52,7 @@ const Skeleton = () => (
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
-const FullPost = ({ param1,param2 }) => {
+const FullPost = ({ param1, param2 }) => {
   // usePageTracker("blogs");
 
   const [post, setPost] = useState(null);
@@ -48,8 +67,7 @@ const FullPost = ({ param1,param2 }) => {
   const [loading, setLoading] = useState(false);
   const [loadingStage, setLoadingStage] = useState("spinner"); // 'spinner' | 'skeleton' | 'loaded'
   const fetchedRef = useRef(false);
-  const API_URL =
-    process.env.NEXT_PUBLIC_API_URL;
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const blogAds = [
     {
       id: "interior-design-ideas-glass-mirrors",
@@ -96,9 +114,12 @@ const FullPost = ({ param1,param2 }) => {
 
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/posts/${param1}/${param2}`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${API_URL}/api/posts/${param1}/${param2}`,
+          {
+            withCredentials: true,
+          }
+        );
         setPost(response.data.data);
       } catch (err) {
         console.error("Error fetching post:", err);
@@ -203,16 +224,15 @@ const FullPost = ({ param1,param2 }) => {
   const adimageUrl = post?.AdImage ? `${API_URL}/${post.AdImage}` : "";
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
-if (error) {
-  return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md max-w-md text-center">
-        <strong className="font-bold">Page Not Found</strong>
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md max-w-md text-center">
+          <strong className="font-bold">Page Not Found</strong>
+        </div>
       </div>
-    </div>
-  );
-}
-
+    );
+  }
 
   if (!post) {
     return (
@@ -234,37 +254,6 @@ if (error) {
         <meta property="og:url" content={currentUrl} />
         <link rel="canonical" href={currentUrl} />
       </Head>
-
-      <div
-        className="bg-white bg-cover bg-center h-[400px] rounded-lg relative"
-        style={{
-          backgroundImage: `url(${post.featured_image ? imageUrl : ""})`,
-        }}>
-        <div className="absolute w-full md:p-8 flex flex-col justify-evenly h-full bg-opacity-60">
-          <div className="flex flex-col justify-start ml-[4%] mr-[20%]">
-            <h1 className="lg:text-5xl text-xl font-semibold text-white mb-4">
-              {post.title || "Untitled"}
-            </h1>
-            <div className="flex gap-3">
-              <p className="text-white font-semibold text-xl">
-                By {post.author_name || "Unknown Author"}
-              </p>
-              <div className="border-l-2 pl-3 border-white">
-                <p className="text-white font-semibold text-xl">
-                  {new Date(
-                    post.scheduleDate || post.created_at
-                  ).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
-              </div>
-            </div>
-          </div>
-          {/* Bottom spacing for the content */}
-        </div>
-      </div>
 
       <div className="mx-auto px-4 lg:px-8 pt-16">
         {/* Main Layout */}
@@ -308,11 +297,49 @@ if (error) {
           </aside>
 
           {/* Blog Content */}
-          <main className="w-full lg:w-3/5">
+          <main className="lg:w-3/5">
+            <div className="mb-6">
+              <h1 className="lg:text-5xl text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">
+                {post.title || "Untitled"}
+              </h1>
+            </div>
+
+            <div className="flex items-center gap-6 mb-8 text-gray-600">
+              <p className="font-semibold text-lg hover:text-indigo-600 transition-colors cursor-default">
+                By {post.author_name || "Unknown Author"}
+              </p>
+              <div className="border-l-2 border-gray-300 pl-4">
+                <p className="font-medium text-lg">
+                  {new Date(
+                    post.scheduleDate || post.created_at
+                  ).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+              </div>
+            </div>
+
+            <div className="mb-8 overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <Image
+                src={
+                  post?.featured_image
+                    ? imageUrl
+                    : "https://via.placeholder.com/600x400.png?text=No+Image"
+                }
+                alt={post?.title || "Blog Thumbnail"}
+                width={600}
+                height={400}
+                className="object-cover w-full h-full"
+              />
+            </div>
+
             <div
-              className="custom-html text-gray-700 leading-relaxed mb-8"
+              className="custom-html text-gray-700 leading-relaxed prose prose-indigo max-w-none mb-12"
               dangerouslySetInnerHTML={{ __html: updatedContent }}
             />
+
             <CommentSection
               comments={comments}
               handleSubmit={handleSubmit}
@@ -326,8 +353,10 @@ if (error) {
 
           {adData && (
             <aside className="lg:w-1/4">
-              <div className="sticky top-16 p-4 border m-4 overflow-auto lg:h-screen" id="sidebanner">
-                <Link href={adData.link} target="_blank" >
+              <div
+                className="sticky top-16 p-4 border m-4 overflow-auto lg:h-screen"
+                id="sidebanner">
+                <Link href={adData.link} target="_blank">
                   <img src={adData.image} alt="ad" />
                 </Link>
               </div>
@@ -335,8 +364,10 @@ if (error) {
           )}
           {post.AdImage && (
             <aside className="lg:w-1/4">
-              <div className="sticky top-16 p-4 border m-4 overflow-auto lg:h-screen" id="sidebanner">
-                <Link href={post.ad_url} target="_blank" >
+              <div
+                className="sticky top-16 p-4 border m-4 overflow-auto lg:h-screen"
+                id="sidebanner">
+                <Link href={post.ad_url} target="_blank">
                   <img src={adimageUrl} alt="ad" />
                 </Link>
               </div>
@@ -355,9 +386,11 @@ if (error) {
               {relatedBlogs.map((blog) => (
                 <Link
                   key={blog.id}
-                  href={`/${createSlug(blog?.categories[0]?.category_type)}/${createSlug(blog?.categories[0]?.category_name)}/${createSlug(
-                    blog?.Custom_url
-                  )}`}
+                  href={`/${createSlug(
+                    blog?.categories[0]?.category_type
+                  )}/${createSlug(
+                    blog?.categories[0]?.category_name
+                  )}/${createSlug(blog?.Custom_url)}`}
                   className="block">
                   <img
                     src={`${API_URL}/${blog.featured_image}`}
