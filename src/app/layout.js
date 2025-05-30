@@ -4,6 +4,7 @@ import Footer from "../Components/Common/Footer";
 import ScrollButtons from "@/Components/Common/ScrollButton";
 import Subscribe from "@/Components/Common/Subscribe";
 import SubscribePopup from "@/Components/Common/Popup";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata = {
@@ -26,6 +27,7 @@ export const metadata = {
     icon: "/favicon.webp",
   },
 };
+
 const schemas = [
   {
     "@context": "https://schema.org",
@@ -47,23 +49,38 @@ const schemas = [
     ],
   },
 ];
-export default async function RootLayout({ children }) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
 
-  const categoriesRes = await fetch(`${baseUrl}/api/categories`, {
-    cache: "no-store",
-  });
-  const postsRes = await fetch(`${baseUrl}/api/posts`, { cache: "no-store" });
-  const categories = await categoriesRes.json();
-  const posts = await postsRes.json();
-
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
         <link rel="preload" as="image" href="/Hero.webp" type="image/webp" />
-        {/* Google Tag Manager */}
-        <script
+
+        {/* Schema JSON-LD */}
+        {schemas.map((schema, index) => (
+          <script
+            key={index}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          />
+        ))}
+
+        <meta name="lhverifycode" content="32dc01246faccb7f5b3cad5016dd5033" />
+        <meta name="fo-verify" content="a98b21b4-ddf9-40a6-a1ea-00d196380a4d" />
+      </head>
+      <body>
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-WGLXVJCS"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}></iframe>
+        </noscript>
+
+        {/* GTM - Lazy load using lazyOnload for better performance */}
+        <Script
+          id="gtm"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -73,49 +90,34 @@ export default async function RootLayout({ children }) {
           }}
         />
 
-        {/* LH Verify Code */}
-        <meta name="lhverifycode" content="32dc01246faccb7f5b3cad5016dd5033" />
-        <meta name="fo-verify" content="a98b21b4-ddf9-40a6-a1ea-00d196380a4d" />
-        {/* <!-- Organization Schema --> */}
-        {schemas.map((schema, index) => (
-          <script
-            key={index}
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-          />
-        ))}
-      </head>
-      <body>
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-WGLXVJCS"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}></iframe>
-        </noscript>
+        {/* Skimlinks - Also lazy load */}
+        <Script
+          id="skimlinks"
+          src="https://s.skimresources.com/js/285761X1772273.skimlinks.js"
+          strategy="lazyOnload"
+        />
 
-        <Navbar categories={categories.data} posts={posts.data} />
+        {/* Optional: Use requestIdleCallback for ultra-low priority */}
+        <Script id="defer-scripts" strategy="afterInteractive">
+          {`
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(() => {
+                const skim = document.createElement('script');
+                skim.src = "https://s.skimresources.com/js/285761X1772273.skimlinks.js";
+                skim.async = true;
+                document.body.appendChild(skim);
+              });
+            }
+          `}
+        </Script>
+
+        {/* Minimal navbar, postpone fetch to client or hydrate */}
+        <Navbar />
         {children}
         <ScrollButtons />
         <SubscribePopup />
         <Subscribe />
         <Footer />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function () {
-      var scriptProto = document.location.protocol === 'https:' ? 'https://' : 'http://';
-      var script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.async = true;
-      script.src = scriptProto + 'js.trckprf.com/v1/js?api_key=5df7b4dfe1879bb9c5d92e152bcb4344&site_id=d2356918e2b14619825e4c09c20d5ea5';
-      (document.('head')[0] || document.body).appendChild(script);
-    })();`,
-          }}
-        />
-        <script
-          type="text/javascript"
-          src="https://s.skimresources.com/js/285761X1772273.skimlinks.js"></script>
       </body>
     </html>
   );
