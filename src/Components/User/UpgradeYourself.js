@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 function createSlug(text) {
@@ -8,31 +5,7 @@ function createSlug(text) {
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-export default function UpgradeYourself() {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch all published posts
-        const postsRes = await fetch(`${baseUrl}/api/posts`);
-        const postsJson = await postsRes.json();
-
-        const allPublishedPosts = postsJson.data.filter(
-          (post) => post.blog_type === "published"
-        );
-
-        setPosts(allPublishedPosts);
-      } catch (err) {
-        console.error("Error fetching data: ", err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+export default function UpgradeYourself({ posts }) {
   const categoryFilter = [
     {
       name: "Smart Home Technology",
@@ -65,32 +38,31 @@ export default function UpgradeYourself() {
   return (
     <>
       <div
-        className="relative w-full lg:h-[400px] h-[350px] flex flex-col justify-center gap-3 py-5 px-[2%] lg:px-[10%]"
+        className="relative w-full h-[350px] lg:h-[400px] flex flex-col justify-center gap-3 py-5 px-[2%] lg:px-[10%] bg-cover bg-center"
         style={{
-          backgroundImage: `url('/upgradeypurself.webp')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
+          backgroundImage: "url('/upgradeypurself.webp')",
         }}>
         <h1 className="lg:text-5xl text-xl font-semibold text-white">
           Upgrade Yourself
         </h1>
         <p className="lg:text-base text-xs text-white leading-relaxed">
-          Welcome to Home Insights, the ultimate destination for improving
-          your living area. Make informed decisions with our products reviews
-          section, where we cover everything from the newest home gadgets to
-          quirky gifts and essentials. For tips and tricks for setting up your
-          smart home and other home improvement projects check out our How To
-          Guides. In our Comparisons section below, we compare two similar
-          products to make it easier for you to purchase the perfect one for
-          your specific needs. And see our Best Picks, which are items expertly
-          chosen by our product reporters and writers. Finally, make sure to
-          check out our Deals section to save hundreds of products on premium
-          goods. Home Insights was founded to enrich you with value and savings
-          for a smarter home.
+          Our “Upgrade Yourself” line is your final stop for all things
+          innovative, creative, and stylish that will help you upgrade your
+          house and your life. Explore the latest Smart Home Technology and its
+          benefits of controlling devices, personalization and comfort. And for
+          those who can’t do enough of home projects or fast and easy DIY
+          projects, our DIY Home Projects provides faster and more specific
+          how-to DIY, with great pictures and uncomplicated style to personalize
+          your weekend and home, with or without wood. Get ahead of the curve
+          with Interior Design Trends, a modern, decorative design blog for all
+          things interior design, and discover the latest trends along with tips
+          and tricks for achieving a top-looking space! Whether you are a tech
+          geek, a DIY enthusiast, a wise design fan, this category helps you to
+          upgrade yourself and surround your home with ease and art.
         </p>
       </div>
-      <div className="sm:px-6 lg:px-8 my-12">
+
+      <div className="lg:space-y-10 lg:px-8 my-4 mx-4">
         {groupedPosts.map(({ category, posts }, index) => (
           <div
             key={category.name}
@@ -98,25 +70,21 @@ export default function UpgradeYourself() {
               index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
             } gap-6`}>
             {/* Main Content */}
-            <div className="mt-6">
+            <div className="mt-6 w-full">
               <div className="text-3xl md:text-5xl font-bold text-center">
                 <h2>{category.name}</h2>
               </div>
               {index % 2 === 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 mb-8">
-                {loading
-                    ? Array(3).fill(0).map((_, i) => <HorizontalBlogSkeleton key={i} />)
-                    : posts.slice(0, 6).map((post) => (
-                        <HorizontalBlogCard key={post.id} post={post} />
-                      ))}
+                  {posts.slice(0, 6).map((post) => (
+                    <HorizontalBlogCard key={post.id} post={post} />
+                  ))}
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 mb-8">
-                  {loading
-                    ? Array(4).fill(0).map((_, i) => <LatestBlogSkeleton key={i} />)
-                    : posts.slice(0, 8).map((post) => (
-                        <LatestBlogs key={post.id} post={post} />
-                      ))}
+                  {posts.slice(0, 8).map((post) => (
+                    <LatestBlogs key={post.id} post={post} />
+                  ))}
                 </div>
               )}
 
@@ -214,26 +182,3 @@ const LatestBlogs = ({ post }) => {
     </Link>
   );
 };
-
-// Skeleton for Latest Blog
-const LatestBlogSkeleton = () => (
-  <div className="bg-gray-100 animate-pulse rounded-lg w-full h-64 flex flex-col">
-    <div className="bg-gray-300 h-48 rounded-t-lg w-full"></div>
-    <div className="p-4 space-y-2">
-      <div className="bg-gray-300 h-4 w-3/4 rounded"></div>
-      <div className="bg-gray-300 h-3 w-full rounded"></div>
-    </div>
-  </div>
-);
-
-// Skeleton for Horizontal Blog
-const HorizontalBlogSkeleton = () => (
-  <div className="flex flex-col lg:flex-row bg-gray-100 animate-pulse rounded-lg overflow-hidden shadow-md">
-    <div className="bg-gray-300 w-full lg:w-1/3 h-48"></div>
-    <div className="p-4 w-full lg:w-2/3 space-y-2">
-      <div className="bg-gray-300 h-5 w-2/3 rounded"></div>
-      <div className="bg-gray-300 h-4 w-full rounded"></div>
-      <div className="bg-gray-300 h-4 w-1/2 rounded"></div>
-    </div>
-  </div>
-);

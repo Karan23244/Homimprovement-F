@@ -1,5 +1,5 @@
 import HomeInsights from "@/Components/User/HomeInsights";
-// This function runs server-side when the page is requested
+
 export async function generateMetadata() {
   return {
     title: "Essential Home Maintenance Tips for Every Homeowner ",
@@ -18,17 +18,29 @@ export async function generateMetadata() {
     links: [
       {
         rel: "preload",
-        href: "/homeinsights.webp", 
+        href: "/homeinsights.webp",
         as: "image",
         type: "image/webp",
       },
     ],
   };
 }
+
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export default async function AboutPage() {
-  return (
-    <>
-      <HomeInsights />
-    </>
-  );
+  try {
+    const postsRes = await fetch(`${baseUrl}/api/posts`, {
+      cache: "no-store", // Ensures fresh data each request (SSR)
+    });
+    const postsJson = await postsRes.json();
+    const allPublishedPosts = postsJson.data.filter(
+      (post) => post.blog_type === "published"
+    );
+
+    return <HomeInsights posts={allPublishedPosts} />;
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return <HomeInsights posts={[]} />;
+  }
 }

@@ -63,8 +63,6 @@ const FullPost = ({ post, param1, param2 }) => {
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loadingStage, setLoadingStage] = useState("spinner"); // 'spinner' | 'skeleton' | 'loaded'
-  const fetchedRef = useRef(false);
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const blogAds = [
     {
@@ -105,29 +103,6 @@ const FullPost = ({ post, param1, param2 }) => {
       console.error("Error fetching comments:", err);
     }
   };
-  // useEffect(() => {
-  //   if (!param2) return;
-  //   setPost(null);
-  //   setError(null);
-
-  //   const fetchPost = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${API_URL}/api/posts/${param1}/${param2}`,
-  //         {
-  //           withCredentials: true,
-  //         }
-  //       );
-  //       setPost(response.data.data);
-  //     } catch (err) {
-  //       console.error("Error fetching post:", err);
-  //       setError("Unable to load the post. Please try again later.");
-  //     }
-  //   };
-
-  //   fetchPost();
-  // }, [param2]);
-
   useEffect(() => {
     if (post) {
       const parser = new DOMParser();

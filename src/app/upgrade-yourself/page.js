@@ -1,6 +1,7 @@
-import HomeInsights from "@/Components/User/HomeInsights";
 import UpgradeYourself from "@/Components/User/UpgradeYourself";
-// This function runs server-side when the page is requested
+
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export async function generateMetadata() {
   return {
     title:
@@ -21,17 +22,23 @@ export async function generateMetadata() {
     links: [
       {
         rel: "preload",
-        href: "/upgradeypurself.webp", 
+        href: "/upgradeypurself.webp",
         as: "image",
         type: "image/webp",
       },
     ],
   };
 }
-export default async function AboutPage() {
-  return (
-    <>
-      <UpgradeYourself />
-    </>
+
+export default async function UpgradePage() {
+  const res = await fetch(`${baseUrl}/api/posts`, {
+    next: { revalidate: 60 }, // optional caching (ISR)
+  });
+  const json = await res.json();
+
+  const allPublishedPosts = json.data.filter(
+    (post) => post.blog_type === "published"
   );
+
+  return <UpgradeYourself posts={allPublishedPosts} />;
 }

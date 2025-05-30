@@ -1,20 +1,44 @@
 import NewPage from "@/Components/User/NewPage";
-import UserHome from "@/Components/User/UserHome";
-
-export async function generateMetadata({ params }) {}
 
 export default async function HomePage() {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  // Fetch posts
   const postsRes = await fetch(`${baseUrl}/api/posts`, { cache: "no-store" });
   const postsJson = await postsRes.json();
-  const posts = postsJson.data.filter(
+  const allposts = postsJson.data.filter(
     (post) => post.blog_type === "published"
   );
+
+  // Fetch top reads and editor's choice
+  const topRes = await fetch(`${baseUrl}/api/posts/topReadsAndEditorsChoice`, {
+    cache: "no-store",
+  });
+  const topJson = await topRes.json();
+
+  const latest = allposts.slice(0, 16);
+  const latestIds = new Set(latest.map((p) => p.id));
+
+  const topReads = (topJson.data?.topReads || [])
+    .filter((post) => post.blog_type === "published" && !latestIds.has(post.id))
+    .slice(0, 9);
+
+  const topIds = new Set(topReads.map((p) => p.id));
+
+  const editorsChoice = (topJson.data?.editorsChoice || [])
+    .filter(
+      (post) =>
+        post.blog_type === "published" &&
+        !latestIds.has(post.id) &&
+        !topIds.has(post.id)
+    )
+    .slice(0, 8);
+
   return (
-    <>
-      {/* <UserHome allposts={posts} /> */}
-      <NewPage allposts={posts} />
-    </>
+    <NewPage
+      allposts={allposts}
+      topReads={topReads}
+      editorsChoice={editorsChoice}
+    />
   );
 }

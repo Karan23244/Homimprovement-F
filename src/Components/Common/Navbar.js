@@ -128,8 +128,14 @@ function Navbar({ categories = [], posts }) {
         <div className="flex justify-between items-center">
           <div className="flex flex-row items-center lg:gap-4 gap-2 lg:w-[40%] pl-3 py-1">
             <div className="flex items-center space-x-3 cursor-pointer">
-              <Link href="/">
-                <img src="/headerlogo.webp" alt="Logo" width={80} height={80} />
+              <Link href="/" prefetch={true}>
+                <Image
+                  src="/headerlogo.webp"
+                  alt="Logo"
+                  width={80}
+                  height={80}
+                  priority
+                />
               </Link>
             </div>
 

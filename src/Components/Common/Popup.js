@@ -68,7 +68,6 @@ const SubscribePopup = () => {
                 src="/headerlogo.webp"
                 alt="Logo"
                 className="w-full h-auto"
-                loading="lazy"
               />
             </div>
             <div className="flex flex-col gap-4 sm:gap-8 items-start text-center sm:text-left">
