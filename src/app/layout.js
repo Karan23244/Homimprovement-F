@@ -1,4 +1,3 @@
-// src/app/layout.js
 import Navbar from "../Components/Common/Navbar";
 import Footer from "../Components/Common/Footer";
 import ScrollButtons from "@/Components/Common/ScrollButton";
@@ -84,41 +83,39 @@ export default async function RootLayout({ children }) {
             src="https://www.googletagmanager.com/ns.html?id=GTM-WGLXVJCS"
             height="0"
             width="0"
-            style={{ display: "none", visibility: "hidden" }}></iframe>
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
         </noscript>
 
-        <Script
-          id="gtm"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-WGLXVJCS');`,
-          }}
-        />
-
-        <Script
-          id="skimlinks"
-          src="https://s.skimresources.com/js/285761X1772273.skimlinks.js"
-          strategy="lazyOnload"
-        />
-
-        <Script id="defer-scripts" strategy="afterInteractive">
+        {/* ✅ Defer GTM using requestIdleCallback */}
+        <Script id="gtm-defer" strategy="afterInteractive">
           {`
             if ('requestIdleCallback' in window) {
               requestIdleCallback(() => {
-                const skim = document.createElement('script');
-                skim.src = "https://s.skimresources.com/js/285761X1772273.skimlinks.js";
-                skim.async = true;
-                document.body.appendChild(skim);
+                const gtmScript = document.createElement('script');
+                gtmScript.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-WGLXVJCS';
+                gtmScript.async = true;
+                document.head.appendChild(gtmScript);
               });
             }
           `}
         </Script>
 
-        {/* ✅ Pass server-fetched props to Server Component Navbar */}
+        {/* ✅ Defer Skimlinks using requestIdleCallback */}
+        <Script id="skimlinks-defer" strategy="afterInteractive">
+          {`
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(() => {
+                const skimScript = document.createElement('script');
+                skimScript.src = "https://s.skimresources.com/js/285761X1772273.skimlinks.js";
+                skimScript.async = true;
+                document.body.appendChild(skimScript);
+              });
+            }
+          `}
+        </Script>
+
+        {/* ✅ Render Components */}
         <Navbar categories={categoriesData.data} posts={postsData.data} />
         {children}
         <ScrollButtons />
