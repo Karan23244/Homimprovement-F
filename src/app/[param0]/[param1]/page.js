@@ -163,7 +163,6 @@ const formatCategory = (str) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
-
 // DYNAMIC METADATA FUNCTION
 export async function generateMetadata({ params }) {
   const { param0, param1 } = await params;
@@ -173,6 +172,7 @@ export async function generateMetadata({ params }) {
       ? "How To ?"
       : readableParam2;
   const data = seoData[modifiedCategoryName];
+
   return {
     title: data.title,
     description: data.description,
@@ -186,8 +186,17 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `${API_URL}/${param0}/${param1}`,
     },
+    links: [
+      {
+        rel: "preload",
+        href: "/background.webp", 
+        as: "image",
+        type: "image/webp",
+      },
+    ],
   };
 }
+
 
 // DEFAULT PAGE RENDER
 export default async function Page({ params }) {

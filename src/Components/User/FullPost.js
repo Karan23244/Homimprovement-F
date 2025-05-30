@@ -52,10 +52,8 @@ const Skeleton = () => (
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
-const FullPost = ({ param1, param2 }) => {
+const FullPost = ({ post, param1, param2 }) => {
   // usePageTracker("blogs");
-
-  const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
   const [toc, setToc] = useState([]);
   const [activeSection, setActiveSection] = useState("");
@@ -107,28 +105,28 @@ const FullPost = ({ param1, param2 }) => {
       console.error("Error fetching comments:", err);
     }
   };
-  useEffect(() => {
-    if (!param2) return;
-    setPost(null);
-    setError(null);
+  // useEffect(() => {
+  //   if (!param2) return;
+  //   setPost(null);
+  //   setError(null);
 
-    const fetchPost = async () => {
-      try {
-        const response = await axios.get(
-          `${API_URL}/api/posts/${param1}/${param2}`,
-          {
-            withCredentials: true,
-          }
-        );
-        setPost(response.data.data);
-      } catch (err) {
-        console.error("Error fetching post:", err);
-        setError("Unable to load the post. Please try again later.");
-      }
-    };
+  //   const fetchPost = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${API_URL}/api/posts/${param1}/${param2}`,
+  //         {
+  //           withCredentials: true,
+  //         }
+  //       );
+  //       setPost(response.data.data);
+  //     } catch (err) {
+  //       console.error("Error fetching post:", err);
+  //       setError("Unable to load the post. Please try again later.");
+  //     }
+  //   };
 
-    fetchPost();
-  }, [param2]);
+  //   fetchPost();
+  // }, [param2]);
 
   useEffect(() => {
     if (post) {
@@ -331,7 +329,7 @@ const FullPost = ({ param1, param2 }) => {
                 alt={post?.title || "Blog Thumbnail"}
                 width={600}
                 height={400}
-                className="object-cover w-full h-full"
+                className="object-cover w-full h-auto"
                 priority
               />
             </div>
@@ -341,7 +339,7 @@ const FullPost = ({ param1, param2 }) => {
               dangerouslySetInnerHTML={{ __html: updatedContent }}
             />
 
-            <div className="my-5">
+            <div className="my-5 lg:min-h-auto min-h-[500px]">
               {loading ? (
                 <div className="space-y-4 max-w-2xl mx-auto">
                   {[...Array(3)].map((_, i) => (
@@ -370,7 +368,11 @@ const FullPost = ({ param1, param2 }) => {
                 className="sticky top-16 p-4 border m-4 overflow-auto lg:h-screen"
                 id="sidebanner">
                 <Link href={adData.link} target="_blank">
-                  <img src={adData.image} alt="ad" />
+                  <Image
+                    src={adData.image}
+                    alt="ad"
+                    className="w-full h-auto aspect-[4/3]" // reserve ratio
+                  />
                 </Link>
               </div>
             </aside>

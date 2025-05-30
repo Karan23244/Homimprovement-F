@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import Image from "next/image";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import usePostsByCategory from "../Hooks/usePostsByCategory";
 import usePageTracker from "../Hooks/usePageTracker";
@@ -195,13 +196,15 @@ const CategoryPosts = () => {
                 posts[0]?.category_names?.split(",")[0]
               )}/${createSlug(posts[0]?.Custom_url)}`}
               className="block">
-              <img
+              <Image
                 src={
                   posts[0].featured_image
                     ? `${baseUrl}/${posts[0].featured_image}`
                     : "https://via.placeholder.com/300x200.png?text=No+Image"
                 }
                 alt={posts[0].title}
+                width={300}
+                height={200}
                 className="w-full h-[300px] object-cover mb-4"
                 loading="lazy"
               />
@@ -217,16 +220,19 @@ const CategoryPosts = () => {
             <div
               key={post.id}
               className="bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-              <img
+              <Image
                 src={
                   post.featured_image
                     ? `${baseUrl}/${post.featured_image}`
                     : "https://via.placeholder.com/300x200.png?text=No+Image"
                 }
                 alt={post.title}
+                width={400}
+                height={160}
                 className="w-full h-40 object-cover mb-2"
                 loading="lazy"
               />
+
               <div className="p-2">
                 <h3 className="text-base font-semibold line-clamp-2">
                   {post?.title}
@@ -280,6 +286,15 @@ const CategoryPosts = () => {
 
   const HomeInsightsUI = () => (
     <>
+      <Head>
+        {posts?.[0]?.featured_image && (
+          <link
+            rel="preload"
+            as="image"
+            href={`${baseUrl}/${posts[0].featured_image}`}
+          />
+        )}
+      </Head>
       <div className="relative w-full lg:h-[250px] h-[350px] flex flex-col gap-3 py-5 px-[2%] lg:px-[10%]">
         <h1 className="lg:text-5xl text-center text-xl font-semibold text-black">
           {modifiedCategoryName}
@@ -299,15 +314,17 @@ const CategoryPosts = () => {
                 posts[0]?.category_names?.split(",")[0]
               )}/${createSlug(posts[0]?.Custom_url)}`}
               className="block relative h-full">
-              <img
+              <Image
                 src={
                   posts[0]?.featured_image
                     ? `${baseUrl}/${posts[0]?.featured_image}`
                     : "https://via.placeholder.com/600x400.png?text=No+Image"
                 }
                 alt={posts[0]?.title}
+                height={250}
+                width={400}
                 className="w-full lg:h-[450px] h-[250px] object-cover"
-                loading="lazy"
+                priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
               <div className="absolute bottom-4 left-4 right-4 text-white">
@@ -333,13 +350,15 @@ const CategoryPosts = () => {
                     post?.category_names?.split(",")[0]
                   )}/${createSlug(post?.Custom_url)}`}
                   className="block relative h-full">
-                  <img
+                  <Image
                     src={
                       post?.featured_image
                         ? `${baseUrl}/${post?.featured_image}`
                         : "https://via.placeholder.com/300x200.png?text=No+Image"
                     }
                     alt={post?.title}
+                    height={150}
+                    width={400}
                     className="w-full h-[150px] object-cover"
                     loading="lazy"
                   />
@@ -366,13 +385,15 @@ const CategoryPosts = () => {
               key={post.id}
               className="flex flex-row items-start gap-2 lg:gap-10">
               <div className="w-5/12">
-                <img
+                <Image
                   src={
                     post?.featured_image
                       ? `${baseUrl}/${post?.featured_image}`
                       : "https://via.placeholder.com/300x200.png?text=No+Image"
                   }
                   alt={post?.title}
+                  height={250}
+                  width={400}
                   className="w-full h-32 object-cover"
                 />
               </div>

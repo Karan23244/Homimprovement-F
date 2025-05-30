@@ -10,6 +10,8 @@ function createSlug(text) {
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 export default function UpgradeYourself() {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -23,8 +25,9 @@ export default function UpgradeYourself() {
 
         setPosts(allPublishedPosts);
       } catch (err) {
-        setError("Error fetching data: " + err.message);
+        console.error("Error fetching data: ", err.message);
       } finally {
+        setLoading(false);
       }
     };
 
@@ -101,15 +104,19 @@ export default function UpgradeYourself() {
               </div>
               {index % 2 === 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 mb-8">
-                  {posts.slice(0, 6).map((post) => (
-                    <HorizontalBlogCard key={post.id} post={post} />
-                  ))}
+                {loading
+                    ? Array(3).fill(0).map((_, i) => <HorizontalBlogSkeleton key={i} />)
+                    : posts.slice(0, 6).map((post) => (
+                        <HorizontalBlogCard key={post.id} post={post} />
+                      ))}
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 mb-8">
-                  {posts.slice(0, 8).map((post) => (
-                    <LatestBlogs key={post.id} post={post} />
-                  ))}
+                  {loading
+                    ? Array(4).fill(0).map((_, i) => <LatestBlogSkeleton key={i} />)
+                    : posts.slice(0, 8).map((post) => (
+                        <LatestBlogs key={post.id} post={post} />
+                      ))}
                 </div>
               )}
 
@@ -207,3 +214,26 @@ const LatestBlogs = ({ post }) => {
     </Link>
   );
 };
+
+// Skeleton for Latest Blog
+const LatestBlogSkeleton = () => (
+  <div className="bg-gray-100 animate-pulse rounded-lg w-full h-64 flex flex-col">
+    <div className="bg-gray-300 h-48 rounded-t-lg w-full"></div>
+    <div className="p-4 space-y-2">
+      <div className="bg-gray-300 h-4 w-3/4 rounded"></div>
+      <div className="bg-gray-300 h-3 w-full rounded"></div>
+    </div>
+  </div>
+);
+
+// Skeleton for Horizontal Blog
+const HorizontalBlogSkeleton = () => (
+  <div className="flex flex-col lg:flex-row bg-gray-100 animate-pulse rounded-lg overflow-hidden shadow-md">
+    <div className="bg-gray-300 w-full lg:w-1/3 h-48"></div>
+    <div className="p-4 w-full lg:w-2/3 space-y-2">
+      <div className="bg-gray-300 h-5 w-2/3 rounded"></div>
+      <div className="bg-gray-300 h-4 w-full rounded"></div>
+      <div className="bg-gray-300 h-4 w-1/2 rounded"></div>
+    </div>
+  </div>
+);

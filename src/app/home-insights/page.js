@@ -15,6 +15,14 @@ export async function generateMetadata() {
     alternates: {
       canonical: "https://homimprovement.com/home-insights",
     },
+    links: [
+      {
+        rel: "preload",
+        href: "/homeinsights.webp", 
+        as: "image",
+        type: "image/webp",
+      },
+    ],
   };
 }
 export default async function AboutPage() {

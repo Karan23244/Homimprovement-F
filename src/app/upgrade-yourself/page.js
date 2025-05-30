@@ -18,6 +18,14 @@ export async function generateMetadata() {
     alternates: {
       canonical: "https://homimprovement.com/upgrade-yourself",
     },
+    links: [
+      {
+        rel: "preload",
+        href: "/upgradeypurself.webp", 
+        as: "image",
+        type: "image/webp",
+      },
+    ],
   };
 }
 export default async function AboutPage() {

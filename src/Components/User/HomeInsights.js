@@ -3,54 +3,42 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export default function HomeInsights() {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch all published posts
         const postsRes = await fetch(`${baseUrl}/api/posts`);
         const postsJson = await postsRes.json();
-
         const allPublishedPosts = postsJson.data.filter(
           (post) => post.blog_type === "published"
         );
-
         setPosts(allPublishedPosts);
       } catch (err) {
-        setError("Error fetching data: " + err.message);
+        console.error("Error fetching data: ", err.message);
       } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
+
   const categoryFilter = [
-    {
-      name: "Product Reviews",
-      link: "/home-insights/product-reviews",
-    },
-    {
-      name: "Comparisons",
-      link: "/home-insights/comparisons",
-    },
-    {
-      name: "Best Picks",
-      link: "/home-insights/best-picks",
-    },
-    {
-      name: "How To Guides",
-      link: "/home-insights/how-to-guides",
-    },
-    {
-      name: "Deals",
-      link: "/home-insights/deals",
-    },
+    { name: "Product Reviews", link: "/home-insights/product-reviews" },
+    { name: "Comparisons", link: "/home-insights/comparisons" },
+    { name: "Best Picks", link: "/home-insights/best-picks" },
+    { name: "How To Guides", link: "/home-insights/how-to-guides" },
+    { name: "Deals", link: "/home-insights/deals" },
   ];
 
   const filteredPosts = posts.filter(
@@ -78,48 +66,37 @@ export default function HomeInsights() {
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
         }}>
-        <h1 className="lg:text-5xl text-xl font-semibold text-white">
-          Home Insights
-        </h1>
+        <h1 className="lg:text-5xl text-xl font-semibold text-white">Home Insights</h1>
         <p className="lg:text-base text-xs text-white leading-relaxed">
-          Our “Upgrade Yourself” line is your final stop for all things
-          innovative, creative, and stylish that will help you upgrade your
-          house and your life. Explore the latest Smart Home Technology and its
-          benefits of controlling devices, personalization and comfort. And for
-          those who can’t do enough of home projects or fast and easy DIY
-          projects, our DIY Home Projects provides faster and more specific
-          how-to DIY, with great pictures and uncomplicated style to personalize
-          your weekend and home, with or without wood. Get ahead of the curve
-          with Interior Design Trends, a modern, decorative design blog for all
-          things interior design, and discover the latest trends along with tips
-          and tricks for achieving a top-looking space! Whether you are a tech
-          geek, a DIY enthusiast, a wise design fan, this category helps you to
-          upgrade yourself and surround your home with ease and art.
+          {/* Description text */}
+          Our “Upgrade Yourself” line is your final stop for all things innovative, creative, and stylish...
         </p>
       </div>
+
       <div className="space-y-10 sm:px-6 lg:px-8 my-12">
         {groupedPosts.map(({ category, posts }, index) => (
           <div
             key={category.name}
-            className={`flex flex-col ${
-              index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-            } gap-6`}>
-            {/* Main Content */}
+            className={`flex flex-col ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} gap-6`}>
             <div className="mt-6">
               <div className="text-3xl md:text-5xl font-bold text-center">
                 <h2>{category.name}</h2>
               </div>
               {index % 2 === 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 mb-8">
-                  {posts.slice(0, 8).map((post) => (
-                    <LatestBlogs key={post.id} post={post} />
-                  ))}
+                  {loading
+                    ? Array(4).fill(0).map((_, i) => <LatestBlogSkeleton key={i} />)
+                    : posts.slice(0, 8).map((post) => (
+                        <LatestBlogs key={post.id} post={post} />
+                      ))}
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 mb-8">
-                  {posts.slice(0, 6).map((post) => (
-                    <HorizontalBlogCard key={post.id} post={post} />
-                  ))}
+                  {loading
+                    ? Array(3).fill(0).map((_, i) => <HorizontalBlogSkeleton key={i} />)
+                    : posts.slice(0, 6).map((post) => (
+                        <HorizontalBlogCard key={post.id} post={post} />
+                      ))}
                 </div>
               )}
 
@@ -137,6 +114,7 @@ export default function HomeInsights() {
     </>
   );
 }
+
 const HorizontalBlogCard = ({ post }) => {
   return (
     <Link
@@ -144,18 +122,7 @@ const HorizontalBlogCard = ({ post }) => {
         post?.categories[0]?.category_name
       )}/${createSlug(post?.Custom_url)}`}
       className="flex flex-col lg:flex-row bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      {/* Image on left */}
       <div className="w-full lg:w-1/3 h-48 lg:h-auto">
-        {/* <img
-          src={
-            post?.featured_image
-              ? `${baseUrl}/${post?.featured_image}`
-              : "https://via.placeholder.com/300x200.png?text=No+Image"
-          }
-          alt={post?.title}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        /> */}
         <Image
           src={
             post?.featured_image
@@ -169,8 +136,6 @@ const HorizontalBlogCard = ({ post }) => {
           loading="lazy"
         />
       </div>
-
-      {/* Content on right */}
       <div className="p-4 flex flex-col items-start justify-start gap-2 w-full lg:w-2/3">
         <h2 className="text-lg lg:text-xl font-semibold line-clamp-2">
           {post?.title}
@@ -185,14 +150,14 @@ const HorizontalBlogCard = ({ post }) => {
     </Link>
   );
 };
+
 const LatestBlogs = ({ post }) => {
   return (
     <Link
-      key={post.id}
       href={`/${createSlug(post?.categories[0]?.category_type)}/${createSlug(
         post?.categories[0]?.category_name
       )}/${createSlug(post?.Custom_url)}`}
-      className="bg-white  overflow-hidden block transition-shadow duration-300">
+      className="bg-white overflow-hidden block transition-shadow duration-300">
       <Image
         src={
           post?.featured_image
@@ -216,3 +181,26 @@ const LatestBlogs = ({ post }) => {
     </Link>
   );
 };
+
+// Skeleton for Latest Blog
+const LatestBlogSkeleton = () => (
+  <div className="bg-gray-100 animate-pulse rounded-lg w-full h-64 flex flex-col">
+    <div className="bg-gray-300 h-48 rounded-t-lg w-full"></div>
+    <div className="p-4 space-y-2">
+      <div className="bg-gray-300 h-4 w-3/4 rounded"></div>
+      <div className="bg-gray-300 h-3 w-full rounded"></div>
+    </div>
+  </div>
+);
+
+// Skeleton for Horizontal Blog
+const HorizontalBlogSkeleton = () => (
+  <div className="flex flex-col lg:flex-row bg-gray-100 animate-pulse rounded-lg overflow-hidden shadow-md">
+    <div className="bg-gray-300 w-full lg:w-1/3 h-48"></div>
+    <div className="p-4 w-full lg:w-2/3 space-y-2">
+      <div className="bg-gray-300 h-5 w-2/3 rounded"></div>
+      <div className="bg-gray-300 h-4 w-full rounded"></div>
+      <div className="bg-gray-300 h-4 w-1/2 rounded"></div>
+    </div>
+  </div>
+);
