@@ -50,13 +50,24 @@ const schemas = [
   },
 ];
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
+
+  const [categoriesRes, postsRes] = await Promise.all([
+    fetch(`${baseUrl}/api/categories`, { cache: "no-store" }),
+    fetch(`${baseUrl}/api/posts`, { cache: "no-store" }),
+  ]);
+
+  const [categoriesData, postsData] = await Promise.all([
+    categoriesRes.json(),
+    postsRes.json(),
+  ]);
+
   return (
     <html lang="en">
       <head>
         <link rel="preload" as="image" href="/Hero.webp" type="image/webp" />
-
-        {/* Schema JSON-LD */}
         {schemas.map((schema, index) => (
           <script
             key={index}
@@ -64,7 +75,6 @@ export default function RootLayout({ children }) {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
           />
         ))}
-
         <meta name="lhverifycode" content="32dc01246faccb7f5b3cad5016dd5033" />
         <meta name="fo-verify" content="a98b21b4-ddf9-40a6-a1ea-00d196380a4d" />
       </head>
@@ -77,7 +87,6 @@ export default function RootLayout({ children }) {
             style={{ display: "none", visibility: "hidden" }}></iframe>
         </noscript>
 
-        {/* GTM - Lazy load using lazyOnload for better performance */}
         <Script
           id="gtm"
           strategy="lazyOnload"
@@ -90,14 +99,12 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* Skimlinks - Also lazy load */}
         <Script
           id="skimlinks"
           src="https://s.skimresources.com/js/285761X1772273.skimlinks.js"
           strategy="lazyOnload"
         />
 
-        {/* Optional: Use requestIdleCallback for ultra-low priority */}
         <Script id="defer-scripts" strategy="afterInteractive">
           {`
             if ('requestIdleCallback' in window) {
@@ -111,8 +118,8 @@ export default function RootLayout({ children }) {
           `}
         </Script>
 
-        {/* Minimal navbar, postpone fetch to client or hydrate */}
-        <Navbar />
+        {/* ✅ Pass server-fetched props to Server Component Navbar */}
+        <Navbar categories={categoriesData.data} posts={postsData.data} />
         {children}
         <ScrollButtons />
         <SubscribePopup />

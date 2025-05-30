@@ -150,7 +150,7 @@ function Navbar({ categories = [], posts }) {
                     Blog Categories
                   </button>
                   {/* Second level - dropdown with types */}
-                  <ul className="absolute hidden group-hover:block left-0 w-[250px] z-20 bg-white shadow-lg border border-black">
+                  <ul className="absolute hidden group-hover:block left-0 w-[250px] z-200 bg-white shadow-lg border border-black">
                     {Object.keys(groupedCategories).map((type) => (
                       <li
                         key={type}
