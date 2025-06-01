@@ -4,8 +4,6 @@ import { FaTag } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import FeedbackSlider from "../Common/FeedbackSlider";
 
-
-
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
@@ -133,6 +131,7 @@ const Hero = () => {
           fill
           className="object-cover object-center z-0"
           priority // fetchpriority=high equivalent
+          loading="eager"
         />
 
         {/* Content */}

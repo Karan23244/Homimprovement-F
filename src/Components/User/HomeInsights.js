@@ -7,7 +7,7 @@ function createSlug(text) {
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export default function HomeInsights({posts}) {
+export default function HomeInsights({ posts }) {
   const categoryFilter = [
     { name: "Product Reviews", link: "/home-insights/product-reviews" },
     { name: "Comparisons", link: "/home-insights/comparisons" },
@@ -33,29 +33,32 @@ export default function HomeInsights({posts}) {
 
   return (
     <>
-      <div
-        className="relative w-full h-[350px] lg:h-[400px] flex flex-col justify-center gap-3 py-5 px-[2%] lg:px-[10%] bg-cover bg-center"
-        style={{
-          backgroundImage: "url('/homeinsights.webp')",
-        }}>
-        <h1 className="lg:text-5xl text-xl font-semibold text-white">
-          Home Insights
-        </h1>
-        <p className="lg:text-base text-xs text-white leading-relaxed">
-          {/* Description text */}
-          Welcome to Home Insights, the ultimate destination for improving
-          your living area. Make informed decisions with our products reviews
-          section, where we cover everything from the newest home gadgets to
-          quirky gifts and essentials. For tips and tricks for setting up your
-          smart home and other home improvement projects check out our How To
-          Guides. In our Comparisons section below, we compare two similar
-          products to make it easier for you to purchase the perfect one for
-          your specific needs. And see our Best Picks, which are items expertly
-          chosen by our product reporters and writers. Finally, make sure to
-          check out our Deals section to save hundreds of products on premium
-          goods. Home Insights was founded to enrich you with value and savings
-          for a smarter home.
-        </p>
+      <div className="relative w-full h-[350px] lg:h-[400px] overflow-hidden">
+        <Image
+          src="/homeinsights.webp"
+          alt="Home Insights Background"
+          fill
+          className="object-cover object-center"
+          priority
+          fetchPriority="high"
+        />
+        <div className="relative z-10 flex flex-col justify-center gap-3 py-5 px-[2%] lg:px-[10%] h-full text-white bg-black/40">
+          <h1 className="lg:text-5xl text-xl font-semibold">Home Insights</h1>
+          <p className="lg:text-base text-xs leading-relaxed">
+            Welcome to Home Insights, the ultimate destination for improving
+            your living area. Make informed decisions with our products reviews
+            section, where we cover everything from the newest home gadgets to
+            quirky gifts and essentials. For tips and tricks for setting up your
+            smart home and other home improvement projects check out our How To
+            Guides. In our Comparisons section below, we compare two similar
+            products to make it easier for you to purchase the perfect one for
+            your specific needs. And see our Best Picks, which are items
+            expertly chosen by our product reporters and writers. Finally, make
+            sure to check out our Deals section to save hundreds of products on
+            premium goods. Home Insights was founded to enrich you with
+            value and savings for a smarter home.
+          </p>
+        </div>
       </div>
 
       <div className="lg:space-y-10 lg:px-8 my-4 mx-4">

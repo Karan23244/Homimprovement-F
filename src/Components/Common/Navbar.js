@@ -135,6 +135,7 @@ function Navbar({ categories = [], posts }) {
                   width={80}
                   height={80}
                   priority
+                  sizes="80px"
                 />
               </Link>
             </div>

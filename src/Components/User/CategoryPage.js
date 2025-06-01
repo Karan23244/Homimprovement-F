@@ -167,20 +167,29 @@ const CategoryPosts = () => {
 
   const UpgradeYourselfUI = () => (
     <>
-      <div
-        className="relative w-full lg:h-[250px] h-[350px] flex flex-col gap-3 py-5 px-[2%] lg:px-[10%]"
-        style={{
-          backgroundImage: `linear-gradient(90deg, #000025 0%, rgba(0, 0, 139, 0.3) 100%), url('/background.webp')`,
-          backgroundSize: "contain",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-        }}>
-        <h1 className="lg:text-5xl text-xl font-semibold text-white">
-          {modifiedCategoryName}
-        </h1>
-        <p className="lg:text-base text-xs text-white leading-relaxed">
-          {shortDescription}
-        </p>
+      <div className="relative w-full lg:h-[250px] h-[350px] overflow-hidden">
+        {/* Background Image */}
+        <Image
+          src="/background.webp"
+          alt="Category Background"
+          fill
+          className="object-contain object-center"
+          priority
+          fetchPriority="high"
+        />
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#000025] to-[rgba(0,0,139,0.3)] z-10" />
+
+        {/* Content */}
+        <div className="relative z-20 flex flex-col gap-3 justify-center h-full py-5 px-[2%] lg:px-[10%]">
+          <h1 className="lg:text-5xl text-xl font-semibold text-white">
+            {modifiedCategoryName}
+          </h1>
+          <p className="lg:text-base text-xs text-white leading-relaxed">
+            {shortDescription}
+          </p>
+        </div>
       </div>
 
       <div className="lg:px-[15%] px-[2%] py-[2%] bg-[#00008B]/30">

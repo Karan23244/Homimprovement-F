@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 const SubscribePopup = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -14,10 +15,9 @@ const SubscribePopup = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        `http://localhost:3001/api/subscribe`,
-        { email }
-      );
+      const response = await axios.post(`http://localhost:3001/api/subscribe`, {
+        email,
+      });
       setMessage(response.data.message);
       setStatus("success");
       setEmail("");
@@ -55,21 +55,23 @@ const SubscribePopup = () => {
           <div
             className={`bg-white rounded-lg shadow-lg p-6 max-w-sm sm:max-w-md lg:max-w-3xl w-full h-auto transition-transform duration-300 transform flex flex-col lg:flex-row justify-center items-center mx-auto gap-6 px-4 sm:px-8 ${
               isVisible ? "scale-100 opacity-100" : "scale-90 opacity-0"
-            }`}
-          >
+            }`}>
             <button
               onClick={handleClose}
-              className="absolute top-2 right-4 sm:right-6 text-2xl sm:text-4xl font-medium text-gray-700 hover:text-gray-900 focus:outline-none"
-            >
+              className="absolute top-2 right-4 sm:right-6 text-2xl sm:text-4xl font-medium text-gray-700 hover:text-gray-900 focus:outline-none">
               &times;
             </button>
             <div className="w-32 sm:w-48 lg:w-60 flex-shrink-0">
-              <img
+              <Image
                 src="/headerlogo.webp"
                 alt="Logo"
+                width={240}
+                height={60}
                 className="w-full h-auto"
+                priority
               />
             </div>
+
             <div className="flex flex-col gap-4 sm:gap-8 items-start text-center sm:text-left">
               <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold">
                 Embark on a journey of transformation!
@@ -80,8 +82,7 @@ const SubscribePopup = () => {
               </p>
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-col sm:flex-row gap-4 w-full"
-              >
+                className="flex flex-col sm:flex-row gap-4 w-full">
                 <input
                   type="email"
                   value={email}
@@ -92,8 +93,7 @@ const SubscribePopup = () => {
                 />
                 <button
                   type="submit"
-                  className="w-full sm:w-auto bg-[#00008B] text-white font-semibold px-6 py-2 rounded-md transition-all duration-300"
-                >
+                  className="w-full sm:w-auto bg-[#00008B] text-white font-semibold px-6 py-2 rounded-md transition-all duration-300">
                   Subscribe
                 </button>
               </form>
@@ -101,8 +101,7 @@ const SubscribePopup = () => {
                 <p
                   className={`mt-4 text-center ${
                     status === "success" ? "text-green-500" : "text-red-500"
-                  }`}
-                >
+                  }`}>
                   {message}
                 </p>
               )}

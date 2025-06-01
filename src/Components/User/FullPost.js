@@ -9,46 +9,6 @@ import "./styles.css";
 import usePageTracker from "../Hooks/usePageTracker";
 import Image from "next/image";
 
-// Skeleton Placeholder with reserved spaces similar to actual content layout
-const Skeleton = () => (
-  <div className="animate-pulse space-y-6 px-4 py-8 max-w-4xl mx-auto">
-    {/* Image placeholder with fixed height */}
-    <div className="h-64 bg-gray-300 rounded-md w-full"></div>
-
-    {/* Title */}
-    <div className="h-8 bg-gray-300 rounded w-3/4"></div>
-
-    {/* Author & Date */}
-    <div className="flex space-x-4">
-      <div className="h-6 bg-gray-300 rounded w-1/4"></div>
-      <div className="h-6 bg-gray-300 rounded w-1/6"></div>
-    </div>
-
-    {/* Content paragraphs */}
-    <div className="space-y-3">
-      <div className="h-4 bg-gray-300 rounded w-full"></div>
-      <div className="h-4 bg-gray-300 rounded w-5/6"></div>
-      <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-      <div className="h-4 bg-gray-300 rounded w-11/12"></div>
-      <div className="h-4 bg-gray-300 rounded w-4/5"></div>
-    </div>
-
-    {/* Reserve space for comment section */}
-    <div className="mt-10 space-y-4">
-      <div className="h-8 bg-gray-300 rounded w-1/4"></div>{" "}
-      {/* Comments header */}
-      <div className="h-6 bg-gray-300 rounded w-full"></div>{" "}
-      {/* Comment input */}
-      <div className="h-6 bg-gray-300 rounded w-full"></div>{" "}
-      {/* Comment input */}
-      <div className="h-16 bg-gray-300 rounded w-full"></div>{" "}
-      {/* Submit button */}
-      <div className="h-24 bg-gray-300 rounded w-full"></div>{" "}
-      {/* Comments list placeholder */}
-    </div>
-  </div>
-);
-
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
@@ -105,6 +65,15 @@ const FullPost = ({ post, param1, param2 }) => {
   };
   useEffect(() => {
     if (post) {
+      const timer = setTimeout(() => {
+        fetchComments();
+      }, 3000); // fetch comments after 3 seconds delay
+      return () => clearTimeout(timer);
+    }
+  }, [post]);
+
+  useEffect(() => {
+    if (post) {
       const parser = new DOMParser();
       const contentDocument = parser.parseFromString(
         decodeHtml(post.content || ""),
@@ -130,11 +99,20 @@ const FullPost = ({ post, param1, param2 }) => {
           console.error("Error fetching related blogs:", err);
         }
       };
-
-      fetchRelatedBlogs();
       setToc(tocData);
       setUpdatedContent(contentDocument.body.innerHTML);
-      fetchComments();
+      if (post?.categories?.length > 0) {
+        const timer = setTimeout(() => {
+          fetchRelatedBlogs();
+        }, 3000); // 3 seconds delay
+        return () => clearTimeout(timer);
+      }
+      if (post) {
+        const timer = setTimeout(() => {
+          fetchComments();
+        }, 3000); // fetch comments after 3 seconds delay
+        return () => clearTimeout(timer);
+      }
     }
   }, [post]);
   const decodeHtml = (html) => {
@@ -204,14 +182,6 @@ const FullPost = ({ post, param1, param2 }) => {
           <strong className="font-bold">Page Not Found</strong>
         </div>
       </div>
-    );
-  }
-
-  if (!post) {
-    return (
-      <>
-        <Skeleton />
-      </>
     );
   }
 
@@ -306,15 +276,17 @@ const FullPost = ({ post, param1, param2 }) => {
                 height={400}
                 className="object-cover w-full h-auto"
                 priority
+                placeholder="blur"
+                blurDataURL="/path-to-small-blur-placeholder.png"
               />
             </div>
 
             <div
-              className="custom-html text-gray-700 leading-relaxed prose prose-indigo max-w-none mb-12"
+              className="custom-html text-gray-700 leading-relaxed prose prose-indigo max-w-none mb-12 min-h-[600px]"
               dangerouslySetInnerHTML={{ __html: updatedContent }}
             />
 
-            <div className="my-5 lg:min-h-auto min-h-[500px]">
+            <div className="my-5 min-h-[100px]">
               {loading ? (
                 <div className="space-y-4 max-w-2xl mx-auto">
                   {[...Array(3)].map((_, i) => (
@@ -366,7 +338,6 @@ const FullPost = ({ post, param1, param2 }) => {
         </div>
       </div>
       <div className="bg-[#F0F2F5]">
-        {/* Related Blog Section */}
         {relatedBlogs.length > 0 && (
           <div className="lg:mx-[10%] lg:mt-12 py-5 px-5">
             <h2 className="text-2xl font-semibold mb-6 text-gray-800">

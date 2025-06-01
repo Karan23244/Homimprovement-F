@@ -37,29 +37,36 @@ export default function UpgradeYourself({ posts }) {
 
   return (
     <>
-      <div
-        className="relative w-full h-[350px] lg:h-[400px] flex flex-col justify-center gap-3 py-5 px-[2%] lg:px-[10%] bg-cover bg-center"
-        style={{
-          backgroundImage: "url('/upgradeypurself.webp')",
-        }}>
-        <h1 className="lg:text-5xl text-xl font-semibold text-white">
-          Upgrade Yourself
-        </h1>
-        <p className="lg:text-base text-xs text-white leading-relaxed">
-          Our “Upgrade Yourself” line is your final stop for all things
-          innovative, creative, and stylish that will help you upgrade your
-          house and your life. Explore the latest Smart Home Technology and its
-          benefits of controlling devices, personalization and comfort. And for
-          those who can’t do enough of home projects or fast and easy DIY
-          projects, our DIY Home Projects provides faster and more specific
-          how-to DIY, with great pictures and uncomplicated style to personalize
-          your weekend and home, with or without wood. Get ahead of the curve
-          with Interior Design Trends, a modern, decorative design blog for all
-          things interior design, and discover the latest trends along with tips
-          and tricks for achieving a top-looking space! Whether you are a tech
-          geek, a DIY enthusiast, a wise design fan, this category helps you to
-          upgrade yourself and surround your home with ease and art.
-        </p>
+      <div className="relative w-full h-[350px] lg:h-[400px] overflow-hidden">
+        <Image
+          src="/upgradeypurself.webp"
+          alt="Upgrade Yourself"
+          fill
+          className="object-cover object-center"
+          priority // Important for LCP
+          fetchPriority="high" // New HTML5 attribute for critical image
+        />
+        <div className="relative z-10 flex flex-col justify-center gap-3 py-5 px-[2%] lg:px-[10%] h-full text-white bg-black/40">
+          <h1 className="lg:text-5xl text-xl font-semibold">
+            Upgrade Yourself
+          </h1>
+          <p className="lg:text-base text-xs leading-relaxed">
+            Our “Upgrade Yourself” line is your final stop for all things
+            innovative, creative, and stylish that will help you upgrade your
+            house and your life. Explore the latest Smart Home Technology and
+            its benefits of controlling devices, personalization and comfort.
+            And for those who can’t do enough of home projects or fast and easy
+            DIY projects, our DIY Home Projects provides faster and more
+            specific how-to DIY, with great pictures and uncomplicated style to
+            personalize your weekend and home, with or without wood. Get ahead
+            of the curve with Interior Design Trends, a modern, decorative
+            design blog for all things interior design, and discover the latest
+            trends along with tips and tricks for achieving a top-looking space!
+            Whether you are a tech geek, a DIY enthusiast, a wise design fan,
+            this category helps you to upgrade yourself and surround your home
+            with ease and art.
+          </p>
+        </div>
       </div>
 
       <div className="lg:space-y-10 lg:px-8 my-4 mx-4">

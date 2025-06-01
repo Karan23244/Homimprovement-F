@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import Image from "next/image";
 
 function Footer() {
   return (
@@ -10,7 +11,7 @@ function Footer() {
           {/* Left Side: Logo & Description */}
           <div className="flex flex-col lg:w-1/2 items-center text-center lg:text-left">
             <Link href="/" className="mb-4">
-              <img
+              <Image
                 src="/footerlogo.webp"
                 alt="Logo"
                 width={120}
