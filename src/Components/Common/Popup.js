@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const SubscribePopup = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -15,7 +16,7 @@ const SubscribePopup = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`http://localhost:3001/api/subscribe`, {
+      const response = await axios.post(`${baseUrl}/api/subscribe`, {
         email,
       });
       setMessage(response.data.message);

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const Subscribe = () => {
   const [email, setEmail] = useState("");
@@ -13,7 +14,7 @@ const Subscribe = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/subscribe",
+        `${baseUrl}/api/subscribe`,
         { email }
       );
       setMessage(response.data.message);

@@ -83,8 +83,7 @@ export default async function RootLayout({ children }) {
             src="https://www.googletagmanager.com/ns.html?id=GTM-WGLXVJCS"
             height="0"
             width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
+            style={{ display: "none", visibility: "hidden" }}></iframe>
         </noscript>
 
         {/* ✅ Defer GTM using requestIdleCallback */}
@@ -114,6 +113,9 @@ export default async function RootLayout({ children }) {
             }
           `}
         </Script>
+        <amp-skimlinks
+          layout="nodisplay"
+          publisher-code="285761X1772273"></amp-skimlinks>
 
         {/* ✅ Render Components */}
         <Navbar categories={categoriesData.data} posts={postsData.data} />
