@@ -1,10 +1,17 @@
+// app/page.js
+
 import NewPage from "@/Components/User/NewPage";
+
+// Static generation
+export const dynamic = "force-static";
 
 export default async function HomePage() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   // Fetch posts
-  const postsRes = await fetch(`${baseUrl}/api/posts`, { cache: "no-store" });
+  const postsRes = await fetch(`${baseUrl}/api/posts`, {
+    next: { revalidate: 60 },
+  });
   const postsJson = await postsRes.json();
   const allposts = postsJson.data.filter(
     (post) => post.blog_type === "published"
@@ -12,7 +19,7 @@ export default async function HomePage() {
 
   // Fetch top reads and editor's choice
   const topRes = await fetch(`${baseUrl}/api/posts/topReadsAndEditorsChoice`, {
-    cache: "no-store",
+    next: { revalidate: 60 },
   });
   const topJson = await topRes.json();
 
