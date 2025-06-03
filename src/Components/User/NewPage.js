@@ -123,7 +123,7 @@ export default NewPage;
 const Hero = () => {
   return (
     <>
-      <div className="relative lg:h-[500px] h-[400px] w-full overflow-hidden">
+      <div className="relative lg:h-[500px] h-screen w-full overflow-hidden">
         {/* Desktop Image */}
         <Image
           src="/Hero.webp"
@@ -149,7 +149,7 @@ const Hero = () => {
         {/* Content */}
         <div className="relative z-10 flex items-center h-full px-10 md:px-20">
           <div className="text-white max-w-4xl space-y-6">
-            <h1 className="lg:text-4xl text-lg font-bold leading-tight">
+            <h1 className="lg:text-4xl text-xl font-bold leading-tight">
               Discover 200+ Home Improvement Blogs with HomImprovement for Your
               Dream House
             </h1>

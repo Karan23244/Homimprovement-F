@@ -67,6 +67,7 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="preload" as="image" href="/Hero.webp" type="image/webp" />
+        <link rel="preload" as="image" href="/hero_mobile.webp" type="image/webp" />
         <link
           rel="preload"
           href="/fonts/Inter.woff2"
