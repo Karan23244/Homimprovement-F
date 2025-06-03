@@ -124,18 +124,18 @@ const Hero = () => {
   return (
     <>
       <div className="relative lg:h-[500px] h-[400px] w-full overflow-hidden">
-        {/* Replace background image with an img tag */}
         <Image
           src="/Hero.webp"
           alt="Hero Image"
-          fill
-          className="object-cover object-center z-0"
-          priority // fetchpriority=high equivalent
+          width={1920}
+          height={600}
+          className="object-cover object-center w-full h-full z-0"
+          priority
           loading="eager"
+          fetchPriority="high" 
         />
 
-        {/* Content */}
-        <div className="relative z-10 flex items-center h-full px-10 md:px-20">
+        <div className="relative z-20 flex items-center h-full px-10 md:px-20">
           <div className="text-white max-w-4xl space-y-6">
             <h1 className="lg:text-4xl text-lg font-bold leading-tight">
               Discover 200+ Home Improvement Blogs with HomImprovement for Your
@@ -147,27 +147,11 @@ const Hero = () => {
               advice!
             </p>
             <Link href="/home-insights">
-              <button className="lg:mt-4 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full lg:font-semibold font-medium transition duration-300 cursor-pointer">
+              <button className="lg:mt-4 px-6 py-3 bg-white hover:bg-indigo-700 text-black hover:text-white rounded-full lg:font-semibold font-medium transition duration-300 cursor-pointer">
                 More Insights
               </button>
             </Link>
           </div>
-        </div>
-      </div>
-
-      <div className="bg-[#DEDEFF] py-8 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="lg:text-5xl text-2xl font-bold text-[#202D53] mb-6">
-            House Renovation Ideas By Homimprovement
-          </h2>
-          <p className="lg:text-lg text-base text-black">
-            Impact-Site-Verification: b3c75536-987d-4beb-bf76-99f0bc030a14
-          </p>
-          <p className="lg:text-lg text-base text-black">
-            Ready to revamp your home? Homimprovement offers comprehensive house
-            renovation and unique design ideas to help you create the perfect
-            living space.
-          </p>
         </div>
       </div>
     </>
@@ -190,48 +174,65 @@ const LatestBlogs = ({ allposts = [] }) => {
   const postsToShow = allposts.slice(0, 8);
 
   return (
-    <section className="p-6 bg-gray-100">
-      <header className="mb-6 text-center">
-        <h2 className="text-lg lg:text-3xl font-bold">Latest Blogs</h2>
-      </header>
+    <>
+      <section className="p-6 bg-gray-100">
+        <header className="mb-6 text-center">
+          <h2 className="text-lg lg:text-3xl font-bold">Latest Blogs</h2>
+        </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {postsToShow.map((post, index) => (
-          <Link
-            key={post.id}
-            href={`/${createSlug(
-              post?.categories[0]?.category_type
-            )}/${createSlug(post?.categories[0]?.category_name)}/${createSlug(
-              post?.Custom_url
-            )}`}
-            className="bg-white shadow-md rounded-lg overflow-hidden block hover:shadow-lg transition-shadow duration-300">
-            <Image
-              src={
-                post?.featured_image
-                  ? `${baseUrl}/${post.featured_image}`
-                  : "https://via.placeholder.com/300x200.png?text=No+Image"
-              }
-              alt={post?.title || "Blog Image"}
-              width={300}
-              height={200}
-              className="object-cover w-full h-48"
-              loading="lazy"
-            />
-            <div className="p-4">
-              <h2 className="text-lg lg:text-xl font-semibold mb-2 line-clamp-2">
-                {post?.title}
-              </h2>
-              <p className="text-gray-600 mb-4 text-sm lg:text-base line-clamp-2">
-                {post?.seoDescription}
-              </p>
-              <span className="inline-block px-5 py-2 border border-[#DEDEFF] hover:bg-indigo-700 text-black hover:text-white rounded-full font-medium transition duration-300">
-                Read More...
-              </span>
-            </div>
-          </Link>
-        ))}
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {postsToShow.map((post, index) => (
+            <Link
+              key={post.id}
+              href={`/${createSlug(
+                post?.categories[0]?.category_type
+              )}/${createSlug(post?.categories[0]?.category_name)}/${createSlug(
+                post?.Custom_url
+              )}`}
+              className="bg-white shadow-md rounded-lg overflow-hidden block hover:shadow-lg transition-shadow duration-300">
+              <Image
+                src={
+                  post?.featured_image
+                    ? `${baseUrl}/${post.featured_image}`
+                    : "https://via.placeholder.com/300x200.png?text=No+Image"
+                }
+                alt={post?.title || "Blog Image"}
+                width={300}
+                height={200}
+                className="object-cover w-full h-48"
+                loading="lazy"
+              />
+              <div className="p-4">
+                <h2 className="text-lg lg:text-xl font-semibold mb-2 line-clamp-2">
+                  {post?.title}
+                </h2>
+                <p className="text-gray-600 mb-4 text-sm lg:text-base line-clamp-2">
+                  {post?.seoDescription}
+                </p>
+                <span className="inline-block px-5 py-2 border border-[#DEDEFF] hover:bg-indigo-700 text-black hover:text-white rounded-full font-medium transition duration-300">
+                  Read More...
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+      <div className="bg-[#DEDEFF] py-8 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="lg:text-5xl text-2xl font-bold text-[#202D53] mb-6">
+            House Renovation Ideas By Homimprovement
+          </h2>
+          <p className="lg:text-lg text-base text-black">
+            Impact-Site-Verification: b3c75536-987d-4beb-bf76-99f0bc030a14
+          </p>
+          <p className="lg:text-lg text-base text-black">
+            Ready to revamp your home? Homimprovement offers comprehensive house
+            renovation and unique design ideas to help you create the perfect
+            living space.
+          </p>
+        </div>
       </div>
-    </section>
+    </>
   );
 };
 

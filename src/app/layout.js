@@ -67,6 +67,20 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="preload" as="image" href="/Hero.webp" type="image/webp" />
+        <link
+          rel="preload"
+          href="/fonts/Inter.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+
         {schemas.map((schema, index) => (
           <script
             key={index}
