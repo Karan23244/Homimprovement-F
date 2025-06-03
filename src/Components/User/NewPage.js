@@ -124,18 +124,19 @@ const Hero = () => {
   return (
     <>
       <div className="relative lg:h-[500px] h-[400px] w-full overflow-hidden">
+        {/* Replace background image with an img tag */}
         <Image
           src="/Hero.webp"
           alt="Hero Image"
-          width={1920}
-          height={600}
-          className="object-cover object-center w-full h-full z-0"
+          fill
+          className="object-cover object-center z-0"
           priority
           loading="eager"
-          fetchPriority="high" 
+          fetchPriority="high"
         />
 
-        <div className="relative z-20 flex items-center h-full px-10 md:px-20">
+        {/* Content */}
+        <div className="relative z-10 flex items-center h-full px-10 md:px-20">
           <div className="text-white max-w-4xl space-y-6">
             <h1 className="lg:text-4xl text-lg font-bold leading-tight">
               Discover 200+ Home Improvement Blogs with HomImprovement for Your
