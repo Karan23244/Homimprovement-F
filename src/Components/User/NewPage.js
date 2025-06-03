@@ -123,7 +123,7 @@ export default NewPage;
 const Hero = () => {
   return (
     <>
-      <div className="relative lg:h-[500px] h-screen w-full overflow-hidden">
+      <div className="relative lg:h-[500px] h-[400px] w-full overflow-hidden">
         {/* Desktop Image */}
         <Image
           src="/Hero.webp"
@@ -137,7 +137,7 @@ const Hero = () => {
 
         {/* Mobile Image */}
         <Image
-          src="/hero_mobile.webp"
+          src="/heromobile.webp"
           alt="Hero Image Mobile"
           fill
           className="block lg:hidden object-cover object-center z-0"
@@ -147,7 +147,7 @@ const Hero = () => {
         />
 
         {/* Content */}
-        <div className="relative z-10 flex items-center h-full px-10 md:px-20">
+        <div className="relative hidden z-10 lg:flex items-center h-full px-10 md:px-20">
           <div className="text-white max-w-4xl space-y-6">
             <h1 className="lg:text-4xl text-xl font-bold leading-tight">
               Discover 200+ Home Improvement Blogs with HomImprovement for Your
