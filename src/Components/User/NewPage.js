@@ -124,12 +124,23 @@ const Hero = () => {
   return (
     <>
       <div className="relative lg:h-[500px] h-[400px] w-full overflow-hidden">
-        {/* Replace background image with an img tag */}
+        {/* Desktop Image */}
         <Image
           src="/Hero.webp"
-          alt="Hero Image"
+          alt="Hero Image Desktop"
           fill
-          className="object-cover object-center z-0"
+          className="hidden lg:block object-cover object-center z-0"
+          priority
+          loading="eager"
+          fetchPriority="high"
+        />
+
+        {/* Mobile Image */}
+        <Image
+          src="/hero_mobile.webp"
+          alt="Hero Image Mobile"
+          fill
+          className="block lg:hidden object-cover object-center z-0"
           priority
           loading="eager"
           fetchPriority="high"
