@@ -76,8 +76,8 @@ export default async function RootLayout({ children }) {
         <link
           rel="preload"
           as="image"
-          href="/heromobile.webp"
-          type="image/webp"
+          href="/heromobile.avif"
+          type="image/avif"
           media="(max-width: 1023px)"
         />
 

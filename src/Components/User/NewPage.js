@@ -74,52 +74,6 @@ function NewPage({ allposts, topReads, editorsChoice }) {
 }
 
 export default NewPage;
-
-// const Hero = () => {
-//   return (
-//     <>
-//       <div
-//         className="relative lg:h-[500px] h-[400px] w-full bg-cover bg-center"
-//         style={{ backgroundImage: `url("/Hero.webp")` }}>
-//         <div className="relative z-10 flex items-center h-full px-10 md:px-20">
-//           <div className="text-white max-w-4xl space-y-6">
-//             <h1 className="lg:text-4xl text-lg font-bold leading-tight">
-//               Discover 200+ Home Improvement Blogs with HomImprovement for Your
-//               Dream House
-//             </h1>
-//             <p className="text-base lg:text-xl">
-//               Browse HomImprovement for expert guides on home renovation,
-//               design, and smart tech. Transform your living space with trusted
-//               advice!
-//             </p>
-//             <Link href="/home-insights">
-//               <button className="lg:mt-4 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full lg:font-semibold font-medium transition duration-300 cursor-pointer">
-//                 More Insights
-//               </button>
-//             </Link>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="bg-[#DEDEFF] py-8 px-4">
-//         <div className="max-w-7xl mx-auto text-center">
-//           <h2 className="lg:text-5xl text-2xl font-bold text-[#202D53] mb-6">
-//             House Renovation Ideas By Homimprovement
-//           </h2>
-//           <p className="lg:text-lg text-base text-black">
-//             Impact-Site-Verification: b3c75536-987d-4beb-bf76-99f0bc030a14
-//           </p>
-//           <p className="lg:text-lg text-base text-black">
-//             Ready to revamp your home? Homimprovement offers comprehensive house
-//             renovation and unique design ideas to help you create the perfect
-//             living space.
-//           </p>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
 const Hero = () => {
   return (
     <>
@@ -137,7 +91,7 @@ const Hero = () => {
 
         {/* Mobile Image */}
         <Image
-          src="/heromobile.webp"
+          src="/heromobile.avif"
           alt="Hero Image Mobile"
           fill
           className="block lg:hidden object-cover object-center z-0"
@@ -169,18 +123,6 @@ const Hero = () => {
     </>
   );
 };
-
-const LatestSkeletonCard = () => (
-  <div className="bg-white shadow-md rounded-lg overflow-hidden animate-pulse">
-    <div className="w-full h-48 bg-gray-300"></div>
-    <div className="p-4 space-y-3">
-      <div className="h-5 bg-gray-300 rounded w-3/4"></div>
-      <div className="h-4 bg-gray-200 rounded w-full"></div>
-      <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-      <div className="mt-4 h-10 w-28 bg-gray-300 rounded-full"></div>
-    </div>
-  </div>
-);
 
 const LatestBlogs = ({ allposts = [] }) => {
   const postsToShow = allposts.slice(0, 8);
@@ -235,9 +177,6 @@ const LatestBlogs = ({ allposts = [] }) => {
             House Renovation Ideas By Homimprovement
           </h2>
           <p className="lg:text-lg text-base text-black">
-            Impact-Site-Verification: b3c75536-987d-4beb-bf76-99f0bc030a14
-          </p>
-          <p className="lg:text-lg text-base text-black">
             Ready to revamp your home? Homimprovement offers comprehensive house
             renovation and unique design ideas to help you create the perfect
             living space.
@@ -247,18 +186,6 @@ const LatestBlogs = ({ allposts = [] }) => {
     </>
   );
 };
-
-const SkeletonFeatureCard = () => (
-  <div className="bg-white shadow-md rounded-lg overflow-hidden animate-pulse">
-    <div className="w-full h-56 bg-gray-300 relative"></div>
-    <div className="p-4 space-y-3">
-      <div className="h-5 bg-gray-300 rounded w-3/4"></div>
-      <div className="h-4 bg-gray-200 rounded w-full"></div>
-      <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-      <div className="mt-4 h-10 w-28 bg-gray-300 rounded-full"></div>
-    </div>
-  </div>
-);
 
 const FeatureCategory = ({ featureCategoryBlogs = [] }) => {
   return (
@@ -315,15 +242,6 @@ const FeatureCategory = ({ featureCategoryBlogs = [] }) => {
     </section>
   );
 };
-const BlogCardSkeleton = () => (
-  <div className="relative block h-72 rounded-lg overflow-hidden bg-gray-200 animate-pulse shadow-md">
-    <div className="absolute inset-0 bg-gray-300" />
-    <div className="absolute bottom-4 left-4 right-4 z-20">
-      <div className="h-6 bg-gray-400 rounded w-3/4 mb-2"></div>
-      <div className="h-4 bg-gray-400 rounded w-full"></div>
-    </div>
-  </div>
-);
 
 const BlogCard = ({ post }) => {
   return (
@@ -361,16 +279,6 @@ const BlogCard = ({ post }) => {
     </Link>
   );
 };
-const HorizontalBlogCardSkeleton = () => (
-  <div className="flex flex-col lg:flex-row bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
-    <div className="w-full lg:w-1/3 h-48 lg:h-auto bg-gray-300" />
-    <div className="p-4 flex flex-col justify-start gap-2 w-full lg:w-2/3">
-      <div className="h-6 bg-gray-300 rounded w-3/4"></div>
-      <div className="h-4 bg-gray-300 rounded w-full"></div>
-      <div className="h-4 bg-gray-300 rounded w-1/2 mt-2"></div>
-    </div>
-  </div>
-);
 
 const HorizontalBlogCard = ({ post }) => {
   return (
@@ -430,12 +338,15 @@ const CategorySection = () => {
           </Link>
         </article>
 
-        {/* Clickable Empty Box with Flexoffer */}
-        <Link href="/flexoffer">
-          <figure className="lg:w-1/2 w-full h-64 rounded-lg shadow-lg bg-white text-[#00008B] flex items-center justify-center cursor-pointer hover:bg-gray-100 transition">
-            <span className="text-xl font-semibold">Flexoffer</span>
-          </figure>
-        </Link>
+        <figure className="lg:w-1/2 w-full h-64 rounded-lg shadow-lg bg-white text-[#00008B] flex items-center justify-center cursor-pointer hover:bg-gray-100 transition">
+          <Image
+            src="/homepage.webp" // or use a URL like "https://example.com/logo.png"
+            alt="Flexoffer Logo"
+            width={120}
+            height={60}
+            className="object-contain"
+          />
+        </figure>
       </div>
     </section>
   );
