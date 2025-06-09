@@ -8,7 +8,6 @@ module.exports = {
   additionalPaths: async (config) => {
     // Static routes with priority
     const staticPaths = [
-      { loc: `${baseUrl}/`, lastmod: "2025-04-01", priority: 1.0 },
       {
         loc: `${baseUrl}/upgrade-yourself`,
         lastmod: "2025-04-01",

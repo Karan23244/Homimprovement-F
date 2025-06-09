@@ -57,6 +57,26 @@ const blogRedirects = [
     from: "/upgrade-yourself/smart-home-technology/rental-friendly-smart-home-security-systems",
     to: "/upgrade-yourself/smart-home-technology/rental-friendly-smart-home-security-systems",
   },
+{
+    from: "/smart-home-technology/rental-friendly-smart-home-security-systems",
+    to: "/upgrade-yourself/smart-home-technology",
+  },
+{
+    from: "/home-insights/how-to",
+    to: "/home-insights/how-to-guides",
+  },
+{
+    from: "/home-insights/vs",
+    to: "/home-insights/comparisons",
+  },
+  {
+   from: "/home-insights/how-to",
+    to: "/home-insights/how-to-guides",
+  },
+{
+    from: "/home-insights/reviews",
+    to: "/home-insights/product-reviews",
+  },
 
   // Add more here
 ];

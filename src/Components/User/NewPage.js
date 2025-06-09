@@ -338,15 +338,15 @@ const CategorySection = () => {
           </Link>
         </article>
 
-        <figure className="lg:w-1/2 w-full h-64 rounded-lg shadow-lg bg-white text-[#00008B] flex items-center justify-center cursor-pointer hover:bg-gray-100 transition">
+        <div className="lg:w-1/2">
           <Image
             src="/homepage.webp" // or use a URL like "https://example.com/logo.png"
-            alt="Flexoffer Logo"
+            alt="homepage"
             width={120}
             height={60}
-            className="object-contain"
+            className="object-contain w-full h-full"
           />
-        </figure>
+        </div>
       </div>
     </section>
   );
