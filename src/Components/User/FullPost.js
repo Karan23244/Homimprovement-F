@@ -174,7 +174,7 @@ const FullPost = ({ post, param1, param2 }) => {
     : "";
   const adimageUrl = post?.AdImage ? `${API_URL}/${post.AdImage}` : "";
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
-
+  const schemaJSON = post.schema ? JSON.stringify(post.schema) : "";
   if (error) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -196,8 +196,17 @@ const FullPost = ({ post, param1, param2 }) => {
         <meta property="og:type" content="article" />
         <meta property="og:url" content={currentUrl} />
         <link rel="canonical" href={currentUrl} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: schemaJSON }}
+        />
       </Head>
-
+      {schemaJSON && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: schemaJSON }}
+        />
+      )}
       <div className="mx-auto px-4 lg:px-8 pt-16">
         {/* Main Layout */}
         <div className="flex flex-col lg:flex-row">
