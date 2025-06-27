@@ -1,4 +1,3 @@
-/** @type {import('next').NextConfig} */
 // next.config.js
 const blogRedirects = [
   {
@@ -57,23 +56,23 @@ const blogRedirects = [
     from: "/upgrade-yourself/smart-home-technology/rental-friendly-smart-home-security-systems",
     to: "/upgrade-yourself/smart-home-technology/rental-friendly-smart-home-security-systems",
   },
-{
+  {
     from: "/smart-home-technology/rental-friendly-smart-home-security-systems",
     to: "/upgrade-yourself/smart-home-technology",
   },
-{
+  {
     from: "/home-insights/how-to",
     to: "/home-insights/how-to-guides",
   },
-{
+  {
     from: "/home-insights/vs",
     to: "/home-insights/comparisons",
   },
   {
-   from: "/home-insights/how-to",
+    from: "/home-insights/how-to",
     to: "/home-insights/how-to-guides",
   },
-{
+  {
     from: "/home-insights/reviews",
     to: "/home-insights/product-reviews",
   },
@@ -81,9 +80,14 @@ const blogRedirects = [
   // Add more here
 ];
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     domains: ["homimprovement.com", "localhost"],
+  },
+  swcMinify: true, // modern, faster JS minification
+  experimental: {
+    legacyBrowsers: false, // ❗ Disables polyfills for old browsers (like IE11)
   },
   async redirects() {
     return blogRedirects.map(({ from, to }) => ({
@@ -93,4 +97,5 @@ const nextConfig = {
     }));
   },
 };
+
 export default nextConfig;

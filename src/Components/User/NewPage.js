@@ -87,6 +87,7 @@ const Hero = () => {
           priority
           loading="eager"
           fetchPriority="high"
+          sizes="100vw"
         />
 
         {/* Mobile Image */}
@@ -98,6 +99,7 @@ const Hero = () => {
           priority
           loading="eager"
           fetchPriority="high"
+          sizes="100vw"
         />
 
         {/* Content */}

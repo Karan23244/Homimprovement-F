@@ -102,8 +102,6 @@ export default async function RootLayout({ children }) {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
           />
         ))}
-        <meta name="lhverifycode" content="32dc01246faccb7f5b3cad5016dd5033" />
-        <meta name="fo-verify" content="a98b21b4-ddf9-40a6-a1ea-00d196380a4d" />
       </head>
       <body>
         <noscript>
@@ -127,23 +125,6 @@ export default async function RootLayout({ children }) {
             }
           `}
         </Script>
-
-        {/* ✅ Defer Skimlinks using requestIdleCallback */}
-        <Script id="skimlinks-defer" strategy="afterInteractive">
-          {`
-            if ('requestIdleCallback' in window) {
-              requestIdleCallback(() => {
-                const skimScript = document.createElement('script');
-                skimScript.src = "https://s.skimresources.com/js/285761X1772273.skimlinks.js";
-                skimScript.async = true;
-                document.body.appendChild(skimScript);
-              });
-            }
-          `}
-        </Script>
-        <amp-skimlinks
-          layout="nodisplay"
-          publisher-code="285761X1772273"></amp-skimlinks>
 
         {/* ✅ Render Components */}
         <Navbar categories={categoriesData.data} posts={postsData.data} />
