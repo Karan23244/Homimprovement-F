@@ -85,10 +85,6 @@ const nextConfig = {
   images: {
     domains: ["homimprovement.com", "localhost"],
   },
-  swcMinify: true, // modern, faster JS minification
-  experimental: {
-    legacyBrowsers: false, // ❗ Disables polyfills for old browsers (like IE11)
-  },
   async redirects() {
     return blogRedirects.map(({ from, to }) => ({
       source: from,

@@ -114,9 +114,9 @@ const Hero = () => {
               design, and smart tech. Transform your living space with trusted
               advice!
             </p>
-            <Link href="/home-insights">
+            <Link href="/upgrade-yourself">
               <button className="lg:mt-4 px-6 py-3 bg-white hover:bg-indigo-700 text-black hover:text-white rounded-full lg:font-semibold font-medium transition duration-300 cursor-pointer">
-                More Insights
+                More To Explore
               </button>
             </Link>
           </div>
@@ -333,9 +333,9 @@ const CategorySection = () => {
             Design Ideas to House renovation help, we will assist you for your
             home improvement.
           </p>
-          <Link href="/upgrade-yourself">
+          <Link href="/home-insights">
             <button className="px-6 py-3 bg-white text-[#00008B] hover:bg-gray-200 font-medium rounded-full transition duration-300 cursor-pointer">
-              More To Explore
+              More Insights
             </button>
           </Link>
         </article>
@@ -347,6 +347,7 @@ const CategorySection = () => {
             width={120}
             height={60}
             className="object-contain w-full h-full"
+            loading="lazy"
           />
         </div>
       </div>
