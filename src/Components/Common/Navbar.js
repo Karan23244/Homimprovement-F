@@ -20,8 +20,8 @@ function createSlug(text) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)+/g, "");
 }
-
-function Navbar({ categories = [], posts }) {
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
+function Navbar() {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchBarOpen, setSearchBarOpen] = useState(false);
@@ -31,7 +31,40 @@ function Navbar({ categories = [], posts }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [openCategory, setOpenCategory] = useState(null); // for second level
   const [openSubCategory, setOpenSubCategory] = useState(null); // for third level
+  const [categories, setCategories] = useState([]);
+  const [posts, setPosts] = useState([]);
+  console.log(posts);
+  console.log(categories);
   const dropdownRef = useRef();
+  // 🔁 Fetch categories & posts on mount
+  useEffect(() => {
+    // Fetch categories first
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(`${baseUrl}/api/categories`, {
+          cache: "no-store",
+        });
+        const data = await res.json();
+        setCategories(data?.data || []);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
+    // Then fetch posts (no need to block category rendering)
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch(`${baseUrl}/api/posts`, { cache: "no-store" });
+        const data = await res.json();
+        setPosts(data?.data || []);
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      }
+    };
+
+    fetchCategories();
+    fetchPosts();
+  }, []);
 
   const handleRedirect = (type) => {
     const lowerType = type.toLowerCase();

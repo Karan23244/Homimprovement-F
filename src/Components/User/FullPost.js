@@ -24,7 +24,6 @@ const FullPost = ({ post, param1, param2 }) => {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  console.log(post);
   const blogAds = [
     {
       id: "interior-design-ideas-glass-mirrors",

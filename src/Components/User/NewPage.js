@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaTag } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
-import FeedbackSlider from "../Common/FeedbackSlider";
+import FeedbackSlider from "./FeedbackSliderWrapper";
 
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");

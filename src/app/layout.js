@@ -50,18 +50,6 @@ const schemas = [
 ];
 
 export default async function RootLayout({ children }) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL || "https://homimprovement.com";
-
-  const [categoriesRes, postsRes] = await Promise.all([
-    fetch(`${baseUrl}/api/categories`, { cache: "no-store" }),
-    fetch(`${baseUrl}/api/posts`, { cache: "no-store" }),
-  ]);
-
-  const [categoriesData, postsData] = await Promise.all([
-    categoriesRes.json(),
-    postsRes.json(),
-  ]);
 
   return (
     <html lang="en">
@@ -127,7 +115,7 @@ export default async function RootLayout({ children }) {
         </Script>
 
         {/* ✅ Render Components */}
-        <Navbar categories={categoriesData.data} posts={postsData.data} />
+        <Navbar/>
         {children}
         <ScrollButtons />
         <SubscribePopup />
