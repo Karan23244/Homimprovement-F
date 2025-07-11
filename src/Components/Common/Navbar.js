@@ -33,8 +33,6 @@ function Navbar() {
   const [openSubCategory, setOpenSubCategory] = useState(null); // for third level
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
-  console.log(posts);
-  console.log(categories);
   const dropdownRef = useRef();
   // 🔁 Fetch categories & posts on mount
   useEffect(() => {

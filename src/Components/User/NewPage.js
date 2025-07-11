@@ -3,7 +3,7 @@ import Image from "next/image";
 import { FaTag } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import FeedbackSlider from "./FeedbackSliderWrapper";
-
+import SubbscriptionForm from "../Common/SubscriptionForm";
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }
@@ -54,7 +54,7 @@ function NewPage({ allposts, topReads, editorsChoice }) {
           ))}
         </div>
       </section>
-
+      <SubbscriptionForm />
       <section className="p-6 bg-gray-100">
         <h2 className="mb-6 text-center text-lg lg:text-3xl font-bold">
           Editor's Choice
