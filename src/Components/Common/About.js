@@ -57,7 +57,8 @@ const AboutUs = () => {
               width={600}
               height={250}
               className="w-full h-[250px] object-cover"
-              priority={false}
+              priority={true} // Important!
+              fetchPriority="high" // Important!
             />
           </div>
         </div>
@@ -70,7 +71,8 @@ const AboutUs = () => {
               width={600}
               height={250}
               className="w-full h-[250px] object-cover"
-              priority={false}
+              loading="lazy"
+              decoding="async"
             />
           </div>
           <div className="lg:w-2/4">

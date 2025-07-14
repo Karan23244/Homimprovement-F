@@ -1,9 +1,4 @@
-# *
 User-agent: *
-Allow: /
-
-# Host
-Host: https://homimprovement.com
-
-# Sitemaps
+Disallow: 
+Disallow: /cgi-bin/
 Sitemap: https://homimprovement.com/sitemap.xml
