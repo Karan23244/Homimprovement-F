@@ -3,7 +3,7 @@ import FullPost from "@/Components/User/FullPost";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
-  const { param1, param2 } = params;
+  const { param1, param2 } = await params;
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   try {
@@ -11,12 +11,12 @@ export async function generateMetadata({ params }) {
       cache: "no-store", // disable cache for fresh metadata
     });
 
-    if (!res.ok) {
-      return {
-        title: "Not Found",
-        description: "This blog post is not available.",
-      };
-    }
+    // if (!res.ok) {
+    //   return {
+    //     title: "Not Found",
+    //     description: "This blog post is not available.",
+    //   };
+    // }
 
     const json = await res.json();
     const post = json.data;
@@ -50,20 +50,22 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const { param1, param2 } = params;
+  const { param1, param2 } = await params;
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   try {
     const res = await fetch(`${API_URL}/api/posts/${param1}/${param2}`, {
       cache: "no-store",
     });
-
-    if (!res.ok) {
-      if (res.status === 403 || res.status === 404) {
-        notFound(); // 🚫 Show Next.js built-in 404
-      }
-      throw new Error("Unexpected response from server");
-    }
+    console.log("Fetching post:", `${API_URL}/api/posts/${param1}/${param2}`);
+    console.log("Response status:", res.status);
+    console.log("Response headers:", res);
+    // if (!res.ok) {
+    //   if (res.status === 403 || res.status === 404) {
+    //     notFound(); // 🚫 Show Next.js built-in 404
+    //   }
+    //   throw new Error("Unexpected response from server");
+    // }
 
     const json = await res.json();
     const post = json?.data;

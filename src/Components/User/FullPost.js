@@ -174,7 +174,7 @@ const FullPost = ({ post, param1, param2 }) => {
     : "";
   const adimageUrl = post?.AdImage ? `${API_URL}/${post.AdImage}` : "";
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
-  const schemaJSON = post.schema ? JSON.stringify(post.schema) : "";
+  const schemaJSON = post?.schema ? JSON.stringify(post?.schema) : "";
   if (error) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
