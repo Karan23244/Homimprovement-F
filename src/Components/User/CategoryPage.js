@@ -114,6 +114,7 @@ const CategoryPosts = () => {
       setCurrentUrl(window.location.href);
     }
   }, []);
+  console.log(posts, "Posts in CategoryPage");
   const modifiedCategoryName =
     categoryName?.trim().toLowerCase() === "how to" ? "How To ?" : categoryName;
 
@@ -230,11 +231,7 @@ const CategoryPosts = () => {
               key={post.id}
               className="bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
               <Image
-                src={
-                  post.featured_image
-                    ? `${baseUrl}/${post.featured_image}`
-                    : "https://via.placeholder.com/300x200.png?text=No+Image"
-                }
+                src={`${baseUrl}/${post.featured_image}`}
                 alt={post.title}
                 width={400}
                 height={160}
@@ -316,35 +313,33 @@ const CategoryPosts = () => {
       <div className="lg:mx-[10%] mx-[2%]">
         <div className="grid lg:gap-4 gap-2 lg:grid-cols-3">
           <div className="relative lg:col-span-2 order-1 lg:order-none">
-            <Link
-              href={`/${createSlug(
-                posts[0]?.category_types?.split(",")[0]
-              )}/${createSlug(
-                posts[0]?.category_names?.split(",")[0]
-              )}/${createSlug(posts[0]?.Custom_url)}`}
-              className="block relative h-full">
-              <Image
-                src={
-                  posts[0]?.featured_image
-                    ? `${baseUrl}/${posts[0]?.featured_image}`
-                    : "https://via.placeholder.com/600x400.png?text=No+Image"
-                }
-                alt={posts[0]?.title}
-                height={250}
-                width={400}
-                className="w-full lg:h-[450px] h-[250px] object-cover"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <h3 className="lg:text-2xl text-lg font-semibold">
-                  {posts[0]?.title}
-                </h3>
-                <p className="lg:text-lg text-base mt-2">
-                  {posts[0]?.seoDescription}
-                </p>
-              </div>
-            </Link>
+            {posts.length > 0 && posts[0] && (
+              <Link
+                href={`/${createSlug(
+                  posts[0]?.category_types?.split(",")[0]
+                )}/${createSlug(
+                  posts[0]?.category_names?.split(",")[0]
+                )}/${createSlug(posts[0]?.Custom_url)}`}
+                className="block relative h-full">
+                <Image
+                  src={`${baseUrl}/${posts[0]?.featured_image}`}
+                  alt={posts[0]?.title}
+                  height={250}
+                  width={400}
+                  className="w-full lg:h-[450px] h-[250px] object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <h3 className="lg:text-2xl text-lg font-semibold">
+                    {posts[0]?.title}
+                  </h3>
+                  <p className="lg:text-lg text-base mt-2">
+                    {posts[0]?.seoDescription}
+                  </p>
+                </div>
+              </Link>
+            )}
           </div>
 
           <div className="flex flex-col gap-2 order-2 lg:order-none h-full">
@@ -360,11 +355,7 @@ const CategoryPosts = () => {
                   )}/${createSlug(post?.Custom_url)}`}
                   className="block relative h-full">
                   <Image
-                    src={
-                      post?.featured_image
-                        ? `${baseUrl}/${post?.featured_image}`
-                        : "https://via.placeholder.com/300x200.png?text=No+Image"
-                    }
+                    src={`${baseUrl}/${post?.featured_image}`}
                     alt={post?.title}
                     height={150}
                     width={400}

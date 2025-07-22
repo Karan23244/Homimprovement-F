@@ -21,6 +21,9 @@ export default async function HomePage() {
   const topRes = await fetch(`${baseUrl}/api/posts/topReadsAndEditorsChoice`, {
     next: { revalidate: 60 },
   });
+  console.log("Fetching top reads and editor's choice:", `${baseUrl}/api/posts/topReadsAndEditorsChoice`);
+  console.log("Response status:", topRes.status);
+  console.log("Response status:", topRes);
   const topJson = await topRes.json();
 
   const latest = allposts.slice(0, 16);
