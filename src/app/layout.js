@@ -50,7 +50,6 @@ const schemas = [
 ];
 
 export default function RootLayout({ children }) {
-
   return (
     <html lang="en">
       <head>
@@ -90,6 +89,15 @@ export default function RootLayout({ children }) {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
           />
         ))}
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-YGGSTY9EQL" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-YGGSTY9EQL');
+  `}
+        </Script>
       </head>
       <body>
         <noscript>
@@ -115,7 +123,7 @@ export default function RootLayout({ children }) {
         </Script>
 
         {/* ✅ Render Components */}
-        <Navbar/>
+        <Navbar />
         {children}
         <ScrollButtons />
         <SubscribePopup />

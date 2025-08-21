@@ -27,7 +27,7 @@ const Disclaimer = () => {
         <link rel="canonical" href="http://localhost:3000/disclaimer" />
       </Head>
     <div className="lg:mx-[13%] lg:my-8 mx-[2%] my-[1%]">
-      <h1 className="lg:text-8xl text-xl font-bold text-gray-900 lg:mt-10 lg:mb-14 my-5">
+      <h1 className="lg:text-5xl text-xl font-bold text-gray-900 lg:mt-10 lg:mb-14 my-5">
         Disclaimer
       </h1>
       <p className="lg:text-lg text-base text-gray-500 mb-4">

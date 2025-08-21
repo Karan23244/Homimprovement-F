@@ -37,7 +37,7 @@ export default function SubscriptionForm() {
       {/* Right Side – Form */}
       <div className="w-full lg:w-1/2 bg-[#f0f4ff] flex flex-col justify-center items-center">
         <div className="w-full max-w-xl bg-white shadow-lg rounded-2xl px-8 py-14">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-3">
+          <h2 className="lg:text-3xl text-xl font-bold text-center text-gray-800 mb-3">
             Craft the Home of Your Dreams. We'll Show You How.
           </h2>
           <p className="text-center text-sm text-gray-600 mb-6">
@@ -70,7 +70,7 @@ export default function SubscriptionForm() {
 
             <button
               type="submit"
-              className="hover:bg-indigo-700 text-black border hover:text-white font-semibold py-3 rounded-lg w-full transition duration-200 cursor-pointer">
+              className="hover:bg-indigo-700 text-black lg:text-2xl text-sm border hover:text-white font-semibold py-3 rounded-lg w-full transition duration-200 cursor-pointer">
               JOIN THE HOME IMPROVEMENT COMMUNITY!
             </button>
           </form>

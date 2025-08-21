@@ -91,6 +91,7 @@ const Hero = () => {
         />
 
         {/* Mobile Image */}
+        <Link href="/upgrade-yourself" className="lg:hidden">
         <Image
           src="/heromobile.avif"
           alt="Hero Image Mobile"
@@ -101,7 +102,7 @@ const Hero = () => {
           fetchPriority="high"
           sizes="100vw"
         />
-
+        </Link>
         {/* Content */}
         <div className="relative hidden z-10 lg:flex items-center h-full px-10 md:px-20">
           <div className="text-white max-w-4xl space-y-6">
@@ -340,7 +341,7 @@ const CategorySection = () => {
           </Link>
         </article>
 
-        <div className="lg:w-1/2">
+        <div className="lg:w-1/2 w-full">
           <Image
             src="/homepage.webp" // or use a URL like "https://example.com/logo.png"
             alt="homepage"

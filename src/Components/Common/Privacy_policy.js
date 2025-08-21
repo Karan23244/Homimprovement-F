@@ -27,7 +27,7 @@ const PrivacyPolicy = () => {
         <link rel="canonical" href="https://homimprovement.com/privacy-policy" />
       </Head>
     <div className="lg:mx-[13%] lg:my-8 mx-[2%] my-[1%]">
-      <h1 className="lg:text-8xl text-xl font-bold text-gray-900 lg:mt-10 lg:mb-14 my-5">
+      <h1 className="lg:text-5xl text-xl font-bold text-gray-900 lg:mt-10 lg:mb-14 my-5">
         Privacy Policy
       </h1>
 
