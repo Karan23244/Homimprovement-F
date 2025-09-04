@@ -28,7 +28,6 @@ export default async function HomePage() {
 
   const latest = allposts.slice(0, 16);
   const latestIds = new Set(latest.map((p) => p.id));
-
   const topReads = (topJson.data?.topReads || [])
     .filter((post) => post.blog_type === "published" && !latestIds.has(post.id))
     .slice(0, 9);
@@ -43,7 +42,6 @@ export default async function HomePage() {
         !topIds.has(post.id)
     )
     .slice(0, 8);
-
   return (
     <NewPage
       allposts={allposts}

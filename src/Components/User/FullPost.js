@@ -394,3 +394,188 @@ const FullPost = ({ post, param1, param2 }) => {
 };
 
 export default FullPost;
+
+// "use client";
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+// import Head from "next/head";
+// import "./styles.css";
+// import ClassicTemplate from "@/components/blogTemplates/ClassicTemplate";
+// import ModernTemplate from "@/components/blogTemplates/ModernTemplate";
+// import MagazineTemplate from "@/components/blogTemplates/MagazineTemplate";
+
+// function createSlug(text) {
+//   return text?.toLowerCase().replace(/\s+/g, "-");
+// }
+
+// const FullPost = ({ post, param1, param2 }) => {
+//   const [error, setError] = useState(null);
+//   const [updatedContent, setUpdatedContent] = useState(null);
+//   const [relatedBlogs, setRelatedBlogs] = useState([]);
+//   const [comments, setComments] = useState([]);
+//   const [name, setName] = useState("");
+//   const [comment, setComment] = useState("");
+//   const [loading, setLoading] = useState(false);
+
+//   const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+//   const fetchComments = async () => {
+//     if (!post?.id) return;
+//     try {
+//       const res = await fetch(`${API_URL}/api/comments/${post.id}`);
+//       const data = await res.json();
+//       setComments(data);
+//     } catch (err) {
+//       console.error("Error fetching comments:", err);
+//     }
+//   };
+
+//   useEffect(() => {
+//     if (post) {
+//       // Decode HTML
+//       const decodeHtml = (html) => {
+//         const txt = document.createElement("textarea");
+//         txt.innerHTML = html;
+//         return txt.value;
+//       };
+//       const parser = new DOMParser();
+//       const contentDocument = parser.parseFromString(
+//         decodeHtml(post.content || ""),
+//         "text/html"
+//       );
+//       setUpdatedContent(contentDocument.body.innerHTML);
+
+//       // Fetch related blogs
+//       const fetchRelatedBlogs = async () => {
+//         try {
+//           const res = await axios.get(
+//             `${API_URL}/api/posts/related/${post.categories[0].category_name}`
+//           );
+//           setRelatedBlogs(res.data.data);
+//         } catch (err) {
+//           console.error("Error fetching related blogs:", err);
+//         }
+//       };
+//       if (post?.categories?.length > 0) {
+//         fetchRelatedBlogs();
+//       }
+//       fetchComments();
+//     }
+//   }, [post]);
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     if (!name || !comment) return alert("All fields are required!");
+//     setLoading(true);
+//     try {
+//       const res = await fetch(`${API_URL}/api/comments`, {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ post_id: post.id, name, comment }),
+//       });
+//       if (res.ok) {
+//         setName("");
+//         setComment("");
+//         fetchComments();
+//       }
+//     } catch (err) {
+//       console.error("Error submitting comment:", err);
+//     }
+//     setLoading(false);
+//   };
+
+//   const imageUrl = post?.featured_image
+//     ? `${API_URL}/${post.featured_image}`
+//     : "";
+
+//   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
+//   const schemaJSON = post?.schema ? JSON.stringify(post?.schema) : "";
+
+//   if (error) {
+//     return (
+//       <div className="flex items-center justify-center h-screen bg-gray-100">
+//         <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md max-w-md text-center">
+//           <strong className="font-bold">Page Not Found</strong>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   // Pick layout (you can also decide based on category or slug)
+//   const templateType = post.layout || "modern"; // default to magazine
+
+//   return (
+//     <>
+//       <Head>
+//         <title>{post.seoTitle || "Blog Post"}</title>
+//         <meta name="description" content={post.seoDescription || ""} />
+//         <meta property="og:title" content={post.seoTitle || "Blog Post"} />
+//         <meta property="og:description" content={post.seoDescription || ""} />
+//         <meta property="og:image" content={imageUrl} />
+//         <meta property="og:type" content="article" />
+//         <meta property="og:url" content={currentUrl} />
+//         <link rel="canonical" href={currentUrl} />
+//         {schemaJSON && (
+//           <script
+//             type="application/ld+json"
+//             dangerouslySetInnerHTML={{ __html: schemaJSON }}
+//           />
+//         )}
+//       </Head>
+
+//       {templateType === "classic" && (
+//         <ClassicTemplate
+//           post={post}
+//           updatedContent={updatedContent}
+//           comments={comments}
+//           handleSubmit={handleSubmit}
+//           loading={loading}
+//           name={name}
+//           setName={setName}
+//           comment={comment}
+//           setComment={setComment}
+//           relatedBlogs={relatedBlogs}
+//           createSlug={createSlug}
+//           API_URL={API_URL}
+//         />
+//       )}
+
+//       {templateType === "modern" && (
+//         <ModernTemplate
+//           post={post}
+//           updatedContent={updatedContent}
+//           comments={comments}
+//           handleSubmit={handleSubmit}
+//           loading={loading}
+//           name={name}
+//           setName={setName}
+//           comment={comment}
+//           setComment={setComment}
+//           relatedBlogs={relatedBlogs}
+//           createSlug={createSlug}
+//           API_URL={API_URL}
+//           className="custom-html"
+//         />
+//       )}
+
+//       {templateType === "magazine" && (
+//         <MagazineTemplate
+//           post={post}
+//           updatedContent={updatedContent}
+//           comments={comments}
+//           handleSubmit={handleSubmit}
+//           loading={loading}
+//           name={name}
+//           setName={setName}
+//           comment={comment}
+//           setComment={setComment}
+//           relatedBlogs={relatedBlogs}
+//           createSlug={createSlug}
+//           API_URL={API_URL}
+//         />
+//       )}
+//     </>
+//   );
+// };
+
+// export default FullPost;

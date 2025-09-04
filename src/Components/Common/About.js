@@ -66,7 +66,7 @@ const AboutUs = () => {
         <div className="flex lg:flex-row flex-col-reverse justify-center items-center gap-8 mb-10">
           <div className="lg:w-2/4">
             <Image
-              src="/about2.webp"
+              src="/aboutimage.webp"
               alt="About us"
               width={600}
               height={250}
