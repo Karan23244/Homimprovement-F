@@ -83,7 +83,7 @@ const blogRedirects = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["homimprovement.com", "localhost"],
+    domains: ["homimprovement.com", "admin.homimprovement.com", "localhost"],
   },
   async redirects() {
     return blogRedirects.map(({ from, to }) => ({

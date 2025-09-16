@@ -2,44 +2,90 @@
 .react-datepicker-wrapper {
   width: 100% !important;
 }
-.custom-html{
+.custom-html {
   color: black;
+  padding: 1rem 0; /* spacing inside the container */
+  line-height: 1.8;
+}
+
+.custom-html h1,
+.custom-html h2,
+.custom-html h3,
+.custom-html h4,
+.custom-html h5,
+.custom-html h6 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.custom-html h1 {
+  font-size: 2.25rem;
 }
 .custom-html h2 {
-  font-size: 30px;
-  font-weight: 400 !important;
+  font-size: 1.875rem;
 }
-
 .custom-html h3 {
-  font-size: 24px;
-  font-weight: 500 !important;
+  font-size: 1.5rem;
 }
-
 .custom-html h4 {
-  font-size: 20px;
-  font-weight: 500 !important;
+  font-size: 1.25rem;
 }
-
 .custom-html h5 {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
-
 .custom-html h6 {
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .custom-html p {
   font-size: 1rem;
-  line-height: 1.6;
-  color: black;
+  margin-bottom: 1.25rem;
+  color: #111;
   text-align: justify;
+}
+
+.custom-html a {
+  color: #2563eb;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.custom-html a:hover {
+  color: #1d4ed8;
+}
+
+.custom-html ul,
+.custom-html ol {
+  margin: 1rem 0 1.25rem 2rem;
+  padding-left: 1rem;
+}
+.custom-html li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.custom-html blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid #2563eb;
+  background: #f9fafb;
+  font-style: italic;
+  color: #374151;
+  border-radius: 0.25rem;
+}
+
+.custom-html img {
+  width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+  border-radius: 0.5rem;
 }
 
 .custom-html a {
   color: #2563eb; /* Tailwind's `text-blue-600` */
   text-decoration: underline;
 }
-
 
 .custom-html li {
   margin-bottom: 4px;
@@ -60,48 +106,15 @@
 }
 /* Responsive Styles */
 @media (max-width: 768px) {
-  .custom-html h2 {
-    font-size: 24px;
-  }
-  .custom-html h3 {
-    font-size: 20px;
-  }
-  .custom-html h4 {
-    font-size: 18px;
-  }
-  .custom-html h5 {
-    font-size: 16px;
-  }
-  .custom-html h6 {
-    font-size: 14px;
-  }
-  .custom-html p {
-    font-size: 0.9rem;
-    text-align: justify;
-  }
+  .custom-html h2 { font-size: 1.5rem; }
+  .custom-html h3 { font-size: 1.25rem; }
+  .custom-html p  { font-size: 0.95rem; }
 }
 
 @media (max-width: 480px) {
-  .custom-html h2 {
-    font-size: 20px;
-  }
-  .custom-html h3 {
-    font-size: 18px;
-  }
-  .custom-html h4 {
-    font-size: 16px;
-  }
-  .custom-html h5 {
-    font-size: 14px;
-  }
-  .custom-html h6 {
-    font-size: 12px;
-  }
-  .custom-html p {
-    font-size: 0.85rem;
-    line-height: 1.4;
-    text-align: justify;
-  }
+  .custom-html h2 { font-size: 1.25rem; }
+  .custom-html h3 { font-size: 1.1rem; }
+  .custom-html p  { font-size: 0.9rem; line-height: 1.5; }
   .custom-html ul {
     padding-left: 20px;
   }

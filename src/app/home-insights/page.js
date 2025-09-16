@@ -26,19 +26,37 @@ export async function generateMetadata() {
   };
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const baseUrl = process.env.NEXT_PUBLIC_WP_URL;
 
-export default async function AboutPage() {
+export default async function HomePage() {
   try {
-    const postsRes = await fetch(`${baseUrl}/api/posts`, {
-      cache: "no-store", // Ensures fresh data each request (SSR)
-    });
-    const postsJson = await postsRes.json();
-    const allPublishedPosts = postsJson.data.filter(
-      (post) => post.blog_type === "published"
+    const postsRes = await fetch(
+      `${baseUrl}/wp-json/wp/v2/posts?_embed&per_page=50`,
+      { cache: "no-store" } // always fetch fresh data (SSR)
     );
 
-    return <HomeInsights posts={allPublishedPosts} />;
+    if (!postsRes.ok) {
+      console.error("Failed to fetch posts:", postsRes.statusText);
+      return <HomeInsights posts={[]} />;
+    }
+
+    const posts = await postsRes.json();
+
+    // Normalize WordPress post structure → your design format
+    const formattedPosts = posts.map((post) => ({
+      id: post.id,
+      title: post.title.rendered,
+      seoDescription: post.excerpt.rendered.replace(/<[^>]+>/g, ""), // strip HTML tags
+      featured_image:
+        post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null,
+      categories: post._embedded?.["wp:term"]?.[0]?.map((cat) => ({
+        category_name: cat.name,
+        category_type: "category",
+      })),
+      Custom_url: post.slug,
+    }));
+
+    return <HomeInsights posts={formattedPosts} />;
   } catch (error) {
     console.error("Error fetching posts:", error);
     return <HomeInsights posts={[]} />;

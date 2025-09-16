@@ -33,23 +33,32 @@ function getUniqueCategoryBlogs(allBlogs, usedBlogs) {
 }
 
 function NewPage({ allposts, topReads, editorsChoice }) {
-  const featureCategoryBlogs = getUniqueCategoryBlogs(allposts, [
-    ...topReads,
-    ...editorsChoice,
-    ...allposts.slice(0, 8),
-  ]);
+  // latest blogs
+  const latest = allposts.slice(0, 8);
+  // one per category
+  const featureCategoryBlogs = [];
+  const seenCategories = new Set();
+  console.log(featureCategoryBlogs);
+  for (const post of allposts) {
+    const category = post._embedded?.["wp:term"]?.[0]?.[0];
+    if (category && !seenCategories.has(category.id)) {
+      seenCategories.add(category.id);
+      featureCategoryBlogs.push(post);
+    }
+    if (featureCategoryBlogs.length === 8) break;
+  }
+
   return (
     <>
       <Hero />
-      <LatestBlogs allposts={allposts} />
-      <FeatureCategory featureCategoryBlogs={featureCategoryBlogs} />
+      <LatestBlogs posts={latest} />
+      <FeatureCategory posts={featureCategoryBlogs} />
       <section className="p-6 bg-gray-100">
         <h2 className="mb-6 text-center text-lg lg:text-3xl font-bold">
           Top Reads
         </h2>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {topReads.slice(0, 12).map((post) => (
+          {topReads.map((post) => (
             <HorizontalBlogCard key={post.id} post={post} />
           ))}
         </div>
@@ -59,14 +68,12 @@ function NewPage({ allposts, topReads, editorsChoice }) {
         <h2 className="mb-6 text-center text-lg lg:text-3xl font-bold">
           Editor's Choice
         </h2>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {editorsChoice.slice(0, 8).map((post) => (
             <BlogCard key={post.id} post={post} />
           ))}
         </div>
       </section>
-
       <CategorySection />
       <FeedbackSlider />
     </>
@@ -92,16 +99,16 @@ const Hero = () => {
 
         {/* Mobile Image */}
         <Link href="/upgrade-yourself" className="lg:hidden">
-        <Image
-          src="/heromobile.avif"
-          alt="Hero Image Mobile"
-          fill
-          className="block lg:hidden object-cover object-center z-0"
-          priority
-          loading="eager"
-          fetchPriority="high"
-          sizes="100vw"
-        />
+          <Image
+            src="/heromobile.avif"
+            alt="Hero Image Mobile"
+            fill
+            className="block lg:hidden object-cover object-center z-0"
+            priority
+            loading="eager"
+            fetchPriority="high"
+            sizes="100vw"
+          />
         </Link>
         {/* Content */}
         <div className="relative hidden z-10 lg:flex items-center h-full px-10 md:px-20">
@@ -127,9 +134,8 @@ const Hero = () => {
   );
 };
 
-const LatestBlogs = ({ allposts = [] }) => {
-  const postsToShow = allposts.slice(0, 8);
-
+const LatestBlogs = ({ posts = [] }) => {
+  const postsToShow = posts.slice(0, 8);
   return (
     <>
       <section className="p-6 bg-gray-100">
@@ -141,31 +147,31 @@ const LatestBlogs = ({ allposts = [] }) => {
           {postsToShow.map((post, index) => (
             <Link
               key={post.id}
-              href={`/${createSlug(
-                post?.categories[0]?.category_type
-              )}/${createSlug(post?.categories[0]?.category_name)}/${createSlug(
-                post?.Custom_url
-              )}`}
+              href={`/${post._embedded?.["wp:term"]?.[0]?.[0]?.slug}/${
+                post._embedded?.["wp:term"]?.[0]?.[1]?.slug || ""
+              }/${post.slug}`}
               className="bg-white shadow-md rounded-lg overflow-hidden block hover:shadow-lg transition-shadow duration-300">
               <Image
-                src={
-                  post?.featured_image
-                    ? `${baseUrl}/${post.featured_image}`
-                    : "https://via.placeholder.com/300x200.png?text=No+Image"
-                }
-                alt={post?.title || "Blog Image"}
+                src={post?._embedded?.["wp:featuredmedia"]?.[0]?.source_url}
+                alt={post?.title?.rendered}
                 width={300}
                 height={200}
                 className="object-cover w-full h-48"
                 loading="lazy"
               />
               <div className="p-4">
-                <h2 className="text-lg lg:text-xl font-semibold mb-2 line-clamp-2">
-                  {post?.title}
-                </h2>
-                <p className="text-gray-600 mb-4 text-sm lg:text-base line-clamp-2">
-                  {post?.seoDescription}
-                </p>
+                <h2
+                  className="text-lg lg:text-xl font-semibold mb-2 line-clamp-2"
+                  dangerouslySetInnerHTML={{ __html: post?.title?.rendered }}
+                />
+                <p
+                  className="text-sm lg:text-base text-gray-600 line-clamp-2"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      post?.excerpt?.rendered?.replace(/<\/?p>/g, "") ||
+                      "No excerpt available",
+                  }}
+                />
                 <span className="inline-block px-5 py-2 border border-[#DEDEFF] hover:bg-indigo-700 text-black hover:text-white rounded-full font-medium transition duration-300">
                   Read More...
                 </span>
@@ -201,20 +207,14 @@ const FeatureCategory = ({ featureCategoryBlogs = [] }) => {
         {featureCategoryBlogs.map((post, index) => (
           <Link
             key={post.id}
-            href={`/${createSlug(
-              post?.categories[0]?.category_type
-            )}/${createSlug(post?.categories[0]?.category_name)}/${createSlug(
-              post?.Custom_url
-            )}`}
+            href={`/${post._embedded?.["wp:term"]?.[0]?.[0]?.slug}/${
+              post._embedded?.["wp:term"]?.[0]?.[1]?.slug || ""
+            }/${post.slug}`}
             className="bg-white shadow-md rounded-lg overflow-hidden block hover:shadow-lg transition-shadow duration-300">
             <div className="relative">
               <Image
-                src={
-                  post?.featured_image
-                    ? `${baseUrl}/${post.featured_image}`
-                    : "https://via.placeholder.com/300x200.png?text=No+Image"
-                }
-                alt={post?.title || "Blog Thumbnail"}
+                src={post?._embedded?.["wp:featuredmedia"]?.[0]?.source_url}
+                alt={post?.title?.rendered}
                 width={300}
                 height={233}
                 className="object-cover w-full h-56"
@@ -229,12 +229,18 @@ const FeatureCategory = ({ featureCategoryBlogs = [] }) => {
             </div>
 
             <div className="p-4 flex flex-col h-full">
-              <h2 className="text-lg lg:text-xl line-clamp-2 font-semibold mb-2">
-                {post?.title}
-              </h2>
-              <p className="text-gray-600 mb-4 line-clamp-2 text-sm lg:text-base">
-                {post?.seoDescription}
-              </p>
+              <h2
+                className="text-lg lg:text-xl font-semibold mb-2 line-clamp-2"
+                dangerouslySetInnerHTML={{ __html: post?.title?.rendered }}
+              />
+              <p
+                className="text-sm lg:text-base text-gray-600 line-clamp-2"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    post?.excerpt?.rendered?.replace(/<\/?p>/g, "") ||
+                    "No excerpt available",
+                }}
+              />
               <span className="w-fit px-5 py-2 border border-[#DEDEFF] hover:bg-indigo-700 text-black hover:text-white rounded-full font-medium transition duration-300">
                 Read More...
               </span>
@@ -249,21 +255,17 @@ const FeatureCategory = ({ featureCategoryBlogs = [] }) => {
 const BlogCard = ({ post }) => {
   return (
     <Link
-      href={`/${createSlug(post?.categories[0]?.category_type)}/${createSlug(
-        post?.categories[0]?.category_name
-      )}/${createSlug(post?.Custom_url)}`}
-      className="relative block h-72 rounded-lg overflow-hidden group shadow-md hover:shadow-lg transition-shadow duration-300">
+      key={post.id}
+      href={`/${post._embedded?.["wp:term"]?.[0]?.[0]?.slug}/${
+        post._embedded?.["wp:term"]?.[0]?.[1]?.slug || ""
+      }/${post.slug}`}
+      className="relative bg-white shadow-md rounded-lg overflow-hidden block hover:shadow-lg transition-shadow duration-300 h-64">
       {/* Background image */}
       <Image
-        src={
-          post?.featured_image
-            ? `${baseUrl}/${post?.featured_image}`
-            : "https://via.placeholder.com/400x300.png?text=No+Image"
-        }
-        alt={post?.title}
-        width={400}
-        height={300}
-        className="object-cover h-full w-full absolute inset-0"
+        src={post?._embedded?.["wp:featuredmedia"]?.[0]?.source_url}
+        alt={post?.title?.rendered}
+        fill
+        className="object-cover"
         loading="lazy"
       />
 
@@ -272,12 +274,18 @@ const BlogCard = ({ post }) => {
 
       {/* Text over image */}
       <div className="absolute bottom-4 left-4 right-4 z-20 text-white">
-        <h2 className="text-lg lg:text-2xl font-bold mb-2 line-clamp-2">
-          {post?.title}
-        </h2>
-        <p className="text-sm lg:text-base line-clamp-2">
-          {post?.seoDescription}
-        </p>
+        <h2
+          className="text-lg lg:text-xl font-semibold mb-2 line-clamp-2"
+          dangerouslySetInnerHTML={{ __html: post?.title?.rendered }}
+        />
+        <p
+          className="text-sm lg:text-base text-white line-clamp-2"
+          dangerouslySetInnerHTML={{
+            __html:
+              post?.excerpt?.rendered?.replace(/<\/?p>/g, "") ||
+              "No excerpt available",
+          }}
+        />
       </div>
     </Link>
   );
@@ -286,19 +294,16 @@ const BlogCard = ({ post }) => {
 const HorizontalBlogCard = ({ post }) => {
   return (
     <Link
-      href={`/${createSlug(post?.categories[0]?.category_type)}/${createSlug(
-        post?.categories[0]?.category_name
-      )}/${createSlug(post?.Custom_url)}`}
+      key={post.id}
+      href={`/${post._embedded?.["wp:term"]?.[0]?.[0]?.slug}/${
+        post._embedded?.["wp:term"]?.[0]?.[1]?.slug || ""
+      }/${post.slug}`}
       className="flex flex-col lg:flex-row bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       {/* Image on left */}
       <div className="w-full lg:w-1/3 h-48 lg:h-auto">
         <Image
-          src={
-            post?.featured_image
-              ? `${baseUrl}/${post?.featured_image}`
-              : "https://via.placeholder.com/300x200.png?text=No+Image"
-          }
-          alt={post?.title}
+          src={post?._embedded?.["wp:featuredmedia"]?.[0]?.source_url}
+          alt={post?.title?.rendered}
           width={300}
           height={200}
           className="object-cover w-full h-full"
@@ -308,12 +313,18 @@ const HorizontalBlogCard = ({ post }) => {
 
       {/* Content on right */}
       <div className="p-4 flex flex-col items-start justify-start gap-2 w-full lg:w-2/3">
-        <h2 className="text-lg lg:text-xl font-semibold line-clamp-2">
-          {post?.title}
-        </h2>
-        <p className="text-sm lg:text-base text-gray-600 line-clamp-2">
-          {post?.seoDescription}
-        </p>
+        <h2
+          className="text-lg lg:text-xl font-semibold mb-2 line-clamp-2"
+          dangerouslySetInnerHTML={{ __html: post?.title?.rendered }}
+        />
+        <p
+          className="text-sm lg:text-base text-gray-600 line-clamp-2"
+          dangerouslySetInnerHTML={{
+            __html:
+              post?.excerpt?.rendered?.replace(/<\/?p>/g, "") ||
+              "No excerpt available",
+          }}
+        />
         <span className="inline-block w-fit px-5 py-2 mt-2 border border-[#DEDEFF] hover:bg-indigo-700 text-black hover:text-white rounded-full font-medium transition duration-300">
           Read More...
         </span>

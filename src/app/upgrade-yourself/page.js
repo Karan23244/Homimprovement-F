@@ -1,6 +1,6 @@
 import UpgradeYourself from "@/Components/User/UpgradeYourself";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const baseUrl = process.env.NEXT_PUBLIC_WP_URL;
 
 export async function generateMetadata() {
   return {
@@ -31,14 +31,34 @@ export async function generateMetadata() {
 }
 
 export default async function UpgradePage() {
-  const res = await fetch(`${baseUrl}/api/posts`, {
-    next: { revalidate: 60 }, // optional caching (ISR)
-  });
-  const json = await res.json();
-
-  const allPublishedPosts = json.data.filter(
-    (post) => post.blog_type === "published"
+  // Fetch posts from WP REST API
+  const res = await fetch(
+    `${baseUrl}/wp-json/wp/v2/posts?_embed&per_page=50`, // _embed to include images, per_page limit
+    {
+      next: { revalidate: 60 }, // ISR caching
+    }
   );
 
-  return <UpgradeYourself posts={allPublishedPosts} />;
+  if (!res.ok) {
+    console.error("Failed to fetch posts", res.statusText);
+    return <div>Error fetching posts</div>;
+  }
+
+  const posts = await res.json();
+
+  // Map WordPress format → your design format
+  const formattedPosts = posts.map((post) => ({
+    id: post.id,
+    title: post.title.rendered,
+    seoDescription: post.excerpt.rendered.replace(/<[^>]+>/g, ""), // strip HTML
+    featured_image:
+      post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || null,
+    categories: post._embedded?.["wp:term"]?.[0]?.map((cat) => ({
+      category_name: cat.name,
+      category_type: "category", // WordPress only has categories/tags
+    })),
+    Custom_url: post.slug,
+  }));
+
+  return <UpgradeYourself posts={formattedPosts} />;
 }

@@ -95,6 +95,378 @@ const getSeoDetails = (category) => {
   );
 };
 
+// const CategoryPosts = () => {
+//   // usePageTracker("category");
+
+//   const {
+//     posts,
+//     loading,
+//     error,
+//     categoryName,
+//     categoryType,
+//     totalPages,
+//     currentPage,
+//     fetchPosts,
+//   } = usePostsByCategory();
+//   const [currentUrl, setCurrentUrl] = useState("");
+//   useEffect(() => {
+//     if (typeof window !== "undefined") {
+//       setCurrentUrl(window.location.href);
+//     }
+//   }, []);
+//   console.log(posts, "Posts in CategoryPage");
+//   const modifiedCategoryName =
+//     categoryName?.trim().toLowerCase() === "how to" ? "How To ?" : categoryName;
+
+//   const { title, description, keywords, shortDescription, html } =
+//     getSeoDetails(modifiedCategoryName);
+
+//   if (loading)
+//     return (
+//       <div className="flex flex-col items-center justify-center h-screen text-gray-600">
+//         <svg
+//           className="animate-spin h-10 w-10 text-blue-500 mb-4"
+//           xmlns="http://www.w3.org/2000/svg"
+//           fill="none"
+//           viewBox="0 0 24 24">
+//           <circle
+//             className="opacity-25"
+//             cx="12"
+//             cy="12"
+//             r="10"
+//             stroke="currentColor"
+//             strokeWidth="4"></circle>
+//           <path
+//             className="opacity-75"
+//             fill="currentColor"
+//             d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+//         </svg>
+//         <p className="text-lg">Loading, please wait...</p>
+//       </div>
+//     );
+
+//   if (error)
+//     return (
+//       <div className="flex flex-col items-center justify-center h-screen text-red-600">
+//         <svg
+//           className="w-12 h-12 mb-4"
+//           fill="none"
+//           stroke="currentColor"
+//           strokeWidth="2"
+//           viewBox="0 0 24 24">
+//           <path
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//             d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+//           />
+//         </svg>
+//         <p className="text-lg font-semibold">Page Not Found!</p>
+//       </div>
+//     );
+
+//   const sortedPosts = [...posts].sort((a, b) => b.view_count - a.view_count);
+
+//   const UpgradeYourselfUI = () => (
+//     <>
+//       <div className="relative w-full lg:h-[250px] h-[350px] overflow-hidden">
+//         {/* Background Image */}
+//         <Image
+//           src="/background.webp"
+//           alt="Category Background"
+//           fill
+//           className="object-contain object-center"
+//           priority
+//           fetchPriority="high"
+//         />
+
+//         {/* Gradient Overlay */}
+//         <div className="absolute inset-0 bg-gradient-to-r from-[#000025] to-[rgba(0,0,139,0.3)] z-10" />
+
+//         {/* Content */}
+//         <div className="relative z-20 flex flex-col gap-3 justify-center h-full py-5 px-[2%] lg:px-[10%]">
+//           <h1 className="lg:text-5xl text-xl font-semibold text-white">
+//             {modifiedCategoryName}
+//           </h1>
+//           <p className="lg:text-base text-xs text-white leading-relaxed">
+//             {shortDescription}
+//           </p>
+//         </div>
+//       </div>
+
+//       <div className="lg:px-[15%] px-[2%] py-[2%] bg-[#00008B]/30">
+//         {posts.length > 0 && (
+//           <div className="mb-6">
+//             <h2 className="lg:text-2xl text-lg font-semibold mb-2">
+//               {posts[0].title}
+//             </h2>
+//             <Link
+//               href={`/${createSlug(
+//                 posts[0]?.category_types?.split(",")[0]
+//               )}/${createSlug(
+//                 posts[0]?.category_names?.split(",")[0]
+//               )}/${createSlug(posts[0]?.Custom_url)}`}
+//               className="block">
+//               <Image
+//                 src={
+//                   posts[0].featured_image
+//                     ? `${baseUrl}/${posts[0].featured_image}`
+//                     : "https://via.placeholder.com/300x200.png?text=No+Image"
+//                 }
+//                 alt={posts[0].title}
+//                 width={300}
+//                 height={200}
+//                 className="w-full h-[300px] object-cover mb-4"
+//                 loading="lazy"
+//               />
+//               <p className="lg:text-lg text-base text-gray-700">
+//                 {posts[0].seoDescription}...
+//               </p>
+//             </Link>
+//           </div>
+//         )}
+
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+//           {posts.slice(1).map((post) => (
+//             <div
+//               key={post.id}
+//               className="bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+//               <Image
+//                 src={`${baseUrl}/${post.featured_image}`}
+//                 alt={post.title}
+//                 width={400}
+//                 height={160}
+//                 className="w-full h-40 object-cover mb-2"
+//                 loading="lazy"
+//               />
+
+//               <div className="p-2">
+//                 <h3 className="text-base font-semibold line-clamp-2">
+//                   {post?.title}
+//                 </h3>
+//                 <p className="text-xs text-gray-600 line-clamp-2">
+//                   {post?.seoDescription}
+//                 </p>
+//                 <Link
+//                   href={`/${createSlug(
+//                     post?.category_types?.split(",")[0]
+//                   )}/${createSlug(
+//                     post?.category_names?.split(",")[0]
+//                   )}/${createSlug(post?.Custom_url)}`}
+//                   className="text-[#00008B] hover:underline inline-block">
+//                   Read More...
+//                 </Link>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+
+//         {totalPages > 1 && (
+//           <div className="flex justify-center items-center mt-6 space-x-3">
+//             <button
+//               disabled={currentPage === 1}
+//               onClick={() => fetchPosts(currentPage - 1)}
+//               className="flex items-center gap-2 px-4 py-2 text-white bg-[#00008B] rounded-full shadow-md transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+//               <FaChevronLeft className="text-lg" />
+//               Prev
+//             </button>
+
+//             <span className="px-4 py-2 text-lg font-semibold text-gray-800 bg-gray-100 rounded-lg shadow-md">
+//               Page {currentPage} of {totalPages}
+//             </span>
+
+//             <button
+//               disabled={currentPage === totalPages}
+//               onClick={() => fetchPosts(currentPage + 1)}
+//               className="flex items-center gap-2 px-4 py-2 text-white bg-[#00008B] rounded-full shadow-md transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+//               Next
+//               <FaChevronRight className="text-lg" />
+//             </button>
+//           </div>
+//         )}
+//         <div className="leading-relaxed py-5">
+//           <div dangerouslySetInnerHTML={{ __html: html }} />
+//         </div>
+//       </div>
+//     </>
+//   );
+
+//   const HomeInsightsUI = () => (
+//     <>
+//       <Head>
+//         {posts?.[0]?.featured_image && (
+//           <link
+//             rel="preload"
+//             as="image"
+//             href={`${baseUrl}/${posts[0].featured_image}`}
+//           />
+//         )}
+//       </Head>
+//       <div className="relative w-full lg:h-[250px] h-[350px] flex flex-col gap-3 py-5 px-[2%] lg:px-[10%]">
+//         <h1 className="lg:text-5xl text-center text-xl font-semibold text-black">
+//           {modifiedCategoryName}
+//         </h1>
+//         <p className="text-lg text-black text-justify leading-relaxed">
+//           {shortDescription}
+//         </p>
+//       </div>
+
+//       <div className="lg:mx-[10%] mx-[2%]">
+//         <div className="grid lg:gap-4 gap-2 lg:grid-cols-3">
+//           <div className="relative lg:col-span-2 order-1 lg:order-none">
+//             {posts.length > 0 && posts[0] && (
+//               <Link
+//                 href={`/${createSlug(
+//                   posts[0]?.category_types?.split(",")[0]
+//                 )}/${createSlug(
+//                   posts[0]?.category_names?.split(",")[0]
+//                 )}/${createSlug(posts[0]?.Custom_url)}`}
+//                 className="block relative h-full">
+//                 <Image
+//                   src={`${baseUrl}/${posts[0]?.featured_image}`}
+//                   alt={posts[0]?.title}
+//                   height={250}
+//                   width={400}
+//                   className="w-full lg:h-[450px] h-[250px] object-cover"
+//                   priority
+//                 />
+//                 <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+//                 <div className="absolute bottom-4 left-4 right-4 text-white">
+//                   <h3 className="lg:text-2xl text-lg font-semibold">
+//                     {posts[0]?.title}
+//                   </h3>
+//                   <p className="lg:text-lg text-base mt-2">
+//                     {posts[0]?.seoDescription}
+//                   </p>
+//                 </div>
+//               </Link>
+//             )}
+//           </div>
+
+//           <div className="flex flex-col gap-2 order-2 lg:order-none h-full">
+//             {posts.slice(1, 3).map((post) => (
+//               <div
+//                 key={post.id}
+//                 className="relative flex-1 flex flex-col bg-white">
+//                 <Link
+//                   href={`/${createSlug(
+//                     post?.category_types?.split(",")[0]
+//                   )}/${createSlug(
+//                     post?.category_names?.split(",")[0]
+//                   )}/${createSlug(post?.Custom_url)}`}
+//                   className="block relative h-full">
+//                   <Image
+//                     src={`${baseUrl}/${post?.featured_image}`}
+//                     alt={post?.title}
+//                     height={150}
+//                     width={400}
+//                     className="w-full h-[150px] object-cover"
+//                     loading="lazy"
+//                   />
+//                   <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+//                   <div className="absolute bottom-4 left-4 right-4 text-white">
+//                     <h3 className="lg:text-lg text-base font-semibold">
+//                       {post?.title}
+//                     </h3>
+//                     <p className="lg:text-base text-sm mt-1 line-clamp-2">
+//                       {post?.seoDescription}
+//                     </p>
+//                   </div>
+//                 </Link>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+
+//         <hr className="border-gray-300 my-5" />
+
+//         <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-8 pb-8">
+//           {posts.slice(3).map((post) => (
+//             <div
+//               key={post.id}
+//               className="flex flex-row items-start gap-2 lg:gap-10">
+//               <div className="w-5/12">
+//                 <Image
+//                   src={
+//                     post?.featured_image
+//                       ? `${baseUrl}/${post?.featured_image}`
+//                       : "https://via.placeholder.com/300x200.png?text=No+Image"
+//                   }
+//                   alt={post?.title}
+//                   height={250}
+//                   width={400}
+//                   className="w-full h-32 object-cover"
+//                 />
+//               </div>
+//               <div className="flex-1">
+//                 <h3 className="text-lg font-semibold">{post?.title}</h3>
+//                 <p className="text-sm text-gray-700 line-clamp-3">
+//                   {post?.seoDescription}
+//                 </p>
+//                 <Link
+//                   href={`/${createSlug(
+//                     post?.category_types?.split(",")[0]
+//                   )}/${createSlug(
+//                     post?.category_names?.split(",")[0]
+//                   )}/${createSlug(post?.Custom_url)}`}
+//                   className="text-[#00008B] hover:underline inline-block mt-1">
+//                   Read More...
+//                 </Link>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//         {totalPages > 1 && (
+//           <div className="flex justify-center items-center mt-6 space-x-3">
+//             <button
+//               disabled={currentPage === 1}
+//               onClick={() => fetchPosts(currentPage - 1)}
+//               className="flex items-center gap-2 px-4 py-2 text-white bg-[#00008B] rounded-full shadow-md transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+//               <FaChevronLeft className="text-lg" />
+//               Prev
+//             </button>
+
+//             <span className="px-4 py-2 text-lg font-semibold text-gray-800 bg-gray-100 rounded-lg shadow-md">
+//               Page {currentPage} of {totalPages}
+//             </span>
+
+//             <button
+//               disabled={currentPage === totalPages}
+//               onClick={() => fetchPosts(currentPage + 1)}
+//               className="flex items-center gap-2 px-4 py-2 text-white bg-[#00008B] rounded-full shadow-md transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+//               Next
+//               <FaChevronRight className="text-lg" />
+//             </button>
+//           </div>
+//         )}
+//         <div className="leading-relaxed py-5">
+//           <div dangerouslySetInnerHTML={{ __html: html }} />
+//         </div>
+//       </div>
+//     </>
+//   );
+
+//   return (
+//     <>
+//       <Head>
+//         <title>{title}</title>
+//         <meta name="description" content={description} />
+//         <meta name="keywords" content={keywords} />
+//         <meta property="og:title" content={title} />
+//         <meta property="og:description" content={description} />
+//         <meta property="og:type" content="Category Page" />
+//         <meta property="og:url" content={`${currentUrl}`} />
+//         <link rel="canonical" href={`${currentUrl}`} />
+//       </Head>
+
+//       {categoryType === "Upgrade Yourself"
+//         ? UpgradeYourselfUI()
+//         : HomeInsightsUI()}
+//     </>
+//   );
+// };
+
+// export default CategoryPosts;
+
 const CategoryPosts = () => {
   // usePageTracker("category");
 
@@ -108,13 +480,14 @@ const CategoryPosts = () => {
     currentPage,
     fetchPosts,
   } = usePostsByCategory();
+
   const [currentUrl, setCurrentUrl] = useState("");
   useEffect(() => {
     if (typeof window !== "undefined") {
       setCurrentUrl(window.location.href);
     }
   }, []);
-  console.log(posts, "Posts in CategoryPage");
+
   const modifiedCategoryName =
     categoryName?.trim().toLowerCase() === "how to" ? "How To ?" : categoryName;
 
@@ -164,25 +537,19 @@ const CategoryPosts = () => {
       </div>
     );
 
-  const sortedPosts = [...posts].sort((a, b) => b.view_count - a.view_count);
-
+  // ============= Upgrade Yourself Layout =============
   const UpgradeYourselfUI = () => (
     <>
       <div className="relative w-full lg:h-[250px] h-[350px] overflow-hidden">
-        {/* Background Image */}
         <Image
           src="/background.webp"
           alt="Category Background"
           fill
-          className="object-contain object-center"
+          className="object-cover object-center"
           priority
           fetchPriority="high"
         />
-
-        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#000025] to-[rgba(0,0,139,0.3)] z-10" />
-
-        {/* Content */}
         <div className="relative z-20 flex flex-col gap-3 justify-center h-full py-5 px-[2%] lg:px-[10%]">
           <h1 className="lg:text-5xl text-xl font-semibold text-white">
             {modifiedCategoryName}
@@ -195,22 +562,21 @@ const CategoryPosts = () => {
 
       <div className="lg:px-[15%] px-[2%] py-[2%] bg-[#00008B]/30">
         {posts.length > 0 && (
-          <div className="mb-6">
-            <h2 className="lg:text-2xl text-lg font-semibold mb-2">
-              {posts[0].title}
-            </h2>
-            <Link
-              href={`/${createSlug(
-                posts[0]?.category_types?.split(",")[0]
-              )}/${createSlug(
-                posts[0]?.category_names?.split(",")[0]
-              )}/${createSlug(posts[0]?.Custom_url)}`}
-              className="block">
+          <Link
+            href={`/${createSlug(
+              posts[0]?.category_types?.split(",")[0]
+            )}/${createSlug(posts[0]?.category_names?.split(",")[0])}/${
+              posts[0]?.Custom_url
+            }`}
+            className="block">
+            <div className="mb-6">
+              <h2 className="lg:text-2xl text-lg font-semibold mb-2">
+                {posts[0].title}
+              </h2>
               <Image
                 src={
-                  posts[0].featured_image
-                    ? `${baseUrl}/${posts[0].featured_image}`
-                    : "https://via.placeholder.com/300x200.png?text=No+Image"
+                  posts[0].featured_image ||
+                  "https://via.placeholder.com/300x200.png?text=No+Image"
                 }
                 alt={posts[0].title}
                 width={300}
@@ -218,48 +584,51 @@ const CategoryPosts = () => {
                 className="w-full h-[300px] object-cover mb-4"
                 loading="lazy"
               />
-              <p className="lg:text-lg text-base text-gray-700">
-                {posts[0].seoDescription}...
+              <p className="lg:text-lg text-base text-gray-700 line-clamp-2">
+                {posts[0].seoDescription}
               </p>
-            </Link>
-          </div>
+            </div>
+          </Link>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {posts.slice(1).map((post) => (
-            <div
-              key={post.id}
-              className="bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-              <Image
-                src={`${baseUrl}/${post.featured_image}`}
-                alt={post.title}
-                width={400}
-                height={160}
-                className="w-full h-40 object-cover mb-2"
-                loading="lazy"
-              />
-
-              <div className="p-2">
-                <h3 className="text-base font-semibold line-clamp-2">
-                  {post?.title}
-                </h3>
-                <p className="text-xs text-gray-600 line-clamp-2">
-                  {post?.seoDescription}
-                </p>
-                <Link
-                  href={`/${createSlug(
-                    post?.category_types?.split(",")[0]
-                  )}/${createSlug(
-                    post?.category_names?.split(",")[0]
-                  )}/${createSlug(post?.Custom_url)}`}
-                  className="text-[#00008B] hover:underline inline-block">
-                  Read More...
-                </Link>
+            <Link
+              href={`/${createSlug(
+                post?.category_types?.split(",")[0]
+              )}/${createSlug(post?.category_names?.split(",")[0])}/${
+                post?.Custom_url
+              }`}
+              key={post.id}>
+              <div className="bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+                <Image
+                  src={
+                    post.featured_image ||
+                    "https://via.placeholder.com/300x200.png?text=No+Image"
+                  }
+                  alt={post.title}
+                  width={400}
+                  height={160}
+                  className="w-full h-40 object-cover mb-2"
+                  loading="lazy"
+                />
+                <div className="p-2">
+                  <h3 className="text-base font-semibold line-clamp-2">
+                    {post?.title}
+                  </h3>
+                  <p className="text-xs text-gray-600 line-clamp-2">
+                    {post?.seoDescription}
+                  </p>
+                  <div className="text-[#00008B] hover:underline inline-block">
+                    Read More...
+                  </div>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
+        {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-center items-center mt-6 space-x-3">
             <button
@@ -283,6 +652,7 @@ const CategoryPosts = () => {
             </button>
           </div>
         )}
+
         <div className="leading-relaxed py-5">
           <div dangerouslySetInnerHTML={{ __html: html }} />
         </div>
@@ -290,15 +660,12 @@ const CategoryPosts = () => {
     </>
   );
 
+  // ============= Home Insights Layout =============
   const HomeInsightsUI = () => (
     <>
       <Head>
         {posts?.[0]?.featured_image && (
-          <link
-            rel="preload"
-            as="image"
-            href={`${baseUrl}/${posts[0].featured_image}`}
-          />
+          <link rel="preload" as="image" href={posts[0].featured_image} />
         )}
       </Head>
       <div className="relative w-full lg:h-[250px] h-[350px] flex flex-col gap-3 py-5 px-[2%] lg:px-[10%]">
@@ -317,12 +684,15 @@ const CategoryPosts = () => {
               <Link
                 href={`/${createSlug(
                   posts[0]?.category_types?.split(",")[0]
-                )}/${createSlug(
-                  posts[0]?.category_names?.split(",")[0]
-                )}/${createSlug(posts[0]?.Custom_url)}`}
+                )}/${createSlug(posts[0]?.category_names?.split(",")[0])}/${
+                  posts[0]?.Custom_url
+                }`}
                 className="block relative h-full">
                 <Image
-                  src={`${baseUrl}/${posts[0]?.featured_image}`}
+                  src={
+                    posts[0]?.featured_image ||
+                    "https://via.placeholder.com/400x250.png?text=No+Image"
+                  }
                   alt={posts[0]?.title}
                   height={250}
                   width={400}
@@ -350,12 +720,15 @@ const CategoryPosts = () => {
                 <Link
                   href={`/${createSlug(
                     post?.category_types?.split(",")[0]
-                  )}/${createSlug(
-                    post?.category_names?.split(",")[0]
-                  )}/${createSlug(post?.Custom_url)}`}
+                  )}/${createSlug(post?.category_names?.split(",")[0])}/${
+                    post?.Custom_url
+                  }`}
                   className="block relative h-full">
                   <Image
-                    src={`${baseUrl}/${post?.featured_image}`}
+                    src={
+                      post?.featured_image ||
+                      "https://via.placeholder.com/400x150.png?text=No+Image"
+                    }
                     alt={post?.title}
                     height={150}
                     width={400}
@@ -381,40 +754,41 @@ const CategoryPosts = () => {
 
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-8 pb-8">
           {posts.slice(3).map((post) => (
-            <div
-              key={post.id}
-              className="flex flex-row items-start gap-2 lg:gap-10">
-              <div className="w-5/12">
-                <Image
-                  src={
-                    post?.featured_image
-                      ? `${baseUrl}/${post?.featured_image}`
-                      : "https://via.placeholder.com/300x200.png?text=No+Image"
-                  }
-                  alt={post?.title}
-                  height={250}
-                  width={400}
-                  className="w-full h-32 object-cover"
-                />
+            <Link
+              href={`/${createSlug(
+                post?.category_types?.split(",")[0]
+              )}/${createSlug(post?.category_names?.split(",")[0])}/${
+                post?.Custom_url
+              }`}
+              key={post.id}>
+              <div className="flex flex-row items-start gap-2 lg:gap-10">
+                <div className="w-5/12">
+                  <Image
+                    src={
+                      post?.featured_image ||
+                      "https://via.placeholder.com/400x200.png?text=No+Image"
+                    }
+                    alt={post?.title}
+                    height={250}
+                    width={400}
+                    className="w-full h-32 object-cover"
+                  />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold">{post?.title}</h3>
+                  <p className="text-sm text-gray-700 line-clamp-3">
+                    {post?.seoDescription}
+                  </p>
+                  <div className="text-[#00008B] hover:underline inline-block mt-1">
+                    Read More...
+                  </div>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold">{post?.title}</h3>
-                <p className="text-sm text-gray-700 line-clamp-3">
-                  {post?.seoDescription}
-                </p>
-                <Link
-                  href={`/${createSlug(
-                    post?.category_types?.split(",")[0]
-                  )}/${createSlug(
-                    post?.category_names?.split(",")[0]
-                  )}/${createSlug(post?.Custom_url)}`}
-                  className="text-[#00008B] hover:underline inline-block mt-1">
-                  Read More...
-                </Link>
-              </div>
-            </div>
+            </Link>
           ))}
         </div>
+
+        {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-center items-center mt-6 space-x-3">
             <button
