@@ -4,7 +4,7 @@
 }
 .custom-html {
   color: black;
-  padding: 1rem 0; /* spacing inside the container */
+  padding: 0rem 0; /* spacing inside the container */
   line-height: 1.8;
 }
 

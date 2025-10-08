@@ -4,6 +4,7 @@ import { FaTag } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import FeedbackSlider from "./FeedbackSliderWrapper";
 import SubbscriptionForm from "../Common/SubscriptionForm";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 function createSlug(text) {
   return text?.toLowerCase().replace(/\s+/g, "-");
 }

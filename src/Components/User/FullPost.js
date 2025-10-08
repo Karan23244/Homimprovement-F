@@ -58,6 +58,10 @@ const FullPost = ({ post, param1, param2 }) => {
       });
 
       setToc(tocData);
+      // --- Remove FAQ items from content ---
+      const faqItems = contentDocument.querySelectorAll(".rank-math-list-item");
+      faqItems.forEach((item) => item.remove());
+
       setUpdatedContent(contentDocument.body.innerHTML);
 
       // Related blogs fetch by first category
@@ -224,10 +228,13 @@ const FullPost = ({ post, param1, param2 }) => {
             </div>
 
             <div
-              className="custom-html text-gray-700 leading-relaxed prose prose-indigo max-w-none mb-12 min-h-[600px]"
+              className="custom-html text-gray-700 leading-relaxed prose prose-indigo max-w-none min-h-[600px]"
               dangerouslySetInnerHTML={{ __html: updatedContent }}
             />
-
+            <FAQAccordion
+              className="mb-12"
+              htmlContent={post.content.rendered}
+            />
             {/* Comments */}
             <div className="my-5 min-h-[100px]">
               <CommentSection
@@ -277,3 +284,78 @@ const FullPost = ({ post, param1, param2 }) => {
 };
 
 export default FullPost;
+
+const FAQAccordion = ({ htmlContent }) => {
+  const [faqs, setFaqs] = useState([]);
+
+  useEffect(() => {
+    if (!htmlContent) return;
+
+    // Parse the WordPress FAQ HTML
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlContent, "text/html");
+    const items = Array.from(doc.querySelectorAll(".rank-math-list-item"));
+
+    const parsedFaqs = items.map((item, index) => ({
+      id: `faq-${index}`,
+      question: item.querySelector(".rank-math-question")?.textContent || "",
+      answer: item.querySelector(".rank-math-answer")?.innerHTML || "",
+      isOpen: false,
+    }));
+
+    setFaqs(parsedFaqs);
+  }, [htmlContent]);
+
+  const toggleFaq = (id) => {
+    setFaqs((prev) =>
+      prev.map(
+        (faq) =>
+          faq.id === id
+            ? { ...faq, isOpen: !faq.isOpen }
+            : { ...faq, isOpen: false } // optional: close others
+      )
+    );
+  };
+
+  return (
+    <div className="mb-12 space-y-4">
+      {faqs.map((faq) => (
+        <div
+          key={faq.id}
+          className={`border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 ${
+            faq.isOpen ? "bg-blue-50 border-blue-200" : "bg-white"
+          }`}>
+          <button
+            onClick={() => toggleFaq(faq.id)}
+            className="w-full text-left py-4 px-6 flex justify-between items-center text-lg font-semibold focus:outline-none">
+            <span
+              className={`${faq.isOpen ? "text-blue-700" : "text-gray-800"}`}>
+              {faq.question}
+            </span>
+            <svg
+              className={`w-6 h-6 text-blue-500 transition-transform duration-300 ${
+                faq.isOpen ? "rotate-180 transform scale-110" : "transform"
+              }`}
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+          <div
+            className={`overflow-hidden transition-all duration-500 px-6 ${
+              faq.isOpen ? "max-h-96 py-4" : "max-h-0"
+            }`}
+            dangerouslySetInnerHTML={{ __html: faq.answer }}
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
